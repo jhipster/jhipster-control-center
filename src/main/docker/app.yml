@@ -8,4 +8,4 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     ports:
-      - 8080:8080
+      - 1337:1337

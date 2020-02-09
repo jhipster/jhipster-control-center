@@ -1,0 +1,12 @@
+diff a/webpack/webpack.dev.js b/webpack/webpack.dev.js	(rejected hunks)
+@@ -36,9 +36 @@ module.exports = merge(baseWebpackConfig, {
+-        context: [
+-          '/api',
+-          '/services',
+-          '/management',
+-          '/swagger-resources',
+-          '/v2/api-docs',
+-          '/h2-console',
+-          '/auth'
+-        ],
++        context: ['/api', '/services', '/management', '/swagger-resources', '/v2/api-docs', '/h2-console', '/auth'],

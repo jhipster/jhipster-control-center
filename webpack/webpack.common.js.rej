@@ -1,0 +1,6 @@
+diff a/webpack/webpack.common.js b/webpack/webpack.common.js	(rejected hunks)
+@@ -87,2 +87,2 @@ module.exports = {
+-      { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, ignore: ['index.html']},
+-      { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui'},
++      { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, ignore: ['index.html'] },
++      { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui' },
