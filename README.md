@@ -2,6 +2,24 @@
 
 This application was generated using JHipster 6.7.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.7.0](https://www.jhipster.tech/documentation-archive/v6.7.0).
 
+## JHipster Control Center
+
+### Specific Spring profiles
+
+In order to work properly, the Control Center has to be started with a spring profile corresponding to a Spring Cloud discovery backend
+
+- `eureka`: Connect to an Eureka server and fetch its registered instances, configured in `application-eureka.yml`
+- `consul`: Connect to a Consul server and fetch its registered instances, configured in `application-consul.yml`
+- `staticdiscovery`: Uses a static list of instances provided as properties, configured in `application-staticdiscovery.yml`
+- `kubernetes`: To be developed
+
+### Control Center API
+
+- `localhost:1337/api/services/instances`: get registered instances
+- `localhost:1337/management/gateway/routes`: get Spring Cloud Gateway routes
+- `localhost:1337/gateway/<serviceName>/<instanceName>/<urlPath>`: proxy request to `instanceName`'s urlPath.
+  For example, when using Eureka, it would look like: `localhost:1337/gateway/eurekaservice1/eurekaservice1:3d38fb89771e502111b495064d739ef8/management/info`
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:

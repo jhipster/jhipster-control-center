@@ -19,7 +19,7 @@ management:
     web:
       base-path: /management
       exposure:
-        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
+        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'gateway', 'service-registry']
   endpoint:
     health:
       show-details: when_authorized
@@ -95,6 +95,13 @@ spring:
   output:
     ansi:
       console-available: true
+  # Control Center specific config
+  cloud:
+    consul:
+      enabled: false
+    loadbalancer:
+      ribbon:
+        enabled: false
 
 server:
   servlet:
@@ -137,6 +144,11 @@ jhipster:
     contact-email:
     license:
     license-url:
+
+# Control Center specific config
+eureka:
+  client:
+    enabled: false
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

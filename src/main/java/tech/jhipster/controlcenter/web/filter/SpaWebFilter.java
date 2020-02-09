@@ -15,7 +15,7 @@ public class SpaWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (!path.startsWith("/api") && !path.startsWith("/management")
+        if (!path.startsWith("/api") && !path.startsWith("/management") && !path.startsWith("/gateway")
             && path.matches("[^\\\\.]*")) {
             return chain.filter(
                 exchange.mutate().request(exchange.getRequest().mutate().path("/index.html").build()
