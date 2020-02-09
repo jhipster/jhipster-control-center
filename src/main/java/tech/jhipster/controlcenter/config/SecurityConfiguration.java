@@ -67,6 +67,7 @@ public class SecurityConfiguration {
             )))
             .csrf()
                 .disable()
+
             .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
             .exceptionHandling()
@@ -86,11 +87,11 @@ public class SecurityConfiguration {
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
-            .pathMatchers("/api/**").authenticated()
+            .pathMatchers("/api/**").permitAll()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
-            .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+            .pathMatchers("/management/**").permitAll();
         // @formatter:on
         return http.build();
     }
