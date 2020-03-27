@@ -1,59 +1,29 @@
 package tech.jhipster.controlcenter.web.rest.errors;
 
 import tech.jhipster.controlcenter.JhipsterControlCenterApp;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.codec.CodecCustomizer;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.MockServerConfigurer;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.server.WebExceptionHandler;
-import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
-
-import java.util.List;
 
 /**
  * Integration tests {@link ExceptionTranslator} controller advice.
  */
+@WithMockUser
+@AutoConfigureWebTestClient
 @SpringBootTest(classes = JhipsterControlCenterApp.class)
 public class ExceptionTranslatorIT {
 
     @Autowired
-    private ExceptionTranslatorTestController controller;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
-    private CodecCustomizer jacksonCodecCustomizer;
-
-    @Autowired
-    private List<WebExceptionHandler> exceptionHandlers;
-
     private WebTestClient webTestClient;
-
-    @BeforeEach
-    public void setup() {
-        webTestClient = WebTestClient.bindToController(controller)
-            .controllerAdvice(exceptionTranslator)
-            .httpMessageCodecs(jacksonCodecCustomizer::customize)
-            .apply(new MockServerConfigurer() {
-                @Override
-                public void beforeServerCreated(WebHttpHandlerBuilder builder) {
-                    builder
-                        .exceptionHandlers(List::clear)
-                        .exceptionHandlers(handlers -> handlers.addAll(exceptionHandlers));
-                }
-            })
-            .build();
-    }
 
     @Test
     public void testMethodArgumentNotValid() {
-         webTestClient.post().uri("/test/method-argument")
+         webTestClient.post().uri("/api/exception-translator-test/method-argument")
              .contentType(MediaType.APPLICATION_JSON)
              .bodyValue("{}")
              .exchange()
@@ -67,7 +37,7 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testMissingRequestPart() {
-        webTestClient.get().uri("/test/missing-servlet-request-part")
+        webTestClient.get().uri("/api/exception-translator-test/missing-servlet-request-part")
             .exchange()
             .expectStatus().isBadRequest()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
@@ -77,7 +47,7 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testMissingRequestParameter() {
-        webTestClient.get().uri("/test/missing-servlet-request-parameter")
+        webTestClient.get().uri("/api/exception-translator-test/missing-servlet-request-parameter")
             .exchange()
             .expectStatus().isBadRequest()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
@@ -87,7 +57,7 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testAccessDenied() {
-        webTestClient.get().uri("/test/access-denied")
+        webTestClient.get().uri("/api/exception-translator-test/access-denied")
             .exchange()
             .expectStatus().isForbidden()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
@@ -98,19 +68,19 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testUnauthorized() {
-        webTestClient.get().uri("/test/unauthorized")
+        webTestClient.get().uri("/api/exception-translator-test/unauthorized")
             .exchange()
             .expectStatus().isUnauthorized()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
             .expectBody()
             .jsonPath("$.message").isEqualTo("error.http.401")
-            .jsonPath("$.path").isEqualTo("/test/unauthorized")
+            .jsonPath("$.path").isEqualTo("/api/exception-translator-test/unauthorized")
             .jsonPath("$.detail").isEqualTo("test authentication failed!");
     }
 
     @Test
     public void testMethodNotSupported() {
-        webTestClient.post().uri("/test/access-denied")
+        webTestClient.post().uri("/api/exception-translator-test/access-denied")
             .exchange()
             .expectStatus().isEqualTo(HttpStatus.METHOD_NOT_ALLOWED)
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
@@ -121,7 +91,7 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testExceptionWithResponseStatus() {
-        webTestClient.get().uri("/test/response-status")
+        webTestClient.get().uri("/api/exception-translator-test/response-status")
             .exchange()
             .expectStatus().isBadRequest()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
@@ -132,7 +102,7 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void testInternalServerError() {
-        webTestClient.get().uri("/test/internal-server-error")
+        webTestClient.get().uri("/api/exception-translator-test/internal-server-error")
             .exchange()
             .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
             .expectBody()
