@@ -2,7 +2,6 @@ package tech.jhipster.controlcenter.web.rest;
 
 import tech.jhipster.controlcenter.JhipsterControlCenterApp;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -31,7 +30,7 @@ public class AccountResourceIT {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
             .expectBody()
             .jsonPath("$.login").isEqualTo(TEST_USER_LOGIN)
             .jsonPath("$.authorities").isEqualTo(AuthoritiesConstants.ADMIN);

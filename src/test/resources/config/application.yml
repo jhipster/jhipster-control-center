@@ -45,6 +45,9 @@ spring:
         size: 1
   thymeleaf:
     mode: HTML
+  cloud:
+    discovery:
+      enabled: false
 
 server:
   port: 10344
@@ -76,7 +79,7 @@ jhipster:
         token-validity-in-seconds: 86400
   metrics:
     logs: # Reports metrics in the logs
-      enabled: true
+      enabled: false
       report-frequency: 60 # in seconds
 
 # ===================================================================
