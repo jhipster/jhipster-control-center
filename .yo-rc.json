@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "tech.jhipster.controlcenter"
     },
-    "jhipsterVersion": "6.7.0",
+    "jhipsterVersion": "6.8.0",
     "applicationType": "monolith",
     "baseName": "jhipsterControlCenter",
     "packageName": "tech.jhipster.controlcenter",
@@ -36,14 +36,14 @@
     "otherModules": [
       {
         "name": "generator-jhipster-vuejs",
-        "version": "1.5.0"
+        "version": "1.7.0"
       }
     ],
     "enableTranslation": false,
     "blueprints": [
       {
         "name": "generator-jhipster-vuejs",
-        "version": "1.5.0"
+        "version": "1.7.0"
       }
     ],
     "reactive": true

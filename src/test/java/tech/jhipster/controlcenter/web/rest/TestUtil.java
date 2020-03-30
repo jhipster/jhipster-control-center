@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
-import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -20,11 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public final class TestUtil {
 
     private static final ObjectMapper mapper = createObjectMapper();
-
-    /**
-     * MediaType for JSON
-     */
-    public static final MediaType APPLICATION_JSON = MediaType.APPLICATION_JSON;
 
     private static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();

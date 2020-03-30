@@ -9,6 +9,7 @@ import * as config from './shared/config/config';
 import * as bootstrapVueConfig from './shared/config/config-bootstrap-vue';
 import JhiItemCountComponent from './shared/jhi-item-count.vue';
 import JhiSortIndicatorComponent from './shared/sort/jhi-sort-indicator.vue';
+import InfiniteLoading from 'vue-infinite-loading';
 
 import HealthService from './admin/health/health.service';
 import MetricsService from './admin/metrics/metrics.service';
@@ -21,8 +22,11 @@ import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 
+/* tslint:disable */
+
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
+/* tslint:enable */
 Vue.config.productionTip = false;
 config.initVueApp(Vue);
 config.initFortAwesome(Vue);
@@ -31,6 +35,7 @@ Vue.use(Vue2Filters);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
+Vue.component('infinite-loading', InfiniteLoading);
 
 const store = config.initVueXStore(Vue);
 

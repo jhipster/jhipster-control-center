@@ -53,7 +53,9 @@ management:
       application: ${spring.application.name}
     web:
       server:
-        auto-time-requests: true
+        request:
+          autotime:
+            enabled: true
 
 spring:
   application:
@@ -69,9 +71,6 @@ spring:
     basename: i18n/messages
   main:
     allow-bean-definition-overriding: true
-  mvc:
-    favicon:
-      enabled: false
   security:
     user:
       name: admin
