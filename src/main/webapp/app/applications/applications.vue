@@ -1,0 +1,43 @@
+<template>
+    <div>
+        <h2>
+            <span id="applications-page-heading">Applications Instances</span>
+        </h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-responsive d-table">
+                <thead>
+                <tr>
+                    <th class="w-50">Service</th>
+                    <th class="w-50">Instance</th>
+                    <th>Detail</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(content, key) in applicationsData" :key="key">
+                    <td class="table-hover">
+                        <a :href="content[0].uri" target="_blank">{{ key }}</a>
+                    </td>
+                    <td class="table-hover">
+                        <span class="badge badge-pill badge-light">{{ content[0].instanceId }}</span>
+                    </td>
+                    <td class="text-center">
+                        <a class="hand" v-on:click="showApplication(content)" v-if="content">
+                            <font-awesome-icon icon="eye"></font-awesome-icon>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <b-modal ref="applicationModal">
+            <h4 slot="modal-title" v-if="currentApplication" class="modal-title" id="showApplicationLabel">
+                <span class="text-capitalize">{{ currentApplication.serviceId }}</span>
+            </h4>
+            <applications-modal :current-application="currentApplication"></applications-modal>
+        </b-modal>
+    </div>
+</template>
+
+<script lang="ts" src="./applications.component.ts">
+</script>
+

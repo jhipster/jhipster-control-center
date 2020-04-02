@@ -21,6 +21,7 @@ import AccountService from './account/account.service';
 import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
+import ApplicationsService from '@/applications/applications.service';
 
 /* tslint:disable */
 
@@ -77,7 +78,9 @@ new Vue({
     metricsService: () => new MetricsService(),
     alertService: () => alertService,
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
-    accountService: () => accountService
+    accountService: () => accountService,
+
+    applicationsService: () => new ApplicationsService()
   },
   store
 });
