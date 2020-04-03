@@ -30,7 +30,7 @@
                                 {{currentApplication.secure}}
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="currentApplication.metadata">
                             <td class="text-left">
                                 Profile
                             </td>
@@ -38,7 +38,7 @@
                                 <span class="badge badge-pill badge-primary">{{currentApplication.metadata.profile}}</span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="currentApplication.metadata">
                             <td class="text-left">
                                 Version
                             </td>

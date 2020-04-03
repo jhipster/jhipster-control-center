@@ -65,10 +65,11 @@
                     active-class="active"
                     class="pointer">
                     <span slot="button-content" class="navbar-dropdown-menu">
-                        <font-awesome-icon icon="th-list" />
+                        <font-awesome-icon icon="cloud" />
                         <span>Applications</span>
                     </span>
                     <b-dropdown-item to="/applications/jhi-applications">
+                        <font-awesome-icon icon="th-list" />
                         <span>Services</span>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>

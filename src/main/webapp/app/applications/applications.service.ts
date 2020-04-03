@@ -15,7 +15,7 @@ export default class ApplicationsService extends Vue {
   }
 
   /** get proxy request of an application instance */
-  public findProxyRequest(gatwayRoute: string): AxiosPromise<any> {
-    return axios.get('gateway/' + gatwayRoute + '/management/info');
+  public findProxyRequest(gatewayRoute: string): AxiosPromise<any> {
+    return axios.get('gateway/' + gatewayRoute + '/management/info');
   }
 }
