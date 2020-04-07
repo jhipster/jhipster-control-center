@@ -4,6 +4,13 @@ import Component from 'vue-class-component';
 
 @Component
 export default class ApplicationsService extends Vue {
+  constructor() {
+    super();
+
+    // required for the method findActiveProfiles(gatewayRoute: string)
+    axios.defaults.baseURL = '//localhost:1337';
+  }
+
   /** get all applications instances */
   public findAll(): AxiosPromise<any> {
     return axios.get('api/services/instances');
@@ -14,8 +21,9 @@ export default class ApplicationsService extends Vue {
     return axios.get('management/gateway/routes');
   }
 
-  /** get proxy request of an application instance */
-  public findProxyRequest(gatewayRoute: string): AxiosPromise<any> {
-    return axios.get('gateway/' + gatewayRoute + '/management/info');
+  /** get active profiles of an application instance */
+  /** TODO to fix */
+  public findActiveProfiles(gatewayRoute: string): AxiosPromise<any> {
+    return axios.get('gateway/' + String(gatewayRoute) + '/management/info');
   }
 }

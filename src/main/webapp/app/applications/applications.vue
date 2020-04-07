@@ -21,7 +21,7 @@
                         <span class="badge badge-pill badge-light">{{ content[0].instanceId }}</span>
                     </td>
                     <td class="text-center">
-                        <a class="hand" v-on:click="showApplication(content)" v-if="content">
+                        <a class="hand" v-on:click="showApplication(content, content[0].uri)" v-if="content">
                             <font-awesome-icon icon="eye"></font-awesome-icon>
                         </a>
                     </td>
@@ -30,10 +30,10 @@
             </table>
         </div>
         <b-modal ref="applicationModal">
-            <h4 slot="modal-title" v-if="currentApplication" class="modal-title" id="showApplicationLabel">
+            <h4 slot="modal-title" v-if="currentApplication && currentRoute" class="modal-title" id="showApplicationLabel">
                 <span class="text-capitalize">{{ currentApplication.serviceId }}</span>
             </h4>
-            <applications-modal :current-application="currentApplication"></applications-modal>
+            <applications-modal :current-application="currentApplication" :current-route="currentRoute"></applications-modal>
         </b-modal>
     </div>
 </template>

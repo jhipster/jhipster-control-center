@@ -51,7 +51,7 @@ describe('Applications Component', () => {
       mockedAxios.get.mockReturnValue(Promise.resolve({}));
 
       // WHEN
-      applications.getListApplications();
+      applications.refreshApplicationsData();
       await applications.$nextTick();
 
       // THEN
@@ -62,7 +62,7 @@ describe('Applications Component', () => {
       mockedAxios.get.mockReturnValue(Promise.reject({}));
 
       // WHEN
-      applications.getListApplications();
+      applications.refreshApplicationsData();
       await applications.$nextTick();
 
       // THEN

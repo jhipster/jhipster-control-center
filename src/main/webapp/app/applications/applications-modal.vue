@@ -1,6 +1,6 @@
 <template>
     <div class="modal-body pad">
-        <div v-if="currentApplication">
+        <div v-if="currentApplication && currentRoute">
             <div class="table">
                 <table class="table table-bordered">
                     <tbody>
@@ -30,6 +30,22 @@
                                 {{currentApplication.secure}}
                             </td>
                         </tr>
+                        <tr>
+                            <td class="text-left">
+                                Route
+                            </td>
+                            <td class="text-left">
+                                {{currentRoute}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                Active Profiles
+                            </td>
+                            <td class="text-left">
+                                {{activeProfiles}}
+                            </td>
+                        </tr>
                         <tr v-if="currentApplication.metadata">
                             <td class="text-left">
                                 Profile
@@ -53,6 +69,10 @@
         <div v-if="currentApplication && currentApplication.error">
             <h4>Error</h4>
             <pre>{{currentApplication.error}}</pre>
+        </div>
+        <div v-if="currentRoute && currentRoute.error">
+            <h4>Error</h4>
+            <pre>{{currentRoute.error}}</pre>
         </div>
     </div>
 </template>
