@@ -4,13 +4,6 @@ import Component from 'vue-class-component';
 
 @Component
 export default class ApplicationsService extends Vue {
-  constructor() {
-    super();
-
-    // required for the method findActiveProfiles(gatewayRoute: string)
-    axios.defaults.baseURL = '//localhost:1337';
-  }
-
   /** get all applications instances */
   public findAll(): AxiosPromise<any> {
     return axios.get('api/services/instances');

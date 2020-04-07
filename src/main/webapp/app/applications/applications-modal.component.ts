@@ -9,7 +9,8 @@ export default class JhiApplicationsModal extends Vue {
   @Inject('applicationsService') private applicationsService: () => ApplicationsService;
 
   public mounted(): void {
-    this.refreshProfile();
+    /** TODO fix method findActiveProfiles() */
+    // this.refreshProfile();
   }
 
   /** Update profile of current application */
