@@ -31,7 +31,7 @@ export default class JhiApplications extends Vue {
       });
   }
 
-  /** Update gateway route to current application */
+  /** Update applicationsRoute which contains list of routes */
   public refreshApplicationsRoute(): void {
     this.applicationsService()
       .findAllGatewayRoute()

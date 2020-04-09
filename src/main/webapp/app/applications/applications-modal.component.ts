@@ -9,8 +9,7 @@ export default class JhiApplicationsModal extends Vue {
   @Inject('applicationsService') private applicationsService: () => ApplicationsService;
 
   public mounted(): void {
-    /** TODO fix method findActiveProfiles() */
-    // this.refreshProfile();
+    this.refreshProfile();
   }
 
   /** Update profile of current application */
@@ -18,13 +17,9 @@ export default class JhiApplicationsModal extends Vue {
     this.applicationsService()
       .findActiveProfiles(this.currentRoute)
       .then(res => {
-        // console.log for dev
-        console.log(res.data);
         this.activeProfiles = res.data;
       })
       .catch(error => {
-        // console.log for dev
-        console.log(error);
         this.activeProfiles = error.error;
       });
   }

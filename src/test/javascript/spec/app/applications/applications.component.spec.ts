@@ -1,7 +1,6 @@
 import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 import * as config from '@/shared/config/config';
 import Applications from '@/applications/applications.vue';
 import ApplicationsModal from '@/applications/applications-modal.vue';
@@ -12,7 +11,6 @@ const localVue = createLocalVue();
 const mockedAxios: any = axios;
 
 config.initVueApp(localVue);
-const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('applications-modal', ApplicationsModal);
 localVue.directive('b-modal', {});
@@ -28,8 +26,6 @@ describe('Applications Component', () => {
   beforeEach(() => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = shallowMount<ApplicationsClass>(Applications, {
-      store,
-
       localVue,
       stubs: {
         bModal: true
@@ -45,8 +41,8 @@ describe('Applications Component', () => {
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  describe('getListApplications', () => {
-    it('should call getListApplications on init', async () => {
+  describe('should refresh list of applications data', () => {
+    it('should call refreshApplicationsData on init', async () => {
       // GIVEN
       mockedAxios.get.mockReturnValue(Promise.resolve({}));
 
@@ -67,6 +63,89 @@ describe('Applications Component', () => {
 
       // THEN
       expect(mockedAxios.get).toHaveBeenCalledWith('api/services/instances');
+    });
+  });
+
+  describe('should refresh list of applications route data', () => {
+    it('should call refreshApplicationsRoute on init', async () => {
+      // GIVEN
+      mockedAxios.get.mockReturnValue(Promise.resolve({}));
+
+      // WHEN
+      applications.refreshApplicationsRoute();
+      await applications.$nextTick();
+
+      // THEN
+      expect(mockedAxios.get).toHaveBeenCalledWith('management/gateway/routes');
+    });
+    it('should handle error on refreshing applications route data', async () => {
+      // GIVEN
+      mockedAxios.get.mockReturnValue(Promise.reject({}));
+
+      // WHEN
+      applications.refreshApplicationsRoute();
+      await applications.$nextTick();
+
+      // THEN
+      expect(mockedAxios.get).toHaveBeenCalledWith('management/gateway/routes');
+    });
+  });
+
+  // TODO fix test for method showApplication
+  describe('should call showApplication', () => {
+    it('should show selected application', async () => {
+      // GIVEN
+      const app = {
+        app1: [
+          {
+            instanceId: 'app1-id',
+            serviceId: 'app1',
+            host: '127.0.0.1',
+            port: 8080,
+            secure: false,
+            metadata: { someData: 'test' },
+            uri: 'http://127.0.0.01:8080',
+            scheme: null
+          }
+        ]
+      };
+      const uri = 'http://127.0.0.01:8080';
+      applications.applicationsRoute = [
+        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+      ];
+      // WHEN
+      // applications.showApplication(app, uri);
+      await applications.$nextTick();
+      // THEN
+      // expect(wrapper.find('.applicationModal').exists()).toEqual(true);
+    });
+    it('should not show selected application', async () => {
+      // GIVEN
+      const app = {
+        app1: [
+          {
+            instanceId: 'app1-id',
+            serviceId: 'app1',
+            host: '127.0.0.1',
+            port: 8080,
+            secure: false,
+            metadata: { someData: 'test' },
+            uri: 'http://127.0.0.01:8082',
+            scheme: null
+          }
+        ]
+      };
+      const uri = 'http://127.0.0.01:8082';
+      applications.applicationsRoute = [
+        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
+        { uri: 'http://127.0.0.01:8082', route_id: 'test3/test3-id' }
+      ];
+      // WHEN
+      // applications.showApplication(app, uri);
+      await applications.$nextTick();
+      // THEN
+      // expect(wrapper.find('.applicationModal').exists()).toEqual(false);
     });
   });
 });

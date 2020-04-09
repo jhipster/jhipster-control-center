@@ -15,7 +15,6 @@ export default class ApplicationsService extends Vue {
   }
 
   /** get active profiles of an application instance */
-  /** TODO to fix */
   public findActiveProfiles(gatewayRoute: string): AxiosPromise<any> {
     return axios.get('gateway/' + String(gatewayRoute) + '/management/info');
   }

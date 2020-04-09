@@ -21,7 +21,7 @@
                         <span class="badge badge-pill badge-light">{{ content[0].instanceId }}</span>
                     </td>
                     <td class="text-center">
-                        <a class="hand" v-on:click="showApplication(content, content[0].uri)" v-if="content">
+                        <a id="showDetail" class="hand" v-on:click="showApplication(content, content[0].uri)" v-if="content">
                             <font-awesome-icon icon="eye"></font-awesome-icon>
                         </a>
                     </td>
