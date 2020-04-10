@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
+import { shallowMount, createLocalVue, Wrapper, mount } from '@vue/test-utils';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import * as config from '@/shared/config/config';
@@ -19,16 +19,23 @@ jest.mock('axios', () => ({
   get: jest.fn()
 }));
 
+const stubbedModal = {
+  template: '<div></div>',
+  methods: {
+    show() {}
+  }
+};
+
 describe('Applications Component', () => {
   let wrapper: Wrapper<ApplicationsClass>;
   let applications: ApplicationsClass;
 
   beforeEach(() => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    wrapper = shallowMount<ApplicationsClass>(Applications, {
+    wrapper = mount<ApplicationsClass>(Applications, {
       localVue,
       stubs: {
-        bModal: true
+        bModal: stubbedModal
       },
       provide: {
         applicationsService: () => new ApplicationsService()
@@ -95,6 +102,7 @@ describe('Applications Component', () => {
   describe('should call showApplication', () => {
     it('should show selected application', async () => {
       // GIVEN
+      const spy = jest.spyOn(applications, 'showApplication');
       const app = {
         app1: [
           {
@@ -114,38 +122,13 @@ describe('Applications Component', () => {
         { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
         { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
       ];
+
       // WHEN
-      // applications.showApplication(app, uri);
+      applications.showApplication(app, uri);
       await applications.$nextTick();
       // THEN
-      // expect(wrapper.find('.applicationModal').exists()).toEqual(true);
-    });
-    it('should not show selected application', async () => {
-      // GIVEN
-      const app = {
-        app1: [
-          {
-            instanceId: 'app1-id',
-            serviceId: 'app1',
-            host: '127.0.0.1',
-            port: 8080,
-            secure: false,
-            metadata: { someData: 'test' },
-            uri: 'http://127.0.0.01:8082',
-            scheme: null
-          }
-        ]
-      };
-      const uri = 'http://127.0.0.01:8082';
-      applications.applicationsRoute = [
-        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8082', route_id: 'test3/test3-id' }
-      ];
-      // WHEN
-      // applications.showApplication(app, uri);
-      await applications.$nextTick();
-      // THEN
-      // expect(wrapper.find('.applicationModal').exists()).toEqual(false);
+      expect(spy).toHaveBeenCalled();
+      spy.mockRestore();
     });
   });
 });

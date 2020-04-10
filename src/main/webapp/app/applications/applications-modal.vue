@@ -35,18 +35,22 @@
                                 Route
                             </td>
                             <td class="text-left">
-                                {{currentRoute}}
+                                <span class="badge badge-pill badge-info">
+                                    {{currentRoute}}
+                                </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="activeProfiles">
                             <td class="text-left">
                                 Active Profiles
                             </td>
-                            <td class="text-left">
-                                {{activeProfiles}}
+                            <td class="text-left align-middle">
+                                <span v-for="content in activeProfiles.activeProfiles" v-bind:key="content" class="badge badge-pill badge-success mr-2">
+                                    {{ content }}
+                                </span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.metadata">
+                        <tr v-if="currentApplication.metadata && currentApplication.metadata.profile">
                             <td class="text-left">
                                 Profile
                             </td>
@@ -54,7 +58,7 @@
                                 <span class="badge badge-pill badge-primary">{{currentApplication.metadata.profile}}</span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.metadata">
+                        <tr v-if="currentApplication.metadata && currentApplication.metadata.version">
                             <td class="text-left">
                                 Version
                             </td>

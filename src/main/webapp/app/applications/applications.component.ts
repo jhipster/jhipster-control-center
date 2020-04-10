@@ -12,6 +12,7 @@ export default class JhiApplications extends Vue {
   public applicationsRoute: Array<any> = null;
   public currentApplication: any = null;
   public currentRoute: any = null;
+  public applicationModal: any = null;
   @Inject('applicationsService') private applicationsService: () => ApplicationsService;
 
   public mounted(): void {
@@ -52,6 +53,7 @@ export default class JhiApplications extends Vue {
         break;
       }
     }
-    (<any>this.$refs.applicationModal).show();
+    this.applicationModal = <any>this.$refs.applicationModal;
+    this.applicationModal.show();
   }
 }

@@ -14,13 +14,18 @@ export default class JhiApplicationsModal extends Vue {
 
   /** Update profile of current application */
   public refreshProfile(): void {
-    this.applicationsService()
-      .findActiveProfiles(this.currentRoute)
-      .then(res => {
-        this.activeProfiles = res.data;
-      })
-      .catch(error => {
-        this.activeProfiles = error.error;
-      });
+    /* istanbul ignore else */
+    if (this.currentApplication.serviceId !== 'consul') {
+      this.applicationsService()
+        .findActiveProfiles(this.currentRoute)
+        .then(res => {
+          this.activeProfiles = res.data;
+        })
+        .catch(error => {
+          this.activeProfiles = error.error;
+        });
+    } else {
+      this.activeProfiles = {};
+    }
   }
 }
