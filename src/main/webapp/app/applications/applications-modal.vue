@@ -9,8 +9,8 @@
                                 <div>URI</div>
                             </td>
                             <td class="text-left">
-                                <a :href="currentApplication.uri" target="_blank">
-                                    {{currentApplication.uri}}
+                                <a :href="currentApplication.instance.uri" target="_blank">
+                                    {{currentApplication.instance.uri}}
                                 </a>
                             </td>
                         </tr>
@@ -19,7 +19,7 @@
                                 Port
                             </td>
                             <td class="text-left">
-                                {{currentApplication.port}}
+                                {{currentApplication.instance.port}}
                             </td>
                         </tr>
                         <tr>
@@ -27,7 +27,7 @@
                                 Secure
                             </td>
                             <td class="text-left">
-                                {{currentApplication.secure}}
+                                {{currentApplication.instance.secure}}
                             </td>
                         </tr>
                         <tr>
@@ -50,29 +50,25 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.metadata && currentApplication.metadata.profile">
+                        <tr v-if="currentApplication.instance.metadata && currentApplication.instance.metadata.profile">
                             <td class="text-left">
                                 Profile
                             </td>
                             <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{currentApplication.metadata.profile}}</span>
+                                <span class="badge badge-pill badge-primary">{{currentApplication.instance.metadata.profile}}</span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.metadata && currentApplication.metadata.version">
+                        <tr v-if="currentApplication.instance.metadata && currentApplication.instance.metadata.version">
                             <td class="text-left">
                                 Version
                             </td>
                             <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{currentApplication.metadata.version}}</span>
+                                <span class="badge badge-pill badge-primary">{{currentApplication.instance.metadata.version}}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div v-if="currentApplication && currentApplication.error">
-            <h4>Error</h4>
-            <pre>{{currentApplication.error}}</pre>
         </div>
         <div v-if="currentRoute && currentRoute.error">
             <h4>Error</h4>

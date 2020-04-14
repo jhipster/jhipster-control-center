@@ -13,15 +13,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(content, key) in applicationsData" :key="key">
+                <tr v-for="content in applications" :key="content.instance.instanceId">
                     <td class="table-hover">
-                        <a :href="content[0].uri" target="_blank">{{ key }}</a>
+                        <a :href="content.instance.uri" target="_blank">{{ content.instance.serviceId }}</a>
                     </td>
                     <td class="table-hover">
-                        <span class="badge badge-pill badge-light">{{ content[0].instanceId }}</span>
+                        <span class="badge badge-pill badge-light">{{ content.instance.instanceId }}</span>
                     </td>
                     <td class="text-center">
-                        <a id="showDetail" class="hand" v-on:click="showApplication(content, content[0].uri)" v-if="content">
+                        <a id="showDetail" class="hand" v-on:click="showApplication(content, content.instance.uri)" v-if="content">
                             <font-awesome-icon icon="eye"></font-awesome-icon>
                         </a>
                     </td>

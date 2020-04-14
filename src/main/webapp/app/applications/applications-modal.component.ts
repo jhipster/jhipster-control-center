@@ -1,10 +1,10 @@
-import ApplicationsService from './applications.service';
+import ApplicationsService, { Application } from './applications.service';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class JhiApplicationsModal extends Vue {
   public activeProfiles: any = null;
-  @Prop() currentApplication!: any;
+  @Prop() currentApplication!: Application;
   @Prop() currentRoute!: any;
   @Inject('applicationsService') private applicationsService: () => ApplicationsService;
 

@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,10 +35,11 @@ public class ServiceDiscoveryResource {
      * registered to the service discovery provider.
      */
     @GetMapping("/services/instances")
-    public ResponseEntity<Map<String, List<ServiceInstance>>> getAllServiceInstances() {
+    public ResponseEntity<List<ServiceInstance>> getAllServiceInstances() {
         Map<String, List<ServiceInstance>> instances = discoveryClient.getServices().stream()
             .collect(Collectors.toMap(Function.identity(), discoveryClient::getInstances));
-        return new ResponseEntity<>(instances, HttpStatus.OK);
+        List<ServiceInstance> res = instances.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     /**
