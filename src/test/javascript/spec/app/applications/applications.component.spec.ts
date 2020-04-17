@@ -6,6 +6,8 @@ import Applications from '@/applications/applications.vue';
 import ApplicationsModal from '@/applications/applications-modal.vue';
 import ApplicationsClass from '@/applications/applications.component';
 import ApplicationsService from '@/applications/applications.service';
+import { RefreshService } from '@/shared/refresh/refresh.service';
+import { BootstrapVue } from 'bootstrap-vue';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -14,6 +16,9 @@ config.initVueApp(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('applications-modal', ApplicationsModal);
 localVue.directive('b-modal', {});
+localVue.use(BootstrapVue);
+
+const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
   get: jest.fn()
@@ -26,6 +31,10 @@ const stubbedModal = {
   }
 };
 
+const RefreshSelectorMixin = {
+  inject: ['refreshService']
+};
+
 describe('Applications Component', () => {
   let wrapper: Wrapper<ApplicationsClass>;
   let applications: ApplicationsClass;
@@ -34,11 +43,13 @@ describe('Applications Component', () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = mount<ApplicationsClass>(Applications, {
       localVue,
+      mixins: [RefreshSelectorMixin],
       stubs: {
         bModal: stubbedModal
       },
       provide: {
-        applicationsService: () => new ApplicationsService()
+        applicationsService: () => new ApplicationsService(),
+        refreshService: () => new RefreshService(store)
       }
     });
     applications = wrapper.vm;
@@ -98,10 +109,10 @@ describe('Applications Component', () => {
     });
   });
 
-  // TODO fix test for method showApplication
   describe('should call showApplication', () => {
     it('should show selected application', async () => {
       // GIVEN
+      mockedAxios.get.mockReturnValue(Promise.resolve({}));
       const spy = jest.spyOn(applications, 'showApplication');
       const app = {
         app1: [

@@ -1,0 +1,20 @@
+<template>
+    <div>
+        <button class="btn btn-outline-primary" v-on:click="manualRefresh()">
+            <span class="times-text">Refresh now <i class="fa fa-refresh"></i></span>
+        </button>
+        <b-dropdown variant="outline-primary" right>
+            <span slot="button-content"><i v-bind:class="classTime()" ></i>{{ getActiveRefreshTime() }} &nbsp;</span>
+            <span class="dropdown-header">Refresh times (in seconds)</span>
+            <div v-for="time in refreshTimes" :key="time">
+                <b-dropdown-item class="dropdown-item" v-on:click="setActiveRefreshTime(time)" v-bind:class="stateTime(time)">
+                    <span v-if="time > 0">{{ time }}</span>
+                    <span v-else>disabled</span>
+                </b-dropdown-item >
+            </div>
+        </b-dropdown>
+    </div>
+</template>
+
+<script lang="ts" src="./refresh-selector.mixin.ts"></script>
+<style lang="scss" scoped src="./refresh-selector.mixin.scss"></style>

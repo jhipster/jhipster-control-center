@@ -1,15 +1,18 @@
-import ApplicationsService, { Application, Instance } from './applications.service';
-import { Component, Inject, Vue } from 'vue-property-decorator';
+import ApplicationsService, { Application } from './applications.service';
+import { Component, Inject, Mixins, Vue } from 'vue-property-decorator';
 import JhiApplicationsModal from './applications-modal.vue';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import RefreshSelectorMixin from '@/shared/refresh/refresh-selector.mixin.ts';
+import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 
 @Component({
   components: {
-    'applications-modal': JhiApplicationsModal
+    'applications-modal': JhiApplicationsModal,
+    'refresh-selector': RefreshSelectorVue
   }
 })
-export default class JhiApplications extends Vue {
+export default class JhiApplications extends Mixins(RefreshSelectorMixin) {
   public applications?: Array<Application> = null;
   public applicationsRoute: Array<any> = null;
   public currentApplication: Application = null;
@@ -19,6 +22,9 @@ export default class JhiApplications extends Vue {
   @Inject('applicationsService') private applicationsService: () => ApplicationsService;
 
   public mounted(): void {
+    this.refreshService()
+      .refreshReload$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.refreshApplicationsData());
     this.refreshApplicationsData();
     this.refreshApplicationsRoute();
   }

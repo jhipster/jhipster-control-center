@@ -22,6 +22,7 @@ import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 import ApplicationsService from '@/applications/applications.service';
+import { RefreshService } from '@/shared/refresh/refresh.service';
 
 /* tslint:disable */
 
@@ -43,6 +44,7 @@ const store = config.initVueXStore(Vue);
 const alertService = new AlertService(store);
 const loginService = new LoginService();
 const accountService = new AccountService(store, router);
+const refreshService = new RefreshService(store);
 
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
@@ -80,7 +82,8 @@ new Vue({
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
 
-    applicationsService: () => new ApplicationsService()
+    applicationsService: () => new ApplicationsService(),
+    refreshService: () => refreshService
   },
   store
 });
