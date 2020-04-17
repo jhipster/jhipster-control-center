@@ -74,7 +74,7 @@ export default new Router({
       meta: { authorities: [Authority.ADMIN] }
     },
     {
-      path: '/applications/applications',
+      path: '/applications/instances',
       name: 'ApplicationsComponent',
       component: ApplicationsComponent,
       meta: { authorities: [Authority.ADMIN] }
