@@ -68,7 +68,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       template: './src/main/webapp/index.html',
       chunks: ['vendors', 'main', 'global'],
-      chunksSortMode: 'manual',
+      // chunksSortMode: 'manual',
       inject: true,
       minify: {
         removeComments: true,

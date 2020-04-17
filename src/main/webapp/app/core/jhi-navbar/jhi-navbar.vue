@@ -59,6 +59,21 @@
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
+                    id="applications-menu"
+                    v-if="hasAnyAuthority('ROLE_ADMIN')"
+                    :class="{'router-link-active': subIsActive('/applications')}"
+                    active-class="active"
+                    class="pointer">
+                    <span slot="button-content" class="navbar-dropdown-menu">
+                        <font-awesome-icon icon="cloud" />
+                        <span>Applications</span>
+                    </span>
+                    <b-dropdown-item to="/applications/jhi-applications">
+                        <font-awesome-icon icon="th-list" />
+                        <span>Services</span>
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item-dropdown
                     right
                     href="javascript:void(0);"
                     id="account-menu"

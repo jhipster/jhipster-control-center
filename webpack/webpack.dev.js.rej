@@ -4,9 +4,10 @@ diff a/webpack/webpack.dev.js b/webpack/webpack.dev.js	(rejected hunks)
 -          '/api',
 -          '/services',
 -          '/management',
+-          '/gateway',
 -          '/swagger-resources',
 -          '/v2/api-docs',
 -          '/h2-console',
 -          '/auth'
 -        ],
-+        context: ['/api', '/services', '/management', '/swagger-resources', '/v2/api-docs', '/h2-console', '/auth'],
++        context: ['/api', '/services', '/management', '/gateway', '/swagger-resources', '/v2/api-docs', '/h2-console', '/auth'],
