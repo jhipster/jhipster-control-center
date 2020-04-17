@@ -70,7 +70,7 @@
                     </span>
                     <b-dropdown-item to="/applications/jhi-applications">
                         <font-awesome-icon icon="th-list" />
-                        <span>Services</span>
+                        <span>Instances</span>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
