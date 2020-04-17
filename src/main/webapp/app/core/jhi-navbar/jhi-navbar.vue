@@ -68,7 +68,7 @@
                         <font-awesome-icon icon="cloud" />
                         <span>Applications</span>
                     </span>
-                    <b-dropdown-item to="/applications/jhi-applications">
+                    <b-dropdown-item to="/applications/applications">
                         <font-awesome-icon icon="th-list" />
                         <span>Instances</span>
                     </b-dropdown-item>
