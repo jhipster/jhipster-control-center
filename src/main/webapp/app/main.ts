@@ -44,6 +44,7 @@ const store = config.initVueXStore(Vue);
 const alertService = new AlertService(store);
 const loginService = new LoginService();
 const accountService = new AccountService(store, router);
+const refreshService = new RefreshService(store);
 
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
