@@ -1,6 +1,6 @@
 <template>
     <div class="modal-body pad">
-        <div v-if="currentApplication && currentRoute">
+        <div v-if="selectedInstance && selectedInstanceRoute">
             <div class="table">
                 <table class="table table-bordered">
                     <tbody>
@@ -9,8 +9,8 @@
                                 <div>URI</div>
                             </td>
                             <td class="text-left">
-                                <a :href="currentApplication.instance.uri" target="_blank">
-                                    {{currentApplication.instance.uri}}
+                                <a :href="selectedInstance.uri" target="_blank">
+                                    {{selectedInstance.uri}}
                                 </a>
                             </td>
                         </tr>
@@ -19,7 +19,7 @@
                                 Port
                             </td>
                             <td class="text-left">
-                                {{currentApplication.instance.port}}
+                                {{selectedInstance.port}}
                             </td>
                         </tr>
                         <tr>
@@ -27,7 +27,7 @@
                                 Secure
                             </td>
                             <td class="text-left">
-                                {{currentApplication.instance.secure}}
+                                {{selectedInstance.secure}}
                             </td>
                         </tr>
                         <tr>
@@ -36,7 +36,7 @@
                             </td>
                             <td class="text-left">
                                 <span class="badge badge-pill badge-info">
-                                    {{currentRoute}}
+                                    {{selectedInstanceRoute}}
                                 </span>
                             </td>
                         </tr>
@@ -50,32 +50,32 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.instance.metadata && currentApplication.instance.metadata.profile">
+                        <tr v-if="selectedInstance.metadata && selectedInstance.metadata.profile">
                             <td class="text-left">
                                 Profile
                             </td>
                             <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{currentApplication.instance.metadata.profile}}</span>
+                                <span class="badge badge-pill badge-primary">{{selectedInstance.metadata.profile}}</span>
                             </td>
                         </tr>
-                        <tr v-if="currentApplication.instance.metadata && currentApplication.instance.metadata.version">
+                        <tr v-if="selectedInstance.metadata && selectedInstance.metadata.version">
                             <td class="text-left">
                                 Version
                             </td>
                             <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{currentApplication.instance.metadata.version}}</span>
+                                <span class="badge badge-pill badge-primary">{{selectedInstance.metadata.version}}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div v-if="currentRoute && currentRoute.error">
+        <div v-if="selectedInstanceRoute && selectedInstanceRoute.error">
             <h4>Error</h4>
-            <pre>{{currentRoute.error}}</pre>
+            <pre>{{selectedInstanceRoute.error}}</pre>
         </div>
     </div>
 </template>
 
-<script lang="ts" src="./applications-modal.component.ts">
+<script lang="ts" src="./instance-modal.component.ts">
 </script>
