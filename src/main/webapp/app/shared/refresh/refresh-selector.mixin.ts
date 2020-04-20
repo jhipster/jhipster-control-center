@@ -8,6 +8,8 @@ import { interval } from 'rxjs/observable/interval';
 export default class RefreshSelectorMixin extends Vue {
   @Inject('refreshService') protected refreshService: () => RefreshService;
 
+  // htmlActiveRefreshTime allow us to update dynamically refresh button content html
+  htmlActiveRefreshTime = '';
   activeRefreshTime: number;
   refreshTimes: number[] = [0, 5, 10, 30, 60, 300];
   refreshTimer?: Subscription;
@@ -15,6 +17,7 @@ export default class RefreshSelectorMixin extends Vue {
 
   public mounted(): void {
     this.activeRefreshTime = this.refreshService().getSelectedRefreshTime();
+    this.htmlActiveRefreshTime = this.getActiveRefreshTime();
     this.refreshService()
       .refreshChanged$.pipe(takeUntil(this.unsubscribeFromRefreshMixin$))
       .subscribe(() => this.launchTimer(true));
