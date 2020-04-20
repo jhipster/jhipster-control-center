@@ -14,15 +14,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="content in applications" :key="content.instance.instanceId">
+                <tr v-for="instance in instances" :key="instance.instanceId">
                     <td class="table-hover">
-                        <a :href="content.instance.uri" target="_blank">{{ content.instance.serviceId }}</a>
+                        <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
                     </td>
                     <td class="table-hover">
-                        <span class="badge badge-pill badge-light">{{ content.instance.instanceId }}</span>
+                        <span class="badge badge-pill badge-light">{{ instance.instanceId }}</span>
                     </td>
                     <td class="text-center">
-                        <a id="showDetail" class="hand" v-on:click="showApplication(content, content.instance.uri)" v-if="content">
+                        <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
                             <font-awesome-icon icon="eye"></font-awesome-icon>
                         </a>
                     </td>
@@ -30,13 +30,14 @@
                 </tbody>
             </table>
         </div>
-        <b-modal ref="applicationModal">
-            <h4 slot="modal-title" v-if="currentApplication && currentRoute" class="modal-title" id="showApplicationLabel">
-                <span class="text-capitalize">{{ currentApplication.serviceId }}</span>
+        <b-modal ref="instanceModal">
+            <h4 slot="modal-title" v-if="selectedInstance && selectedInstanceRoute" class="modal-title" id="showInstanceLabel">
+                <span class="text-capitalize">{{ selectedInstance.serviceId }}</span>
             </h4>
-            <applications-modal :current-application="currentApplication" :current-route="currentRoute"></applications-modal>
+            <instance-modal :selected-instance="selectedInstance" :selected-instance-route="selectedInstanceRoute"></instance-modal>
         </b-modal>
     </div>
 </template>
 
-<script lang="ts" src="./applications.component.ts"></script>
+<script lang="ts" src="./instance.component.ts">
+</script>
