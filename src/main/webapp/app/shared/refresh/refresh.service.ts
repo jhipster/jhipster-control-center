@@ -16,10 +16,12 @@ export class RefreshService {
     this.refreshReload$ = this.refreshReloadSource.asObservable();
   }
 
+  /* istanbul ignore next */
   refreshChanged(): void {
     this.refreshChangedSource.next();
   }
 
+  /* istanbul ignore next */
   refreshReload(): void {
     this.refreshReloadSource.next();
   }
