@@ -26,7 +26,7 @@
     "useSass": true,
     "clientPackageManager": "npm",
     "clientFramework": "vue",
-    "clientTheme": "flatly",
+    "clientTheme": "pulse",
     "clientThemeVariant": "primary",
     "creationTimestamp": 1581262319851,
     "testFrameworks": [],
