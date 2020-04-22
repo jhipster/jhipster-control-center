@@ -8,18 +8,34 @@
             <table class="table table-striped table-bordered table-responsive d-table">
                 <thead>
                 <tr>
-                    <th class="w-50">Service</th>
-                    <th class="w-50">Instance</th>
+                    <th class="w-25">Service</th>
+                    <th class="w-75">Instance</th>
                     <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="instance in instances" :key="instance.instanceId">
                     <td class="table-hover">
-                        <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
+                        <span class="badge badge-ligth">
+                            <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
+                        </span>
                     </td>
                     <td class="table-hover">
-                        <span class="badge badge-pill badge-light">{{ instance.instanceId }}</span>
+                        <span class="badge badge-ligth">{{ instance.instanceId }}</span><br/>
+                        <div align="right">
+                            <span class="badge badge-success">{{ instance.metadata.profile }}</span>
+                            <span class="badge badge-primary">{{ instance.metadata.version }}</span>
+                        </div>
+                        <div align="right">
+                            <span v-if="instance.metadata.hasOwnProperty('git-commit') && instance.metadata['git-commit']"
+                                  class="badge badge-dark">
+                                { instance.metadata["git-commit"] }}
+                            </span>
+                            <span v-if="instance.metadata.hasOwnProperty('git-branch') && instance.metadata['git-branch']"
+                                  class="badge badge-dark">
+                                {{ instance.metadata["git-branch"] }}
+                            </span>
+                        </div>
                     </td>
                     <td class="text-center">
                         <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">

@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-body pad">
+    <div class="overflow-auto">
         <div v-if="selectedInstance && selectedInstanceRoute">
             <div class="table">
                 <table class="table table-bordered">
@@ -35,14 +35,14 @@
                                 Route
                             </td>
                             <td class="text-left">
-                                <span class="badge badge-pill badge-info">
+                                <span class="badge badge-pill badge-light">
                                     {{selectedInstanceRoute}}
                                 </span>
                             </td>
                         </tr>
                         <tr v-if="activeProfiles">
                             <td class="text-left">
-                                Active Profiles
+                                Profile
                             </td>
                             <td class="text-left align-middle">
                                 <span v-for="content in activeProfiles.activeProfiles" v-bind:key="content" class="badge badge-pill badge-success mr-2">
@@ -50,12 +50,23 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr v-if="selectedInstance.metadata && selectedInstance.metadata.profile">
+                        <tr v-if="selectedInstance.metadata
+                            && selectedInstance.hasOwnProperty('git-version')
+                            && selectedInstance.hasOwnProperty('git-commit')
+                            && selectedInstance.hasOwnProperty('git-branch')">
                             <td class="text-left">
-                                Profile
+                                Git
                             </td>
-                            <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{selectedInstance.metadata.profile}}</span>
+                            <td class="text-left align-middle">
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-version'] }}
+                                </span>
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-commit'] }}
+                                </span>
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-branch'] }}
+                                </span>
                             </td>
                         </tr>
                         <tr v-if="selectedInstance.metadata && selectedInstance.metadata.version">

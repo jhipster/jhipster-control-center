@@ -15,8 +15,7 @@ export interface Instance {
 
 export type Metadata = { [key in MetadataKey]?: any };
 
-/** TODO check key from json result to add or modify */
-export type MetadataKey = 'profile' | 'version' | 'display-ribbon-on-profiles';
+export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' | 'git-branch';
 
 @Component
 export default class InstanceService extends Vue {
