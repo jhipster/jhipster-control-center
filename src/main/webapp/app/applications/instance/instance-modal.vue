@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-body pad">
+    <div class="overflow-auto">
         <div v-if="selectedInstance && selectedInstanceRoute">
             <div class="table">
                 <table class="table table-bordered">
