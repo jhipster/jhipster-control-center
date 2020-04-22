@@ -6,6 +6,8 @@ import InstanceVue from '@/applications/instance/instance.vue';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
 import InstanceService, { Instance, Metadata } from '@/applications/instance/instance.service';
+import { RefreshService } from '@/shared/refresh/refresh.service';
+import { BootstrapVue } from 'bootstrap-vue';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -14,6 +16,9 @@ config.initVueApp(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('instance-modal', InstanceModal);
 localVue.directive('b-modal', {});
+localVue.use(BootstrapVue);
+
+const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
   get: jest.fn()
@@ -26,6 +31,10 @@ const stubbedModal = {
   }
 };
 
+const RefreshSelectorMixin = {
+  inject: ['refreshService']
+};
+
 describe('Instance Component', () => {
   let wrapper: Wrapper<InstanceClass>;
   let instance: InstanceClass;
@@ -34,11 +43,13 @@ describe('Instance Component', () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = mount<InstanceClass>(InstanceVue, {
       localVue,
+      mixins: [RefreshSelectorMixin],
       stubs: {
         bModal: stubbedModal
       },
       provide: {
-        instanceService: () => new InstanceService()
+        instanceService: () => new InstanceService(),
+        refreshService: () => new RefreshService(store)
       }
     });
     instance = wrapper.vm;

@@ -1,15 +1,18 @@
-import { Component, Inject, Vue } from 'vue-property-decorator';
+import { Component, Inject, Mixins, Vue } from 'vue-property-decorator';
 import InstanceService, { Instance } from './instance.service';
-import InstanceModal from './instance-modal.vue';
+import InstanceModalVue from './instance-modal.vue';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import RefreshSelectorMixin from '@/shared/refresh/refresh-selector.mixin.ts';
+import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 
 @Component({
   components: {
-    'instance-modal': InstanceModal
+    'instance-modal': InstanceModalVue,
+    'refresh-selector': RefreshSelectorVue
   }
 })
-export default class JhiInstance extends Vue {
+export default class JhiInstance extends Mixins(RefreshSelectorMixin) {
   public instances?: Array<Instance> = null;
   public instancesRoute: Array<any> = null;
   public selectedInstance: Instance = null;
@@ -19,6 +22,9 @@ export default class JhiInstance extends Vue {
   @Inject('instanceService') private instanceService: () => InstanceService;
 
   public mounted(): void {
+    this.refreshService()
+      .refreshReload$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.refreshInstancesData());
     this.refreshInstancesData();
     this.refreshInstancesRoute();
   }

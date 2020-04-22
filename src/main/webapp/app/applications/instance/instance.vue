@@ -1,8 +1,9 @@
 <template>
     <div>
-        <h2>
-            <span id="instances-page-heading">Applications Instances</span>
-        </h2>
+        <div class="head">
+            <h2 class="d-inline-block">Application Instances</h2>
+            <refresh-selector class="float-right refresh-left-side">button</refresh-selector>
+        </div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-responsive d-table">
                 <thead>
