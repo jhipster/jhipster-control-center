@@ -50,6 +50,25 @@
                                 </span>
                             </td>
                         </tr>
+                        <tr v-if="selectedInstance.metadata
+                            && selectedInstance.hasOwnProperty('git-version')
+                            && selectedInstance.hasOwnProperty('git-commit')
+                            && selectedInstance.hasOwnProperty('git-branch')">
+                            <td class="text-left">
+                                Git
+                            </td>
+                            <td class="text-left align-middle">
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-version'] }}
+                                </span>
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-commit'] }}
+                                </span>
+                                <span class="badge badge-pill badge-dark mr-2">
+                                    {{ selectedInstance.metadata['git-branch'] }}
+                                </span>
+                            </td>
+                        </tr>
                         <tr v-if="selectedInstance.metadata && selectedInstance.metadata.version">
                             <td class="text-left">
                                 Version
