@@ -42,20 +42,12 @@
                         </tr>
                         <tr v-if="activeProfiles">
                             <td class="text-left">
-                                Active Profiles
+                                Profile
                             </td>
                             <td class="text-left align-middle">
                                 <span v-for="content in activeProfiles.activeProfiles" v-bind:key="content" class="badge badge-pill badge-success mr-2">
                                     {{ content }}
                                 </span>
-                            </td>
-                        </tr>
-                        <tr v-if="selectedInstance.metadata && selectedInstance.metadata.profile">
-                            <td class="text-left">
-                                Profile
-                            </td>
-                            <td class="text-left">
-                                <span class="badge badge-pill badge-primary">{{selectedInstance.metadata.profile}}</span>
                             </td>
                         </tr>
                         <tr v-if="selectedInstance.metadata && selectedInstance.metadata.version">
