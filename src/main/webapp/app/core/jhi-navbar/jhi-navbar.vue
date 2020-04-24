@@ -18,6 +18,21 @@
                     </span>
                 </b-nav-item>
                 <b-nav-item-dropdown
+                    id="applications-menu"
+                    v-if="hasAnyAuthority('ROLE_ADMIN')"
+                    :class="{'router-link-active': subIsActive('/applications')}"
+                    active-class="active"
+                    class="pointer">
+                    <span slot="button-content" class="navbar-dropdown-menu">
+                        <font-awesome-icon icon="cloud" />
+                        <span>Applications</span>
+                    </span>
+                    <b-dropdown-item to="/applications/instances">
+                        <font-awesome-icon icon="th-list" />
+                        <span>Instances</span>
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item-dropdown
                     id="entity-menu"
                     v-if="authenticated"
                     active-class="active" class="pointer">
@@ -56,21 +71,6 @@
                     <b-dropdown-item v-if="swaggerEnabled"  to="/admin/docs">
                         <font-awesome-icon icon="book" />
                         <span>API</span>
-                    </b-dropdown-item>
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown
-                    id="applications-menu"
-                    v-if="hasAnyAuthority('ROLE_ADMIN')"
-                    :class="{'router-link-active': subIsActive('/applications')}"
-                    active-class="active"
-                    class="pointer">
-                    <span slot="button-content" class="navbar-dropdown-menu">
-                        <font-awesome-icon icon="cloud" />
-                        <span>Applications</span>
-                    </span>
-                    <b-dropdown-item to="/applications/instances">
-                        <font-awesome-icon icon="th-list" />
-                        <span>Instances</span>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
