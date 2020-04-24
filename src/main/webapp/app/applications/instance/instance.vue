@@ -8,9 +8,11 @@
             <table class="table table-striped table-bordered table-responsive d-table">
                 <thead>
                 <tr>
-                    <th class="w-50">Service</th>
-                    <th class="w-50">Instance</th>
-                    <th>Detail</th>
+                    <th class="w-20">Service</th>
+                    <th class="w-30">Instance</th>
+                    <th class="w-30">Profile</th>
+                    <th class="w-30">Git</th>
+                    <th class="text-center">Detail</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -19,12 +21,28 @@
                         <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
                     </td>
                     <td class="table-hover">
-                        <span class="badge badge-pill badge-light">{{ instance.instanceId }}</span>
+                        <span class="badge badge-ligth">{{ instance.instanceId }}</span><br/>
                     </td>
-                    <td class="text-center">
-                        <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
-                            <font-awesome-icon icon="eye"></font-awesome-icon>
-                        </a>
+                    <td class="table-hover">
+                        <span class="badge badge-success">{{ instance.metadata.profile }}</span>
+                        <span class="badge badge-primary">{{ instance.metadata.version }}</span>
+                    </td>
+                    <td class="table-hover">
+                        <span v-if="instance.metadata.hasOwnProperty('git-commit') && instance.metadata['git-commit']"
+                              class="badge badge-dark">
+                                    {{ instance.metadata["git-commit"] }}
+                        </span>
+                        <span v-if="instance.metadata.hasOwnProperty('git-branch') && instance.metadata['git-branch']"
+                              class="badge badge-dark">
+                                    {{ instance.metadata["git-branch"] }}
+                        </span>
+                    </td>
+                    <td class="table-hover">
+                        <div class="text-center">
+                            <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
+                                <font-awesome-icon icon="eye"></font-awesome-icon>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
