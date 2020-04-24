@@ -19,4 +19,3 @@
 </template>
 
 <script lang="ts" src="./refresh-selector.mixin.ts"></script>
-<style lang="scss" scoped src="./refresh-selector.mixin.scss"></style>
