@@ -1,11 +1,9 @@
 package tech.jhipster.controlcenter.config;
 
-import tech.jhipster.controlcenter.aop.logging.LoggingAspect;
-
 import io.github.jhipster.config.JHipsterConstants;
-
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import tech.jhipster.controlcenter.aop.logging.LoggingAspect;
 
 @Configuration
 @EnableAspectJAutoProxy

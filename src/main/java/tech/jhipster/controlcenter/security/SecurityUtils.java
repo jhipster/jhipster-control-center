@@ -7,14 +7,12 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import reactor.core.publisher.Mono;
 
-
 /**
  * Utility class for Spring Security.
  */
 public final class SecurityUtils {
 
-    private SecurityUtils() {
-    }
+    private SecurityUtils() {}
 
     /**
      * Get the login of the current user.
@@ -22,7 +20,8 @@ public final class SecurityUtils {
      * @return the login of the current user.
      */
     public static Mono<String> getCurrentUserLogin() {
-        return ReactiveSecurityContextHolder.getContext()
+        return ReactiveSecurityContextHolder
+            .getContext()
             .map(SecurityContext::getAuthentication)
             .flatMap(authentication -> Mono.justOrEmpty(extractPrincipal(authentication)));
     }
@@ -39,14 +38,14 @@ public final class SecurityUtils {
         return null;
     }
 
-
     /**
      * Get the JWT of the current user.
      *
      * @return the JWT of the current user.
      */
     public static Mono<String> getCurrentUserJWT() {
-        return ReactiveSecurityContextHolder.getContext()
+        return ReactiveSecurityContextHolder
+            .getContext()
             .map(SecurityContext::getAuthentication)
             .filter(authentication -> authentication.getCredentials() instanceof String)
             .map(authentication -> (String) authentication.getCredentials());
@@ -58,13 +57,11 @@ public final class SecurityUtils {
      * @return true if the user is authenticated, false otherwise.
      */
     public static Mono<Boolean> isAuthenticated() {
-        return ReactiveSecurityContextHolder.getContext()
+        return ReactiveSecurityContextHolder
+            .getContext()
             .map(SecurityContext::getAuthentication)
             .map(Authentication::getAuthorities)
-            .map(authorities -> authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .noneMatch(AuthoritiesConstants.ANONYMOUS::equals)
-            );
+            .map(authorities -> authorities.stream().map(GrantedAuthority::getAuthority).noneMatch(AuthoritiesConstants.ANONYMOUS::equals));
     }
 
     /**
@@ -76,13 +73,10 @@ public final class SecurityUtils {
      * @return true if the current user has the authority, false otherwise.
      */
     public static Mono<Boolean> isCurrentUserInRole(String authority) {
-        return ReactiveSecurityContextHolder.getContext()
+        return ReactiveSecurityContextHolder
+            .getContext()
             .map(SecurityContext::getAuthentication)
             .map(Authentication::getAuthorities)
-            .map(authorities -> authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(authority::equals)
-            );
+            .map(authorities -> authorities.stream().map(GrantedAuthority::getAuthority).anyMatch(authority::equals));
     }
-
 }

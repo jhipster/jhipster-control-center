@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
+import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -22,11 +22,9 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.SyncHandlerMethodArgumentResolver;
 import org.springframework.web.server.ServerWebExchange;
 
-import javax.annotation.Nonnull;
-
 public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandlerMethodArgumentResolver {
-
-    private static final String INVALID_DEFAULT_PAGE_SIZE = "Invalid default page size configured for method %s! Must not be less than one!";
+    private static final String INVALID_DEFAULT_PAGE_SIZE =
+        "Invalid default page size configured for method %s! Must not be less than one!";
 
     private static final String DEFAULT_PAGE_PARAMETER = "page";
     private static final String DEFAULT_SIZE_PARAMETER = "size";
@@ -53,7 +51,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
     }
 
     public ReactivePageableHandlerMethodArgumentResolver(ReactiveSortHandlerMethodArgumentResolver sortResolver) {
-
         Assert.notNull(sortResolver, "ReactiveSortHandlerMethodArgumentResolver must not be null!");
 
         this.sortResolver = sortResolver;
@@ -74,9 +71,7 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      */
     @Nonnull
     @Override
-    public Pageable resolveArgumentValue(MethodParameter parameter, BindingContext bindingContext,
-                                         ServerWebExchange exchange) {
-
+    public Pageable resolveArgumentValue(MethodParameter parameter, BindingContext bindingContext, ServerWebExchange exchange) {
         MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
         String page = queryParams.getFirst(getParameterNameToUse(getPageParameterName(), parameter));
         String pageSize = queryParams.getFirst(getParameterNameToUse(getSizeParameterName(), parameter));
@@ -101,7 +96,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @param fallbackPageable the {@link Pageable} to be used as general fallback.
      */
     public void setFallbackPageable(Pageable fallbackPageable) {
-
         Assert.notNull(fallbackPageable, "Fallback Pageable must not be null!");
 
         this.fallbackPageable = fallbackPageable;
@@ -143,7 +137,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @param pageParameterName the parameter name to be used, must not be {@code null} or empty.
      */
     public void setPageParameterName(String pageParameterName) {
-
         Assert.hasText(pageParameterName, "Page parameter name must not be null or empty!");
         this.pageParameterName = pageParameterName;
     }
@@ -163,7 +156,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @param sizeParameterName the parameter name to be used, must not be {@code null} or empty.
      */
     public void setSizeParameterName(String sizeParameterName) {
-
         Assert.hasText(sizeParameterName, "Size parameter name must not be null or empty!");
         this.sizeParameterName = sizeParameterName;
     }
@@ -219,8 +211,7 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
         return this.oneIndexedParameters;
     }
 
-    protected Pageable getPageable(MethodParameter methodParameter, @Nullable String pageString,
-                                   @Nullable String pageSizeString) {
+    protected Pageable getPageable(MethodParameter methodParameter, @Nullable String pageString, @Nullable String pageSizeString) {
         assertPageableUniqueness(methodParameter);
 
         Optional<Pageable> defaultOrFallback = getDefaultFromAnnotationOrFallback(methodParameter).toOptional();
@@ -232,10 +223,8 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
             return Pageable.unpaged();
         }
 
-        int p = page
-            .orElseGet(() -> defaultOrFallback.map(Pageable::getPageNumber).orElseThrow(IllegalStateException::new));
-        int ps = pageSize
-            .orElseGet(() -> defaultOrFallback.map(Pageable::getPageSize).orElseThrow(IllegalStateException::new));
+        int p = page.orElseGet(() -> defaultOrFallback.map(Pageable::getPageNumber).orElseThrow(IllegalStateException::new));
+        int ps = pageSize.orElseGet(() -> defaultOrFallback.map(Pageable::getPageSize).orElseThrow(IllegalStateException::new));
 
         // Limit lower bound
         ps = ps < 1 ? defaultOrFallback.map(Pageable::getPageSize).orElseThrow(IllegalStateException::new) : ps;
@@ -254,7 +243,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @return the name of the request parameter.
      */
     protected String getParameterNameToUse(String source, @Nullable MethodParameter parameter) {
-
         StringBuilder builder = new StringBuilder(prefix);
 
         Qualifier qualifier = parameter == null ? null : parameter.getParameterAnnotation(Qualifier.class);
@@ -268,7 +256,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
     }
 
     private Pageable getDefaultFromAnnotationOrFallback(MethodParameter methodParameter) {
-
         PageableDefault defaults = methodParameter.getParameterAnnotation(PageableDefault.class);
 
         if (defaults != null) {
@@ -279,7 +266,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
     }
 
     private static Pageable getDefaultPageRequestFrom(MethodParameter parameter, PageableDefault defaults) {
-
         Integer defaultPageNumber = defaults.page();
         Integer defaultPageSize = getSpecificPropertyOrDefaultFromValue(defaults, "size");
 
@@ -305,7 +291,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @return the parsed integer.
      */
     private Optional<Integer> parseAndApplyBoundaries(@Nullable String parameter, int upper, boolean shiftIndex) {
-
         if (!StringUtils.hasText(parameter)) {
             return Optional.empty();
         }
@@ -319,7 +304,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
     }
 
     public static void assertPageableUniqueness(MethodParameter parameter) {
-
         Method method = parameter.getMethod();
 
         if (method == null) {
@@ -339,11 +323,9 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @return whether the given {@link Method} has more than one {@link Pageable} parameter.
      */
     private static boolean containsMoreThanOnePageableParameter(Method method) {
-
         boolean pageableFound = false;
 
         for (Class<?> type : method.getParameterTypes()) {
-
             if (pageableFound && type.equals(Pageable.class)) {
                 return true;
             }
@@ -366,7 +348,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      */
     @SuppressWarnings("unchecked")
     public static <T> T getSpecificPropertyOrDefaultFromValue(Annotation annotation, String property) {
-
         Object propertyDefaultValue = AnnotationUtils.getDefaultValue(annotation, property);
         Object propertyValue = AnnotationUtils.getValue(annotation, property);
 
@@ -389,18 +370,16 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      * @param annotations must not be {@code null}.
      */
     public static void assertQualifiersFor(Class<?>[] parameterTypes, Annotation[][] annotations) {
-
         Set<String> values = new HashSet<>();
 
         for (int i = 0; i < annotations.length; i++) {
-
             if (Pageable.class.equals(parameterTypes[i])) {
-
                 Qualifier qualifier = findAnnotation(annotations[i]);
 
                 if (null == qualifier) {
                     throw new IllegalStateException(
-                        "Ambiguous Pageable arguments in handler method. If you use multiple parameters of type Pageable you need to qualify them with @Qualifier");
+                        "Ambiguous Pageable arguments in handler method. If you use multiple parameters of type Pageable you need to qualify them with @Qualifier"
+                    );
                 }
 
                 if (values.contains(qualifier.value())) {
@@ -421,7 +400,6 @@ public class ReactivePageableHandlerMethodArgumentResolver implements SyncHandle
      */
     @Nullable
     private static Qualifier findAnnotation(Annotation[] annotations) {
-
         for (Annotation annotation : annotations) {
             if (annotation instanceof Qualifier) {
                 return (Qualifier) annotation;
