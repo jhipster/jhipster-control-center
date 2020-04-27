@@ -1,10 +1,8 @@
 package tech.jhipster.controlcenter.config;
 
-import tech.jhipster.controlcenter.security.AuthoritiesConstants;
-import tech.jhipster.controlcenter.security.jwt.JWTFilter;
-import tech.jhipster.controlcenter.security.jwt.TokenProvider;
+import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
+
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -24,14 +22,15 @@ import org.springframework.security.web.server.util.matcher.NegatedServerWebExch
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.util.StringUtils;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
-
-import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
+import tech.jhipster.controlcenter.security.AuthoritiesConstants;
+import tech.jhipster.controlcenter.security.jwt.JWTFilter;
+import tech.jhipster.controlcenter.security.jwt.TokenProvider;
+import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration {
-
     private final TokenProvider tokenProvider;
 
     private final SecurityProblemSupport problemSupport;
@@ -97,5 +96,4 @@ public class SecurityConfiguration {
         // @formatter:on
         return http.build();
     }
-
 }

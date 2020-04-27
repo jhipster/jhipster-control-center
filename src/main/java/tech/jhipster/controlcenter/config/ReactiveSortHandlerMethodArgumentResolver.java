@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -25,7 +23,6 @@ import org.springframework.web.reactive.result.method.SyncHandlerMethodArgumentR
 import org.springframework.web.server.ServerWebExchange;
 
 public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMethodArgumentResolver {
-
     private static final String DEFAULT_PARAMETER = "sort";
     private static final String DEFAULT_PROPERTY_DELIMITER = ",";
     private static final String DEFAULT_QUALIFIER_DELIMITER = "_";
@@ -54,9 +51,7 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      */
     @Nonnull
     @Override
-    public Sort resolveArgumentValue(MethodParameter parameter, BindingContext bindingContext,
-                                     ServerWebExchange exchange) {
-
+    public Sort resolveArgumentValue(MethodParameter parameter, BindingContext bindingContext, ServerWebExchange exchange) {
         List<String> directionParameter = exchange.getRequest().getQueryParams().get(getSortParameter(parameter));
 
         // No parameter
@@ -78,7 +73,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @param sortParameter must not be {@code null} or empty.
      */
     public void setSortParameter(String sortParameter) {
-
         Assert.hasText(sortParameter, "SortParameter must not be null nor empty!");
         this.sortParameter = sortParameter;
     }
@@ -90,7 +84,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @param propertyDelimiter must not be {@code null} or empty.
      */
     public void setPropertyDelimiter(String propertyDelimiter) {
-
         Assert.hasText(propertyDelimiter, "Property delimiter must not be null or empty!");
         this.propertyDelimiter = propertyDelimiter;
     }
@@ -135,14 +128,20 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      *         {@link #setFallbackSort(Sort)}.
      */
     protected Sort getDefaultFromAnnotationOrFallback(MethodParameter parameter) {
-
         SortDefaults annotatedDefaults = parameter.getParameterAnnotation(SortDefaults.class);
         SortDefault annotatedDefault = parameter.getParameterAnnotation(SortDefault.class);
 
         if (annotatedDefault != null && annotatedDefaults != null) {
             throw new IllegalArgumentException(
-                String.format("Cannot use both @%s and @%s on parameter %s! Move %s into %s to define sorting order!",
-                    SORT_DEFAULTS_NAME, SORT_DEFAULT_NAME, parameter.toString(), SORT_DEFAULT_NAME, SORT_DEFAULTS_NAME));
+                String.format(
+                    "Cannot use both @%s and @%s on parameter %s! Move %s into %s to define sorting order!",
+                    SORT_DEFAULTS_NAME,
+                    SORT_DEFAULT_NAME,
+                    parameter.toString(),
+                    SORT_DEFAULT_NAME,
+                    SORT_DEFAULTS_NAME
+                )
+            );
         }
 
         if (annotatedDefault != null) {
@@ -150,7 +149,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
         }
 
         if (annotatedDefaults != null) {
-
             Sort sort = Sort.unsorted();
 
             for (SortDefault currentAnnotatedDefault : annotatedDefaults.value()) {
@@ -172,7 +170,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @return
      */
     private Sort appendOrCreateSortTo(SortDefault sortDefault, Sort sortOrNull) {
-
         String[] fields = getSpecificPropertyOrDefaultFromValue(sortDefault, "sort");
 
         if (fields.length == 0) {
@@ -189,7 +186,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @return the sort parameter to be looked up from the request.
      */
     protected String getSortParameter(@Nullable MethodParameter parameter) {
-
         StringBuilder builder = new StringBuilder();
 
         Qualifier qualifier = parameter != null ? parameter.getParameterAnnotation(Qualifier.class) : null;
@@ -211,18 +207,17 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @return the parsed {@link Sort}.
      */
     Sort parseParameterIntoSort(List<String> source, String delimiter) {
-
         List<Order> allOrders = new ArrayList<>();
 
         for (String part : source) {
-
             if (part == null) {
                 continue;
             }
 
             String[] elements = part.split(delimiter);
 
-            Optional<Direction> direction = elements.length == 0 ? Optional.empty()
+            Optional<Direction> direction = elements.length == 0
+                ? Optional.empty()
                 : Direction.fromOptionalString(elements[elements.length - 1]);
 
             int lastIndex = direction.map(it -> elements.length - 1).orElseGet(() -> elements.length);
@@ -236,7 +231,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
     }
 
     private static Optional<Order> toOrder(String property, Optional<Direction> direction) {
-
         if (!StringUtils.hasText(property)) {
             return Optional.empty();
         }
@@ -252,12 +246,10 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @return the list of sort expresssions.
      */
     protected List<String> foldIntoExpressions(Sort sort) {
-
         List<String> expressions = new ArrayList<>();
         ExpressionBuilder builder = null;
 
         for (Order order : sort) {
-
             Direction direction = order.getDirection();
 
             if (builder == null) {
@@ -282,19 +274,18 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @return the list of epxressions.
      */
     protected List<String> legacyFoldExpressions(Sort sort) {
-
         List<String> expressions = new ArrayList<>();
         ExpressionBuilder builder = null;
 
         for (Order order : sort) {
-
             Direction direction = order.getDirection();
 
             if (builder == null) {
                 builder = new ExpressionBuilder(direction);
             } else if (!builder.hasSameDirectionAs(order)) {
-                throw new IllegalArgumentException(String.format(
-                    "%s in legacy configuration only supports a single direction to sort by!", getClass().getSimpleName()));
+                throw new IllegalArgumentException(
+                    String.format("%s in legacy configuration only supports a single direction to sort by!", getClass().getSimpleName())
+                );
             }
 
             builder.add(order.getProperty());
@@ -309,7 +300,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      * @author Oliver Gierke
      */
     class ExpressionBuilder {
-
         private final List<String> elements = new ArrayList<>();
         private final Direction direction;
 
@@ -319,7 +309,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
          * @param direction must not be {@code null}.
          */
         ExpressionBuilder(Direction direction) {
-
             Assert.notNull(direction, "Direction must not be null!");
             this.direction = direction;
         }
@@ -351,7 +340,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
          * @return
          */
         List<String> dumpExpressionIfPresentInto(List<String> expressions) {
-
             if (elements.isEmpty()) {
                 return expressions;
             }
@@ -373,7 +361,6 @@ public class ReactiveSortHandlerMethodArgumentResolver implements SyncHandlerMet
      */
     @SuppressWarnings("unchecked")
     public static <T> T getSpecificPropertyOrDefaultFromValue(Annotation annotation, String property) {
-
         Object propertyDefaultValue = AnnotationUtils.getDefaultValue(annotation, property);
         Object propertyValue = AnnotationUtils.getValue(annotation, property);
 

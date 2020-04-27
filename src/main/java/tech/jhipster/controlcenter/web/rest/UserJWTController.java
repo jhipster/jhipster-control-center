@@ -1,11 +1,7 @@
 package tech.jhipster.controlcenter.web.rest;
 
-import tech.jhipster.controlcenter.security.jwt.JWTFilter;
-import tech.jhipster.controlcenter.security.jwt.TokenProvider;
-import tech.jhipster.controlcenter.web.rest.vm.LoginVM;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +9,9 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import javax.validation.Valid;
+import tech.jhipster.controlcenter.security.jwt.JWTFilter;
+import tech.jhipster.controlcenter.security.jwt.TokenProvider;
+import tech.jhipster.controlcenter.web.rest.vm.LoginVM;
 
 /**
  * Controller to authenticate users.
@@ -22,7 +19,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
-
     private final TokenProvider tokenProvider;
 
     private final ReactiveAuthenticationManager authenticationManager;
@@ -35,22 +31,25 @@ public class UserJWTController {
     @PostMapping("/authenticate")
     public Mono<ResponseEntity<JWTToken>> authorize(@Valid @RequestBody Mono<LoginVM> loginVM) {
         return loginVM
-            .flatMap(login -> authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
-                .map(auth -> tokenProvider.createToken(auth, Boolean.TRUE.equals(login.isRememberMe())))
+            .flatMap(
+                login ->
+                    authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
+                        .map(auth -> tokenProvider.createToken(auth, Boolean.TRUE.equals(login.isRememberMe())))
             )
-            .map(jwt -> {
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-                return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
-            });
+            .map(
+                jwt -> {
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+                    return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+                }
+            );
     }
 
     /**
      * Object to return as body in JWT Authentication.
      */
     static class JWTToken {
-
         private String idToken;
 
         JWTToken(String idToken) {

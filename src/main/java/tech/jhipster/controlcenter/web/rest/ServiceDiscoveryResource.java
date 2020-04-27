@@ -1,5 +1,8 @@
 package tech.jhipster.controlcenter.web.rest;
 
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
@@ -11,17 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 /**
  * Controller for viewing service discovery data.
  */
 @RestController
 @RequestMapping("/api")
 public class ServiceDiscoveryResource {
-
     private final Logger log = LoggerFactory.getLogger(ServiceDiscoveryResource.class);
 
     private final DiscoveryClient discoveryClient;
@@ -36,7 +34,9 @@ public class ServiceDiscoveryResource {
      */
     @GetMapping("/services/instances")
     public ResponseEntity<List<ServiceInstance>> getAllServiceInstances() {
-        Map<String, List<ServiceInstance>> instances = discoveryClient.getServices().stream()
+        Map<String, List<ServiceInstance>> instances = discoveryClient
+            .getServices()
+            .stream()
             .collect(Collectors.toMap(Function.identity(), discoveryClient::getInstances));
         List<ServiceInstance> res = instances.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
         return new ResponseEntity<>(res, HttpStatus.OK);

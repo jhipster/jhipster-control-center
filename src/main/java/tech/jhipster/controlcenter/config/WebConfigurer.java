@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.web.filter.reactive.CachingHttpHeadersFilter;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.reactive.ResourceHandlerRegistrationCustomizer;
@@ -21,14 +22,11 @@ import org.springframework.web.server.WebExceptionHandler;
 import org.zalando.problem.spring.webflux.advice.ProblemExceptionHandler;
 import org.zalando.problem.spring.webflux.advice.ProblemHandling;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
 public class WebConfigurer implements WebFluxConfigurer {
-
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     private final JHipsterProperties jHipsterProperties;
@@ -54,8 +52,7 @@ public class WebConfigurer implements WebFluxConfigurer {
     // TODO: remove when this is supported in spring-data / spring-boot
     @Override
     public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-        configurer.addCustomResolver(new ReactiveSortHandlerMethodArgumentResolver(),
-            new ReactivePageableHandlerMethodArgumentResolver());
+        configurer.addCustomResolver(new ReactiveSortHandlerMethodArgumentResolver(), new ReactivePageableHandlerMethodArgumentResolver());
     }
 
     @Bean
@@ -79,11 +76,8 @@ public class WebConfigurer implements WebFluxConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui.html**")
-            .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/");
 
-        registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-
 }
