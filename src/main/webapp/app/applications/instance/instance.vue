@@ -48,7 +48,7 @@
                 </tbody>
             </table>
         </div>
-        <b-modal ref="instanceModal">
+        <b-modal ref="instanceModal" ok-only ok-title="Close">
             <h4 slot="modal-title" v-if="selectedInstance && selectedInstanceRoute" class="modal-title" id="showInstanceLabel">
                 <span class="text-capitalize">{{ selectedInstance.serviceId }}</span>
             </h4>
