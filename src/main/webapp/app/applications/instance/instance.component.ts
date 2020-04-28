@@ -3,8 +3,8 @@ import InstanceService, { Instance } from './instance.service';
 import InstanceModalVue from './instance-modal.vue';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import RefreshSelectorMixin from '@/shared/refresh/refresh-selector.mixin.ts';
 import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
+import { RefreshService } from '@/shared/refresh/refresh.service';
 
 @Component({
   components: {
@@ -12,7 +12,7 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
     'refresh-selector': RefreshSelectorVue
   }
 })
-export default class JhiInstance extends Mixins(RefreshSelectorMixin) {
+export default class JhiInstance extends Vue {
   public instances?: Array<Instance> = null;
   public instancesRoute: Array<any> = null;
   public selectedInstance: Instance = null;
@@ -20,6 +20,7 @@ export default class JhiInstance extends Mixins(RefreshSelectorMixin) {
   public instanceModal: any = null;
   private unsubscribe$ = new Subject();
   @Inject('instanceService') private instanceService: () => InstanceService;
+  @Inject('refreshService') private refreshService: () => RefreshService;
 
   public mounted(): void {
     this.refreshService()
