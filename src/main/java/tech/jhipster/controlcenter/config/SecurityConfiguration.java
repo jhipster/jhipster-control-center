@@ -22,7 +22,6 @@ import org.springframework.security.web.server.util.matcher.NegatedServerWebExch
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.util.StringUtils;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
-import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
@@ -88,6 +87,8 @@ public class SecurityConfiguration {
             .pathMatchers("/api/auth-info").permitAll()
             .pathMatchers("/api/authenticate").permitAll()
             .pathMatchers("/api/**").permitAll()
+            .pathMatchers("/swagger-resources/**").permitAll()
+            .pathMatchers("/v2/api-docs").permitAll()
             .pathMatchers("/gateway/**").permitAll()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
