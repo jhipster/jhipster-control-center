@@ -24,11 +24,11 @@
                     active-class="active"
                     class="pointer">
                     <span slot="button-content" class="navbar-dropdown-menu">
-                        <font-awesome-icon icon="cloud" />
+                        <font-awesome-icon icon="sitemap" />
                         <span>Applications</span>
                     </span>
                     <b-dropdown-item to="/applications/instances">
-                        <font-awesome-icon icon="th-list" />
+                        <font-awesome-icon icon="cube" />
                         <span>Instances</span>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
