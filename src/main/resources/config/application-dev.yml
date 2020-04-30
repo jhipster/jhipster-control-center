@@ -44,6 +44,11 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
+  cloud:
+    gateway:
+      default-filters:
+        - SetAuthorizationHeader
+
 
 server:
   port: 1337
@@ -80,7 +85,7 @@ jhipster:
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-      enabled: false
+      enabled: true
       host: localhost
       port: 5000
       queue-size: 512
