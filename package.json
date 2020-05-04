@@ -13,7 +13,7 @@
     "@fortawesome/vue-fontawesome": "0.1.9",
     "axios": "0.19.0",
     "bootstrap": "4.4.1",
-    "bootstrap-vue": "2.2.2",
+    "bootstrap-vue": "2.13.0",
     "bootswatch": "4.4.1",
     "date-fns": "2.9.0",
     "swagger-ui-dist": "3.24.3",
