@@ -1,4 +1,6 @@
 import {
+  BCol,
+  BRow,
   BForm,
   BFormInput,
   BFormCheckbox,
@@ -24,6 +26,8 @@ import {
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
+  vue.component('b-col', BCol);
+  vue.component('b-row', BRow);
   vue.component('b-badge', BBadge);
   vue.component('b-dropdown', BDropdown);
   vue.component('b-dropdown-item', BDropdownItem);

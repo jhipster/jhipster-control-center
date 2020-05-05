@@ -47,6 +47,7 @@ import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { alertStore } from '@/shared/config/store/alert-store';
 import { refreshStore } from '@/shared/config/store/refresh-store';
+import { routesStore } from '@/shared/config/store/routes-store';
 
 export function initVueApp(vue) {
   vue.use(VueCookie);
@@ -103,7 +104,8 @@ export function initVueXStore(vue) {
     modules: {
       accountStore,
       alertStore,
-      refreshStore
+      refreshStore,
+      routesStore
     }
   });
 }

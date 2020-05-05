@@ -1,6 +1,9 @@
 <template>
-    <div class="table-responsive">
-        <h2 id="logs-page-heading">Logs</h2>
+    <div>
+        <div class="head">
+            <h2 id="logs-page-heading" class="d-inline-block">Logs</h2>
+            <routes-selector  class="float-right refresh-left-side"></routes-selector>
+        </div>
 
         <div v-if="loggers">
             <p>There are {{ loggers.length }} loggers.</p>
@@ -31,5 +34,4 @@
     </div>
 </template>
 
-<script lang="ts" src="./logs.component.ts">
-</script>
+<script lang="ts" src="./logs.component.ts"></script>
