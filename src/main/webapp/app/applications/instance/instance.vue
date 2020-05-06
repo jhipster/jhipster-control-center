@@ -12,7 +12,7 @@
                     <th class="w-30">Instance</th>
                     <th class="w-30">Profile</th>
                     <th class="w-30">Git</th>
-                    <th class="text-center">Detail</th>
+                    <th class="text-center">Details</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -93,7 +93,8 @@ public class SecurityConfiguration {
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
-            .pathMatchers("/management/**").permitAll();
+            .pathMatchers("/management/**").permitAll()
+            .pathMatchers("/v2/api-docs","/swagger-resources/**", "/swagger-ui.html").permitAll();
         // @formatter:on
         return http.build();
     }
