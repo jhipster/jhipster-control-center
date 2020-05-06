@@ -31,6 +31,10 @@
                         <font-awesome-icon icon="cube" />
                         <span>Instances</span>
                     </b-dropdown-item>
+                    <b-dropdown-item to="/applications/loggers">
+                        <font-awesome-icon icon="th-list" />
+                        <span>Loggers</span>
+                    </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown
                     id="entity-menu"
