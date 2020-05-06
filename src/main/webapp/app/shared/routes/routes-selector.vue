@@ -1,6 +1,6 @@
 <template>
     <b-row align-h="end">
-        <b-dropdown ref="dd" variant="outline-primary" v-on:click="$event.stopPropagation()">
+        <b-dropdown ref="dd" variant="outline-primary" v-on:click="$event.stopPropagation()" right>
             <span slot="button-content">{{ htmlActiveRoute }} &nbsp;</span>
             <p class="d-flex">
                 <b-form-input type="search" class="form-control d-flex search" placeholder="Search an application..."
