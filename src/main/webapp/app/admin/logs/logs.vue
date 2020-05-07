@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <div class="head">
-            <h2 id="logs-page-heading" class="d-inline-block">Logs</h2>
-        </div>
+    <div class="table-responsive">
+        <h2 id="logs-page-heading">Logs</h2>
 
         <div v-if="loggers">
             <p>There are {{ loggers.length }} loggers.</p>

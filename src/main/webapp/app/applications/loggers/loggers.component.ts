@@ -26,7 +26,6 @@ export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
   @Inject('routesService') private routesService: () => RoutesService;
 
   public mounted(): void {
-    this.loggers = [];
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(route => {

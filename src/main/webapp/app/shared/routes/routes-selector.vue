@@ -8,7 +8,7 @@
             </p>
             <div v-for="route in routes" :key="route.path">
                 <button class="dropdown-item" v-on:click="[setActiveRoute(route),htmlActiveRoute = getActiveRoute(),$refs.dd.hide()]">
-                    <span>{{ route.serviceId.toUpperCase() }} {{ route.serviceId ? '(' + route.path + ')' : '' }}</span>
+                    <span>{{ route.serviceId.toUpperCase() }} {{ route.path ? '(' + route.path + ')' : '' }}</span>
                 </button>
             </div>
         </b-dropdown>

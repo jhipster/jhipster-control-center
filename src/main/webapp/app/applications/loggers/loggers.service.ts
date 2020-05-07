@@ -4,6 +4,7 @@ import Component from 'vue-class-component';
 import { Route } from '@/shared/routes/routes.service';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { SERVER_API_URL } from '@/constants';
 
 export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
 
@@ -38,8 +39,12 @@ export default class LoggersService extends Vue {
     const changeLoggersLevelResponses: Observable<{}>[] = [];
     for (let i = 0; i < routes.length; i++) {
       const loggersLevelResponses = Observable.create(observer => {
+        const logsControlCenter = SERVER_API_URL + '/management/loggers/' + name;
+        const logsOfAnInstance = 'gateway/' + routes[i].path + '/management/loggers/' + name;
+        const url = routes[i] && routes[i].path && routes[i].path.length > 0 ? logsOfAnInstance : logsControlCenter;
+
         axios
-          .post('gateway/' + routes[i].path + '/management/loggers/' + name, { configuredLevel })
+          .post(url, { configuredLevel })
           .then(observer.complete())
           .catch(error => {
             observer.error(error);
@@ -53,8 +58,12 @@ export default class LoggersService extends Vue {
   /** return all log of a route */
   public findAll(route: Route): Observable<Log[]> {
     return Observable.create(observer => {
+      const logsControlCenter = SERVER_API_URL + '/management/loggers';
+      const logsOfAnInstance = 'gateway/' + route.path + '/management/loggers';
+      const url = route && route.path && route.path.length > 0 ? logsOfAnInstance : logsControlCenter;
+
       axios
-        .get('gateway/' + route.path + '/management/loggers')
+        .get(url)
         .then(res => {
           const logs = LoggersService.parseJsonToArrayOfLog(res.data);
           observer.next(logs);

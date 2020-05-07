@@ -2,13 +2,8 @@ import { Component, Inject } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import Vue2Filters from 'vue2-filters';
 import LogsService from './logs.service';
-import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 
-@Component({
-  components: {
-    'routes-selector': RoutesSelectorVue
-  }
-})
+@Component
 export default class JhiLogs extends mixins(Vue2Filters.mixin) {
   @Inject('logsService') private logsService: () => LogsService;
   private loggers: any[] = [];

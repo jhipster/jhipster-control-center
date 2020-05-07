@@ -73,9 +73,10 @@ export default class RoutesService {
     this.store.commit('setRoute', route);
   }
 
-  /** Transform Json array of routes to an array */
+  /** transform json array of routes to an array */
   private parseJsonArrayOfRoutesToArray(data: any): Array<Route> {
     const routes: Array<Route> = [];
+    routes.push(this.getRouteOfControlCenter());
     data.map(r => {
       const route = new class implements Route {
         path: string;
@@ -96,5 +97,26 @@ export default class RoutesService {
       routes.push(route);
     });
     return routes;
+  }
+
+  /** get default route of control center */
+  private getRouteOfControlCenter(): Route {
+    const route = new class implements Route {
+      path: string;
+      predicate: string;
+      filters: Array<string>;
+      serviceId: string;
+      instanceId: string;
+      instanceUri: string;
+      order: number;
+    }();
+    route.path = '';
+    route.predicate = '';
+    route.filters = [];
+    route.serviceId = 'JHIPSTER-CONTROL-CENTER';
+    route.instanceId = 'JHIPSTER-CONTROL-CENTER';
+    route.instanceUri = '';
+    route.order = 0;
+    return route;
   }
 }

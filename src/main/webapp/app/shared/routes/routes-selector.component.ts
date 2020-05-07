@@ -102,7 +102,7 @@ export default class RoutesSelectorComponent extends mixins(Vue2Filters.mixin) {
       this.routes = this.savedRoutes;
     } else {
       this.routes = this.savedRoutes!.filter(route => {
-        return route.serviceId.includes(this.searchedInstance);
+        return route.serviceId.toLowerCase().includes(this.searchedInstance.toLowerCase());
       });
     }
   }
