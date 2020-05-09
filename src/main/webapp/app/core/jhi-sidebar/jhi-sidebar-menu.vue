@@ -39,7 +39,7 @@
             <span>API</span>
           </b-nav-item>
         </b-nav>
-        <span class="hipster img-fluid"></span>
+        <span class="fixed-bottom hipster img-fluid"></span>
       </div>
     </b-sidebar>
   </div>
