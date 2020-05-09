@@ -4,7 +4,7 @@ import Ribbon from '@/core/ribbon/ribbon.vue';
 import JhiFooter from '@/core/jhi-footer/jhi-footer.vue';
 import JhiNavbar from '@/core/jhi-navbar/jhi-navbar.vue';
 import LoginForm from '@/account/login-form/login-form.vue';
-import JhiSidebarMenu from '@/core/sidebar/jhi-sidebar-menu.vue';
+import JhiSidebarMenu from '@/core/jhi-sidebar/jhi-sidebar-menu.vue';
 
 @Component({
   components: {

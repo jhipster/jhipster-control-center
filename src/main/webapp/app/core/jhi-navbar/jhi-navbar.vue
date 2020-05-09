@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="md" type="dark" class="bg-primary">
-    <b-row h-100>
+    <b-row>
       <div class="jh-logo-container" my-auto>
         <div class="icon-sidebar" id="sidebar-icon" exact v-if="hasAnyAuthority('ROLE_ADMIN')">
           <div v-b-toggle.sidebar-footer>
@@ -15,7 +15,6 @@
           <span class="navbar-title"><span class="jhipster-title">JHipster</span> Control Center</span>
           <span class="navbar-version">{{ version }}</span>
         </b-navbar-brand>
-
         <b-navbar-toggle
           class="header-tabs"
           right
