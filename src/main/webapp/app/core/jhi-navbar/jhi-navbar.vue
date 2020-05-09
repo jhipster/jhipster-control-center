@@ -78,10 +78,6 @@
             <font-awesome-icon icon="book" />
             <span>API</span>
           </b-dropdown-item>
-          <b-dropdown-item to="/applications/instances">
-            <font-awesome-icon icon="cube" />
-            <span>Instances</span>
-          </b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown
           right
