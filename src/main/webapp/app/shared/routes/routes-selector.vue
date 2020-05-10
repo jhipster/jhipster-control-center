@@ -4,7 +4,7 @@
             <span slot="button-content">{{ htmlActiveRoute }} &nbsp;</span>
             <p class="d-flex">
                 <b-form-input type="search" class="form-control d-flex search" placeholder="Search an application..."
-                              v-model="searchedInstance" v-on:change="searchByAppName()"  v-on:click.stop/>
+                              v-model="searchedInstance" v-on:input="searchByAppName()" v-on:click.stop/>
             </p>
             <div v-for="route in routes" :key="route.path">
                 <button class="dropdown-item" v-on:click="[setActiveRoute(route),htmlActiveRoute = getActiveRoute(),$refs.dd.hide()]">

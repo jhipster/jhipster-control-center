@@ -1,9 +1,10 @@
 import { Component, Inject } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import Vue2Filters from 'vue2-filters';
-import LoggersService, { Level, Log, Logger, LoggersResponse } from './loggers.service';
+import LoggersService, { Level, Log } from './loggers.service';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
+import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -24,6 +25,7 @@ export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
 
   @Inject('loggersService') private loggersService: () => LoggersService;
   @Inject('routesService') private routesService: () => RoutesService;
+  @Inject('refreshService') private refreshService: () => RefreshService;
 
   public mounted(): void {
     this.routesService()
@@ -48,6 +50,7 @@ export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
       .changeLoggersLevel(this.searchByAppName(), name, level)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.refreshActiveRouteLogs());
+    this.refreshService().refreshReload();
   }
 
   searchByAppName(): Route[] {

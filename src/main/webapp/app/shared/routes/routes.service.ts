@@ -78,23 +78,25 @@ export default class RoutesService {
     const routes: Array<Route> = [];
     routes.push(this.getRouteOfControlCenter());
     data.map(r => {
-      const route = new class implements Route {
-        path: string;
-        predicate: string;
-        filters: Array<string>;
-        serviceId: string;
-        instanceId: string;
-        instanceUri: string;
-        order: number;
-      }();
-      route.path = r.route_id;
-      route.predicate = r.predicate;
-      route.filters = r.filters;
-      route.serviceId = r.route_id.split('/')[0];
-      route.instanceId = r.route_id.split('/')[1];
-      route.instanceUri = r.uri;
-      route.order = r.order;
-      routes.push(route);
+      if (r.route_id.split('/')[0].toLowerCase() !== 'consul') {
+        const route = new class implements Route {
+          path: string;
+          predicate: string;
+          filters: Array<string>;
+          serviceId: string;
+          instanceId: string;
+          instanceUri: string;
+          order: number;
+        }();
+        route.path = r.route_id;
+        route.predicate = r.predicate;
+        route.filters = r.filters;
+        route.serviceId = r.route_id.split('/')[0];
+        route.instanceId = r.route_id.split('/')[1];
+        route.instanceUri = r.uri;
+        route.order = r.order;
+        routes.push(route);
+      }
     });
     return routes;
   }
