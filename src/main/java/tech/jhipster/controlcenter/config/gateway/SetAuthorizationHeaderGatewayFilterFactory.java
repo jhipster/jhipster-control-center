@@ -1,45 +1,40 @@
 package tech.jhipster.controlcenter.config.gateway;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import static tech.jhipster.controlcenter.security.jwt.JWTFilter.AUTHORIZATION_HEADER;
+
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
 @Component
-public class SetAuthorizationHeaderGatewayFilterFactory implements GatewayFilterFactory<SetAuthorizationHeaderGatewayFilterFactory.Config> {
+public class SetAuthorizationHeaderGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
+    private final TokenProvider tokenProvider;
 
-    @Autowired
-    public SetAuthorizationHeaderGatewayFilterFactory() {}
+    public SetAuthorizationHeaderGatewayFilterFactory(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
-    public GatewayFilter apply(Config config) {
+    public GatewayFilter apply(Object config) {
         return (exchange, chain) -> {
-            String AUTHORIZATION_HEADER_VALUE = exchange.getRequest().getHeaders().getFirst("Authorization");
-            ServerHttpRequest request = exchange
-                .getRequest()
-                .mutate()
-                .headers(
-                    httpHeaders -> {
-                        httpHeaders.set(Config.AUTHORIZATION_HEADER, AUTHORIZATION_HEADER_VALUE);
-                    }
-                )
-                .build();
-            return chain.filter(exchange.mutate().request(request).build());
+            String token = this.extractJWTToken(exchange.getRequest());
+            if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
+                ServerHttpRequest request = exchange.getRequest().mutate().header(AUTHORIZATION_HEADER, "Bearer " + token).build();
+
+                return chain.filter(exchange.mutate().request(request).build());
+            }
+            return chain.filter(exchange);
         };
     }
 
-    @Override
-    public Config newConfig() {
-        return new Config();
-    }
-
-    @Override
-    public Class<Config> getConfigClass() {
-        return Config.class;
-    }
-
-    public static class Config {
-        public static final String AUTHORIZATION_HEADER = "Authorization";
+    private String extractJWTToken(ServerHttpRequest request) {
+        String bearerToken = request.getHeaders().getFirst(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        throw new IllegalArgumentException("Invalid token in Authorization header");
     }
 }
