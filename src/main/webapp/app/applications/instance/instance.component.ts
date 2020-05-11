@@ -65,13 +65,33 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
+  /* Modal dialog */
+  public confirmShutdown(instance: Instance): void {
+    const config = {
+      title: 'Please Confirm',
+      size: 'sm',
+      buttonSize: 'sm',
+      okVariant: 'danger',
+      okTitle: 'YES',
+      cancelTitle: 'NO',
+      footerClass: 'p-2',
+      hideHeaderClose: false,
+      centered: true
+    };
+    this.$bvModal
+      .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
+      .then(res => {
+        res ? this.shutdownInstance(instance) : null;
+      })
+      .catch(err => console.warn(err));
+  }
+
   /* shutdown an instance */
   public shutdownInstance(instance: Instance): void {
     this.instanceService()
       .shutdownInstance(instance)
       .then(() => this.$router.go(0))
       .catch(err => {
-        // @ts-ignore
         return this.$bvToast.toast(`${err}`, {
           title: `Error`,
           variant: 'danger',

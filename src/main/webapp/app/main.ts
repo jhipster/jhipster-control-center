@@ -23,7 +23,7 @@ import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
-import { ToastPlugin } from 'bootstrap-vue';
+import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 
 /* tslint:disable */
 
@@ -36,6 +36,7 @@ config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);
 Vue.use(Vue2Filters);
 Vue.use(ToastPlugin);
+Vue.use(ModalPlugin);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);

@@ -47,7 +47,7 @@
                     </td>
                     <td class="table-hover">
                         <div class="text-center">
-                            <a id="shutdownInstance" v-on:click="shutdownInstance(instance)" v-if="instance.serviceId !== 'consul'">
+                            <a id="shutdownInstance" v-on:click="confirmShutdown(instance)" v-if="instance.serviceId !== 'consul'">
                                 <font-awesome-icon icon="power-off"></font-awesome-icon>
                             </a>
                         </div>
