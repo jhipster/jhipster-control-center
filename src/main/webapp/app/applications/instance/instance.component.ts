@@ -73,10 +73,6 @@ export default class JhiInstance extends Vue {
       .catch(err => console.error(err));
   }
 
-  public isInstance(instance: Instance): boolean {
-    return instance.serviceId !== 'consul';
-  }
-
   /* istanbul ignore next */
   beforeDestroy(): any {
     // prevent memory leak when component destroyed

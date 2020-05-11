@@ -47,7 +47,7 @@
                     </td>
                     <td class="table-hover">
                         <div class="text-center">
-                            <b-button id="restartInstance" pill variant="outline-danger" v-on:click="shutdownInstance(instance)" v-if="isInstance(instance)">
+                            <b-button id="shutdownInstance" pill variant="outline-danger" v-on:click="shutdownInstance(instance)" v-if="instance.serviceId !== 'consul'">
                                 shutdown
                             </b-button>
                         </div>
