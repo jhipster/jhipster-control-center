@@ -70,7 +70,15 @@ export default class JhiInstance extends Vue {
     this.instanceService()
       .shutdownInstance(instance)
       .then(() => this.$router.go(0))
-      .catch(err => console.error(err));
+      .catch(err => {
+        // @ts-ignore
+        return this.$bvToast.toast(`${err}`, {
+          title: `Error`,
+          variant: 'danger',
+          solid: true,
+          autoHideDelay: 5000
+        });
+      });
   }
 
   /* istanbul ignore next */
