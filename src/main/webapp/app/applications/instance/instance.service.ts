@@ -43,7 +43,12 @@ export default class InstanceService extends Vue {
 
   /** get active profiles of an instance */
   public findActiveProfiles(gatewayRoute: string): AxiosPromise<any> {
-    return axios.get('gateway/' + String(gatewayRoute) + '/management/info');
+    return axios.get(`gateway/${String(gatewayRoute)}/management/info`);
+  }
+
+  /* shutdown an instance */
+  public shutdownInstance({ serviceId, instanceId }): AxiosPromise<any> {
+    return axios.post(`/gateway/${serviceId}/${instanceId}/management/shutdown`);
   }
 
   /** convert json array of instances to array of instances */

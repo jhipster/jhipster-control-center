@@ -13,6 +13,7 @@
                     <th class="w-30">Profile</th>
                     <th class="w-30">Git</th>
                     <th class="text-center">Detail</th>
+                    <th class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,13 @@
                             <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                             </a>
+                        </div>
+                    </td>
+                    <td class="table-hover">
+                        <div class="text-center">
+                            <b-button id="restartInstance" pill variant="outline-danger" v-on:click="shutdownInstance(instance)" v-if="isInstance(instance)">
+                                shutdown
+                            </b-button>
                         </div>
                     </td>
                 </tr>

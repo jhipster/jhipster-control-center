@@ -65,6 +65,18 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
+  /* shutdown an instance */
+  public shutdownInstance(instance: Instance): void {
+    this.instanceService()
+      .shutdownInstance(instance)
+      .then(() => this.$router.go(0))
+      .catch(err => console.error(err));
+  }
+
+  public isInstance(instance: Instance): boolean {
+    return instance.serviceId !== 'consul';
+  }
+
   /* istanbul ignore next */
   beforeDestroy(): any {
     // prevent memory leak when component destroyed
