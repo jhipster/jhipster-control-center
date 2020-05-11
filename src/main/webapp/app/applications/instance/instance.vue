@@ -13,7 +13,7 @@
                     <th class="w-30">Profile</th>
                     <th class="w-30">Git</th>
                     <th class="text-center">Detail</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">Kill</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,9 +47,9 @@
                     </td>
                     <td class="table-hover">
                         <div class="text-center">
-                            <b-button id="shutdownInstance" pill variant="outline-danger" v-on:click="shutdownInstance(instance)" v-if="instance.serviceId !== 'consul'">
-                                shutdown
-                            </b-button>
+                            <a id="shutdownInstance" v-on:click="shutdownInstance(instance)" v-if="instance.serviceId !== 'consul'">
+                                <font-awesome-icon icon="power-off"></font-awesome-icon>
+                            </a>
                         </div>
                     </td>
                 </tr>
