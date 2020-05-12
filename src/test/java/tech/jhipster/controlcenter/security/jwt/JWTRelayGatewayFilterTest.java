@@ -1,6 +1,7 @@
-package tech.jhipster.controlcenter.config.gateway;
+package tech.jhipster.controlcenter.security.jwt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -8,6 +9,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Collections;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,15 +25,16 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
+import tech.jhipster.controlcenter.security.jwt.JWTRelayGatewayFilterFactory;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
-public class SetAuthorizationHeaderGatewayFilterTest {
+public class JWTRelayGatewayFilterTest {
     private final TokenProvider tokenProvider;
     private final GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
     private final ArgumentCaptor<ServerWebExchange> captor = ArgumentCaptor.forClass(ServerWebExchange.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    SetAuthorizationHeaderGatewayFilterTest() {
+    JWTRelayGatewayFilterTest() {
         JHipsterProperties jHipsterProperties = new JHipsterProperties();
         tokenProvider = new TokenProvider(jHipsterProperties);
         ReflectionTestUtils.setField(
@@ -65,13 +68,13 @@ public class SetAuthorizationHeaderGatewayFilterTest {
         // create request with jwt in header
         String jwt = tokenProvider.createToken(authentication, false);
         MockServerHttpRequest request = MockServerHttpRequest
-            .get("/api/test")
+            .get(sample_url)
             .header(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt)
             .build();
 
         // apply the filter to the request
         ServerWebExchange exchange = MockServerWebExchange.from(request);
-        SetAuthorizationHeaderGatewayFilterFactory factory = new SetAuthorizationHeaderGatewayFilterFactory(tokenProvider);
+        JWTRelayGatewayFilterFactory factory = new JWTRelayGatewayFilterFactory(tokenProvider);
         Config config = new Config();
         GatewayFilter filter = factory.apply(config);
 
@@ -83,6 +86,27 @@ public class SetAuthorizationHeaderGatewayFilterTest {
         ServerHttpRequest requestAfterFilter = captor.getValue().getRequest();
 
         assertEquals(request.getHeaders().getFirst(AUTHORIZATION_HEADER), requestAfterFilter.getHeaders().getFirst(AUTHORIZATION_HEADER));
+    }
+
+    @Test
+    void applyFilterWithWrongTokenTest() {
+        String sample_url = "/gateway/service-id/service-id:number/api/test";
+        String jwt = "wrong-token";
+        MockServerHttpRequest request = MockServerHttpRequest.get(sample_url).header(JWTFilter.AUTHORIZATION_HEADER, jwt).build();
+
+        Throwable exceptionThrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+                // apply the filter to the request
+                ServerWebExchange exchange = MockServerWebExchange.from(request);
+                JWTRelayGatewayFilterFactory factory = new JWTRelayGatewayFilterFactory(tokenProvider);
+                Config config = new Config();
+                GatewayFilter filter = factory.apply(config);
+                filter.filter(exchange, filterChain);
+            }
+        );
+
+        assertEquals(exceptionThrown.getMessage(), "Invalid token in Authorization header");
     }
 
     public static class Config {}

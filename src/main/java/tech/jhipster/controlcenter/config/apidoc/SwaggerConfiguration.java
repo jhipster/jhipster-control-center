@@ -41,10 +41,7 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
-
-        //Add the registry swagger resource that correspond to the jhipster-control-center's own swagger doc
         resources.add(swaggerResource("jhipster-control-center", "/v2/api-docs"));
-
         //Add the registered microservices swagger docs as additional swagger resources
         List<Route> routes = routeLocator.getRoutes().collectList().block();
         routes.forEach(
@@ -56,7 +53,6 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
                 }
             }
         );
-
         return resources;
     }
 

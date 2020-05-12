@@ -1,4 +1,4 @@
-package tech.jhipster.controlcenter.config.gateway;
+package tech.jhipster.controlcenter.security.jwt;
 
 import static tech.jhipster.controlcenter.security.jwt.JWTFilter.AUTHORIZATION_HEADER;
 
@@ -10,10 +10,10 @@ import org.springframework.util.StringUtils;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
 @Component
-public class SetAuthorizationHeaderGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
+public class JWTRelayGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
     private final TokenProvider tokenProvider;
 
-    public SetAuthorizationHeaderGatewayFilterFactory(TokenProvider tokenProvider) {
+    public JWTRelayGatewayFilterFactory(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 

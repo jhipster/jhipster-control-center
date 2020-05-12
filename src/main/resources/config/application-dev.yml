@@ -47,7 +47,7 @@ spring:
   cloud:
     gateway:
       default-filters:
-        - SetAuthorizationHeader
+        - JWTRelay
 
 server:
   port: 1337
