@@ -9,7 +9,7 @@ services:
     # "native" profile means the filesystem is used to store data, see
     # http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html
     environment:
-      - SPRING_PROFILES_ACTIVE=dev,native
+      - SPRING_PROFILES_ACTIVE=dev
       - SECURITY_USER_PASSWORD=admin
       - JHIPSTER_REGISTRY_PASSWORD=admin
       - JHIPSTER_LOGGING_LOGSTASH_ENABLED=false
