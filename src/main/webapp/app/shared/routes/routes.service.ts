@@ -49,18 +49,22 @@ export default class RoutesService {
     });
   }
 
+  /* istanbul ignore next */
   public routeChange(route: Route | undefined): void {
     this.routeChangedSource.next(route);
   }
 
+  /* istanbul ignore next */
   public routesChange(routes: Route[]): void {
     this.routesChangedSource.next(routes);
   }
 
+  /* istanbul ignore next */
   public reloadRoutes(): void {
     this.routeReloadSource.next(true);
   }
 
+  /* istanbul ignore next */
   public routeDown(route: Route | undefined): void {
     this.routeDownSource.next(route);
   }
@@ -74,11 +78,12 @@ export default class RoutesService {
   }
 
   /** transform json array of routes to an array */
+  /* istanbul ignore next */
   private parseJsonArrayOfRoutesToArray(data: any): Array<Route> {
     const routes: Array<Route> = [];
     routes.push(this.getRouteOfControlCenter());
     data.map(r => {
-      if (r.route_id.split('/')[0].toLowerCase() !== 'consul') {
+      if (r.route_id.split('/')[0].toLowerCase() !== 'consul' && r.route_id !== null) {
         const route = new class implements Route {
           path: string;
           predicate: string;
@@ -88,6 +93,7 @@ export default class RoutesService {
           instanceUri: string;
           order: number;
         }();
+
         route.path = r.route_id;
         route.predicate = r.predicate;
         route.filters = r.filters;
