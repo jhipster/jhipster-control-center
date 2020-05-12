@@ -12,10 +12,12 @@ services:
       - SPRING_PROFILES_ACTIVE=dev,native
       - SECURITY_USER_PASSWORD=admin
       - JHIPSTER_REGISTRY_PASSWORD=admin
-      - JHIPSTER_LOGGING_LOGSTASH_ENABLED=true
+      - JHIPSTER_LOGGING_LOGSTASH_ENABLED=false
       - JHIPSTER_LOGGING_LOGSTASH_HOST=jhipster-logstash
       - JHIPSTER_METRICS_LOGS_ENABLED=true
       - JHIPSTER_METRICS_LOGS_REPORTFREQUENCY=60
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
       # - GIT_URI=https://github.com/jhipster/jhipster-registry/
       # - GIT_SEARCH_PATHS=central-config
     ports:
