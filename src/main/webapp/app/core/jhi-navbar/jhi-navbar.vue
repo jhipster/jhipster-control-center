@@ -54,10 +54,6 @@
             <font-awesome-icon icon="cogs" />
             <span>Administration</span>
           </span>
-          <b-dropdown-item none disabled>
-            <font-awesome-icon icon="chart-line" />
-            <span>DashBoard</span>
-          </b-dropdown-item>
           <b-dropdown-item to="/admin/jhi-metrics">
             <font-awesome-icon icon="tachometer-alt" />
             <span id="collapse-1">Metrics</span>
