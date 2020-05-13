@@ -19,8 +19,8 @@ const service_test_route = {
   path: '',
   predicate: '',
   filters: [],
-  serviceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceId: 'JHIPSTER-CONTROL-CENTER',
+  serviceId: 'service-test',
+  instanceId: 'service-test-instance',
   instanceUri: '',
   order: 0
 } as Route;

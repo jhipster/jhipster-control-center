@@ -26,6 +26,7 @@ export default class RoutesSelectorComponent extends mixins(Vue2Filters.mixin) {
   @Inject('refreshService') private refreshService: () => RefreshService;
   @Inject('routesService') private routesService: () => RoutesService;
 
+  /* istanbul ignore next */
   public mounted(): void {
     this.activeRoute = this.routesService().getSelectedRoute();
     this.htmlActiveRoute = this.getActiveRoute();
@@ -53,6 +54,7 @@ export default class RoutesSelectorComponent extends mixins(Vue2Filters.mixin) {
     this.routesService().routeChange(this.activeRoute);
   }
 
+  /* istanbul ignore next */
   private updateRoute(): void {
     this.updatingRoutes = true;
     this.routesService()
