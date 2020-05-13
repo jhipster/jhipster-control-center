@@ -81,7 +81,9 @@ export default class JhiInstance extends Vue {
     this.$bvModal
       .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
       .then(res => {
-        res ? this.shutdownInstance(instance) : null;
+        if (res) {
+          this.shutdownInstance(instance);
+        }
       })
       .catch(err => console.warn(err));
   }
