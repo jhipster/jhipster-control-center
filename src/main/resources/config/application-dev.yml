@@ -44,10 +44,6 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
-  cloud:
-    gateway:
-      default-filters:
-        - JWTRelay
 
 server:
   port: 1337

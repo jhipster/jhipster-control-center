@@ -27,8 +27,6 @@
     <!-- jhipster-needle-distribution-management -->
 
     <properties>
-        <!-- Swagger -->
-        <springfox.version>3.0.0-SNAPSHOT</springfox.version>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>1.8</java.version>
@@ -81,6 +79,8 @@
         <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
+        <!-- Swagger -->
+        <springfox.version>3.0.0-SNAPSHOT</springfox.version>
         <!-- jhipster-needle-maven-property -->
     </properties>
 

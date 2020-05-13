@@ -28,13 +28,13 @@ import tech.jhipster.controlcenter.security.jwt.JWTFilter;
 import tech.jhipster.controlcenter.security.jwt.JWTRelayGatewayFilterFactory;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
-public class JWTRelayGatewayFilterTest {
+public class JWTRelayGatewayFilterFactoryTest {
     private final TokenProvider tokenProvider;
     private final GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
     private final ArgumentCaptor<ServerWebExchange> captor = ArgumentCaptor.forClass(ServerWebExchange.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    JWTRelayGatewayFilterTest() {
+    JWTRelayGatewayFilterFactoryTest() {
         JHipsterProperties jHipsterProperties = new JHipsterProperties();
         tokenProvider = new TokenProvider(jHipsterProperties);
         ReflectionTestUtils.setField(
