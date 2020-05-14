@@ -92,7 +92,14 @@ export default class JhiInstance extends Vue {
   public shutdownInstance(instance: Instance): void {
     this.instanceService()
       .shutdownInstance(instance)
-      .then(() => this.$router.go(0))
+      .then(() => {
+        return this.$bvToast.toast('Instance shutdown successful', {
+          title: 'Success',
+          variant: 'success',
+          solid: true,
+          autoHideDelay: 5000
+        });
+      })
       .catch(err => {
         return this.$bvToast.toast(`${err}`, {
           title: `Error`,
