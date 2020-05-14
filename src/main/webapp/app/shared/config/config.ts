@@ -38,6 +38,10 @@ import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 import { faSitemap } from '@fortawesome/free-solid-svg-icons/faSitemap';
 import { faCube } from '@fortawesome/free-solid-svg-icons/faCube';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons/faChartLine';
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
+import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
 
 import VueCookie from 'vue-cookie';
@@ -60,12 +64,14 @@ export function initVueApp(vue) {
 export function initFortAwesome(vue) {
   library.add(
     faArrowLeft,
+    faAngleDoubleLeft,
     faAsterisk,
     faBan,
     faBars,
     faBell,
     faBook,
     faCloud,
+    faChartLine,
     faEye,
     faFlag,
     faHdd,
@@ -95,6 +101,8 @@ export function initFortAwesome(vue) {
     faWrench,
     faSitemap,
     faCube,
+    faCogs,
+    faEllipsisV,
     faPowerOff
   );
 }
