@@ -44,6 +44,7 @@ import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
 
+
 import VueCookie from 'vue-cookie';
 import Vuelidate from 'vuelidate';
 import Vue2Filters from 'vue2-filters';
