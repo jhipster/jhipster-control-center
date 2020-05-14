@@ -13,6 +13,7 @@
                     <th class="w-30">Profile</th>
                     <th class="w-30">Git</th>
                     <th class="text-center">Detail</th>
+                    <th class="text-center">Kill</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,13 @@
                         <div class="text-center">
                             <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="table-hover">
+                        <div class="text-center">
+                            <a id="shutdownInstance" v-on:click="confirmShutdown(instance)" v-if="instance.serviceId !== 'consul'">
+                                <font-awesome-icon icon="power-off"></font-awesome-icon>
                             </a>
                         </div>
                     </td>
