@@ -6,7 +6,7 @@
     </div>
     <b-container fluid>
       <b-row>
-        <jhi-sidebar-menu></jhi-sidebar-menu>
+        <jhi-sidebar></jhi-sidebar>
         <div class="card jh-card">
           <router-view></router-view>
         </div>

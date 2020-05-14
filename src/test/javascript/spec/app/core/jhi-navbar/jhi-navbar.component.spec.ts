@@ -17,6 +17,7 @@ localVue.component('b-nav-item-dropdown', {});
 localVue.component('b-navbar-toggle', {});
 localVue.component('b-navbar-brand', {});
 localVue.component('b-navbar-nav', {});
+localVue.component('b-row', {});
 
 describe('JhiNavbar', () => {
   let jhiNavbar: JhiNavbarClass;
