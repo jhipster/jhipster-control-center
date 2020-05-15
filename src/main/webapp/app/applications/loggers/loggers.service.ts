@@ -25,6 +25,7 @@ export class Log {
 @Component
 export default class LoggersService extends Vue {
   /** convert json array of loggers to loggersResponse */
+  /* istanbul ignore next */
   private static parseJsonToArrayOfLog(data: any): Log[] {
     const logs: Log[] = [];
     for (const key of Object.keys(data.loggers)) {
@@ -39,7 +40,7 @@ export default class LoggersService extends Vue {
     const changeLoggersLevelResponses: Observable<{}>[] = [];
     for (let i = 0; i < routes.length; i++) {
       const loggersLevelResponses = Observable.create(observer => {
-        const logsControlCenter = SERVER_API_URL + '/management/loggers/' + name;
+        const logsControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/loggers/' + name;
         const logsOfAnInstance = 'gateway/' + routes[i].path + '/management/loggers/' + name;
         const url = routes[i] && routes[i].path && routes[i].path.length > 0 ? logsOfAnInstance : logsControlCenter;
 
@@ -58,7 +59,7 @@ export default class LoggersService extends Vue {
   /** return all log of a route */
   public findAll(route: Route): Observable<Log[]> {
     return Observable.create(observer => {
-      const logsControlCenter = SERVER_API_URL + '/management/loggers';
+      const logsControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/loggers';
       const logsOfAnInstance = 'gateway/' + route.path + '/management/loggers';
       const url = route && route.path && route.path.length > 0 ? logsOfAnInstance : logsControlCenter;
 

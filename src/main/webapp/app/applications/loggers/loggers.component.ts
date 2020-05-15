@@ -27,6 +27,7 @@ export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
   @Inject('routesService') private routesService: () => RoutesService;
   @Inject('refreshService') private refreshService: () => RefreshService;
 
+  /* istanbul ignore next */
   public mounted(): void {
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
@@ -58,12 +59,14 @@ export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
   }
 
   refreshActiveRouteLogs(): void {
+    /* istanbul ignore next */
     this.loggersService()
       .findAll(this.activeRoute)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(res => (this.loggers = res));
   }
 
+  /* istanbul ignore next */
   beforeDestroy(): void {
     // prevent memory leak when component destroyed
     this.unsubscribe$.next();
