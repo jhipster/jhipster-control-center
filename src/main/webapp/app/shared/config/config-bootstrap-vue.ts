@@ -22,6 +22,7 @@ import {
   BLink,
   BAlert,
   BModal,
+  BSidebar,
   VBModal,
   VBToggle,
   BFormSelect,
@@ -30,8 +31,6 @@ import {
   BRow,
   BCol
 } from 'bootstrap-vue';
-
-import { BSidebar } from 'bootstrap-vue/esm';
 
 export function initBootstrapVue(vue) {
   vue.component('b-badge', BBadge);
