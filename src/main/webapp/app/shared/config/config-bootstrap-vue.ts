@@ -1,6 +1,4 @@
 import {
-  BCol,
-  BRow,
   BForm,
   BFormInput,
   BFormCheckbox,
@@ -25,7 +23,6 @@ import {
   BAlert,
   BModal,
   VBModal,
-  BSidebar,
   VBToggle,
   BFormSelect,
   BCard,
@@ -34,9 +31,9 @@ import {
   BCol
 } from 'bootstrap-vue';
 
+import { BSidebar } from 'bootstrap-vue/esm';
+
 export function initBootstrapVue(vue) {
-  vue.component('b-col', BCol);
-  vue.component('b-row', BRow);
   vue.component('b-badge', BBadge);
   vue.component('b-dropdown', BDropdown);
   vue.component('b-dropdown-item', BDropdownItem);
