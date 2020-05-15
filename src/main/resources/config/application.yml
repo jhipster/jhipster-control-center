@@ -101,9 +101,6 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
-    gateway:
-      default-filters:
-        - JWTRelay
 
 server:
   servlet:

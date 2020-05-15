@@ -65,51 +65,6 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
-  /* Modal dialog */
-  public confirmShutdown(instance: Instance): void {
-    const config = {
-      title: 'Please Confirm',
-      size: 'sm',
-      buttonSize: 'sm',
-      okVariant: 'danger',
-      okTitle: 'YES',
-      cancelTitle: 'NO',
-      footerClass: 'p-2',
-      hideHeaderClose: false,
-      centered: true
-    };
-    this.$bvModal
-      .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
-      .then(res => {
-        if (res) {
-          this.shutdownInstance(instance);
-        }
-      })
-      .catch(err => console.warn(err));
-  }
-
-  /* shutdown an instance */
-  public shutdownInstance(instance: Instance): void {
-    this.instanceService()
-      .shutdownInstance(instance)
-      .then(() => {
-        return this.$bvToast.toast('Instance shutdown successful', {
-          title: 'Success',
-          variant: 'success',
-          solid: true,
-          autoHideDelay: 5000
-        });
-      })
-      .catch(err => {
-        return this.$bvToast.toast(`${err}`, {
-          title: `Error`,
-          variant: 'danger',
-          solid: true,
-          autoHideDelay: 5000
-        });
-      });
-  }
-
   /* istanbul ignore next */
   beforeDestroy(): any {
     // prevent memory leak when component destroyed

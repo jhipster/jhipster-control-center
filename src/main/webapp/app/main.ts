@@ -25,7 +25,6 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
 import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 
 /* tslint:disable */
 
@@ -37,8 +36,6 @@ config.initVueApp(Vue);
 config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);
 Vue.use(Vue2Filters);
-Vue.use(ToastPlugin);
-Vue.use(ModalPlugin);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);

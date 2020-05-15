@@ -4,8 +4,7 @@ import axios from 'axios';
 
 const mockedAxios: any = axios;
 jest.mock('axios', () => ({
-  get: jest.fn(),
-  post: jest.fn()
+  get: jest.fn()
 }));
 
 const data: Array<any> = [
@@ -92,16 +91,5 @@ describe('Instance Service', () => {
 
     await expect(instanceService.findActiveProfiles(route)).rejects.toEqual(error);
     expect(mockedAxios.get).toHaveBeenCalledWith('gateway/test/test-id/management/info');
-  });
-
-  it('should make a post request to the shutdown actuator endpoint', async () => {
-    const instance = data[0];
-    const returnValue = {
-      message: 'Shutting down, bye...'
-    };
-    mockedAxios.post.mockReturnValue(Promise.resolve(returnValue));
-
-    await expect(instanceService.shutdownInstance(instance)).resolves.toEqual(returnValue);
-    expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1-id/management/shutdown');
   });
 });

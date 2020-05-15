@@ -55,7 +55,6 @@ export function initBootstrapVue(vue) {
   vue.component('b-nav-item', BNavItem);
   vue.component('b-nav-item-dropdown', BNavItemDropdown);
   vue.component('b-modal', BModal);
-  vue.component('b-button', BButton);
   vue.directive('b-modal', VBModal);
   vue.directive('bToggle', VBToggle);
   vue.component('b-sidebar', BSidebar);
