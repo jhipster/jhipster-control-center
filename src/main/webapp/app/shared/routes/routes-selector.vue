@@ -12,9 +12,6 @@
                 </button>
             </div>
         </b-dropdown>
-
-        <refresh-selector class="ml-2"></refresh-selector>
-
         <p v-if="updatingRoutes && (!routes || routes.length === 0)">Loading...</p>
     </b-row>
 </template>
