@@ -21,7 +21,8 @@ localVue.use(BootstrapVue);
 const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
-  get: jest.fn()
+  get: jest.fn(),
+  post: jest.fn()
 }));
 
 const stubbedModal = {
@@ -141,6 +142,70 @@ describe('Instance Component', () => {
       // THEN
       expect(spy).toHaveBeenCalled();
       spy.mockRestore();
+    });
+  });
+
+  describe('should kill the selected instance', () => {
+    it('should show confirm dialog', async () => {
+      // GIVEN
+      const spy = jest.spyOn(instance, 'confirmShutdown');
+      const inst: Instance = new class implements Instance {
+        serviceId: string;
+        instanceId: string;
+        uri: string;
+        host: string;
+        port: number;
+        secure: boolean;
+        metadata: Metadata;
+      }();
+      inst.serviceId = 'app1';
+      inst.instanceId = 'app1-id';
+      inst.uri = 'http://127.0.0.01:8080';
+      inst.host = '127.0.0.1';
+      inst.port = 8080;
+      inst.secure = false;
+      inst.metadata = {};
+      const uri = 'http://127.0.0.01:8080';
+      instance.instancesRoute = [
+        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+      ];
+      // WHEN
+      instance.confirmShutdown(inst);
+      await instance.$nextTick();
+      // THEN
+      expect(spy).toBeCalledWith(inst);
+      spy.mockRestore();
+    });
+
+    it('should fire a post request ', async () => {
+      mockedAxios.post.mockReturnValue(Promise.resolve({}));
+      const inst: Instance = new class implements Instance {
+        serviceId: string;
+        instanceId: string;
+        uri: string;
+        host: string;
+        port: number;
+        secure: boolean;
+        metadata: Metadata;
+      }();
+      inst.serviceId = 'app1';
+      inst.instanceId = 'app1-id';
+      inst.uri = 'http://127.0.0.01:8080';
+      inst.host = '127.0.0.1';
+      inst.port = 8080;
+      inst.secure = false;
+      inst.metadata = {};
+      const uri = 'http://127.0.0.01:8080';
+      instance.instancesRoute = [
+        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+      ];
+
+      instance.shutdownInstance(inst);
+      await instance.$nextTick();
+
+      expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1-id/management/shutdown');
     });
   });
 });
