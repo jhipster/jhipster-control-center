@@ -8,8 +8,8 @@ export default class VueSidebarMenu extends Vue {
 
   created() {}
 
-  public hasAnyAuthority(authorities: any): boolean {
-    return this.accountService().hasAnyAuthority(authorities);
+  public hasAnyAuthority(authorities: any): Promise<boolean> {
+    return this.accountService().hasAnyAuthorityAndCheckAuth(authorities);
   }
 
   public get swaggerEnabled(): boolean {

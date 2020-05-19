@@ -14,7 +14,7 @@ localVue.component('b-nav-item', {});
 describe('JhiSidebar', () => {
   let jhiSidebar: JhiSidebarClass;
   let wrapper: Wrapper<JhiSidebarClass>;
-  const accountService = { hasAnyAuthority: jest.fn() };
+  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn() };
 
   beforeEach(() => {
     wrapper = shallowMount<JhiSidebarClass>(JhiSidebar, {
@@ -22,8 +22,8 @@ describe('JhiSidebar', () => {
       router,
       localVue,
       provide: {
-        accountService: () => accountService
-      }
+        accountService: () => accountService,
+      },
     });
     jhiSidebar = wrapper.vm;
   });
@@ -45,6 +45,6 @@ describe('JhiSidebar', () => {
   it('should use account service', () => {
     jhiSidebar.hasAnyAuthority('auth');
 
-    expect(accountService.hasAnyAuthority).toHaveBeenCalled();
+    expect(accountService.hasAnyAuthorityAndCheckAuth).toHaveBeenCalled();
   });
 });

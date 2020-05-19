@@ -22,18 +22,18 @@ const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 
 const stubbedModal = {
   template: '<div></div>',
   methods: {
-    show() {}
-  }
+    show() {},
+  },
 };
 
 const RefreshSelectorMixin = {
-  inject: ['refreshService']
+  inject: ['refreshService'],
 };
 
 describe('Instance Component', () => {
@@ -44,14 +44,13 @@ describe('Instance Component', () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = mount<InstanceClass>(InstanceVue, {
       localVue,
-      mixins: [RefreshSelectorMixin],
       stubs: {
-        bModal: stubbedModal
+        bModal: stubbedModal,
       },
       provide: {
         instanceService: () => new InstanceService(),
-        refreshService: () => new RefreshService(store)
-      }
+        refreshService: () => new RefreshService(store),
+      },
     });
     instance = wrapper.vm;
   });
@@ -114,7 +113,7 @@ describe('Instance Component', () => {
     it('should show selected instance', async () => {
       // GIVEN
       const spy = jest.spyOn(instance, 'showInstance');
-      const inst: Instance = new class implements Instance {
+      const inst: Instance = new (class implements Instance {
         serviceId: string;
         instanceId: string;
         uri: string;
@@ -122,7 +121,7 @@ describe('Instance Component', () => {
         port: number;
         secure: boolean;
         metadata: Metadata;
-      }();
+      })();
       inst.serviceId = 'app1';
       inst.instanceId = 'app1-id';
       inst.uri = 'http://127.0.0.01:8080';
@@ -133,7 +132,7 @@ describe('Instance Component', () => {
       const uri = 'http://127.0.0.01:8080';
       instance.instancesRoute = [
         { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
       ];
 
       // WHEN
@@ -149,7 +148,7 @@ describe('Instance Component', () => {
     it('should show confirm dialog', async () => {
       // GIVEN
       const spy = jest.spyOn(instance, 'confirmShutdown');
-      const inst: Instance = new class implements Instance {
+      const inst: Instance = new (class implements Instance {
         serviceId: string;
         instanceId: string;
         uri: string;
@@ -157,7 +156,7 @@ describe('Instance Component', () => {
         port: number;
         secure: boolean;
         metadata: Metadata;
-      }();
+      })();
       inst.serviceId = 'app1';
       inst.instanceId = 'app1-id';
       inst.uri = 'http://127.0.0.01:8080';
@@ -168,7 +167,7 @@ describe('Instance Component', () => {
       const uri = 'http://127.0.0.01:8080';
       instance.instancesRoute = [
         { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
       ];
       // WHEN
       instance.confirmShutdown(inst);
@@ -180,7 +179,7 @@ describe('Instance Component', () => {
 
     it('should fire a post request ', async () => {
       mockedAxios.post.mockReturnValue(Promise.resolve({}));
-      const inst: Instance = new class implements Instance {
+      const inst: Instance = new (class implements Instance {
         serviceId: string;
         instanceId: string;
         uri: string;
@@ -188,7 +187,7 @@ describe('Instance Component', () => {
         port: number;
         secure: boolean;
         metadata: Metadata;
-      }();
+      })();
       inst.serviceId = 'app1';
       inst.instanceId = 'app1-id';
       inst.uri = 'http://127.0.0.01:8080';
@@ -199,7 +198,7 @@ describe('Instance Component', () => {
       const uri = 'http://127.0.0.01:8080';
       instance.instancesRoute = [
         { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' }
+        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
       ];
 
       instance.shutdownInstance(inst);
