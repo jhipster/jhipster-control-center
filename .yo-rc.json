@@ -8,7 +8,7 @@
     "baseName": "jhipsterControlCenter",
     "packageName": "tech.jhipster.controlcenter",
     "packageFolder": "tech/jhipster/controlcenter",
-    "serverPort": "1337",
+    "serverPort": "7419",
     "authenticationType": "jwt",
     "cacheProvider": "no",
     "enableHibernateCache": false,

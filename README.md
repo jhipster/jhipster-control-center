@@ -15,10 +15,10 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 ### Control Center API
 
-- `localhost:1337/api/services/instances`: get registered instances
-- `localhost:1337/management/gateway/routes`: get Spring Cloud Gateway routes
-- `localhost:1337/gateway/<serviceName>/<instanceName>/<urlPath>`: proxy request to `instanceName`'s urlPath.
-  For example, when using Eureka, it would look like: `localhost:1337/gateway/eurekaservice1/eurekaservice1:3d38fb89771e502111b495064d739ef8/management/info`
+- `localhost:7419/api/services/instances`: get registered instances
+- `localhost:7419/management/gateway/routes`: get Spring Cloud Gateway routes
+- `localhost:7419/gateway/<serviceName>/<instanceName>/<urlPath>`: proxy request to `instanceName`'s urlPath.
+  For example, when using Eureka, it would look like: `localhost:7419/gateway/eurekaservice1/eurekaservice1:3d38fb89771e502111b495064d739ef8/management/info`
 
 ## Development
 
@@ -114,7 +114,7 @@ To ensure everything worked, run:
 
     java -jar target/*.jar
 
-Then navigate to [http://localhost:1337](http://localhost:1337) in your browser.
+Then navigate to [http://localhost:7419](http://localhost:7419) in your browser.
 
 Refer to [Using JHipster in production][] for more details.
 

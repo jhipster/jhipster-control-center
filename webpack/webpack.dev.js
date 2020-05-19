@@ -34,7 +34,7 @@ module.exports = merge(baseWebpackConfig, {
     proxy: [
       {
         context: ['/api', '/services', '/management', '/gateway', '/swagger-resources', '/v2/api-docs', '/h2-console', '/auth'],
-        target: 'http://127.0.0.1:1337',
+        target: 'http://127.0.0.1:7419',
         secure: false,
         headers: { host: 'localhost:9000' }
       }
