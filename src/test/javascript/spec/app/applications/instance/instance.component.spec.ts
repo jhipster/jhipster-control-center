@@ -55,10 +55,6 @@ describe('Instance Component', () => {
     instance = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('should refresh list of instance data', () => {
     it('should call refreshInstancesData on init', async () => {
       // GIVEN

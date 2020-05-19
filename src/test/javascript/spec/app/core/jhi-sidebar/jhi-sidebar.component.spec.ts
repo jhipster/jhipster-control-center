@@ -28,10 +28,6 @@ describe('JhiSidebar', () => {
     jhiSidebar = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   it('should not have user data set', () => {
     expect(jhiSidebar.swaggerEnabled).toBeFalsy();
   });

@@ -16,7 +16,12 @@ localVue.component('b-nav-item', {});
 localVue.component('b-nav-item-dropdown', {});
 localVue.component('b-navbar-toggle', {});
 localVue.component('b-navbar-brand', {});
-localVue.component('b-navbar-nav', {});
+
+// jhcc-custom
+localVue.directive('bToggle', {});
+localVue.component('b-col', {});
+localVue.component('b-row', {});
+localVue.component('b-button', {});
 
 describe('JhiNavbar', () => {
   let jhiNavbar: JhiNavbarClass;

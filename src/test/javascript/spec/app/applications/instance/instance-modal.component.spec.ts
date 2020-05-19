@@ -15,7 +15,7 @@ const app = {
   host: '127.0.0.1',
   port: 8080,
   secure: false,
-  metadata: {}
+  metadata: {},
 };
 
 describe('Instance Modal Component', () => {
@@ -26,18 +26,14 @@ describe('Instance Modal Component', () => {
     wrapper = shallowMount<InstanceModalClass>(InstanceModal, {
       propsData: {
         selectedInstance: app,
-        selectedInstanceRoute: {}
+        selectedInstanceRoute: {},
       },
       localVue,
       provide: {
-        instanceService: () => mockedInstanceService
-      }
+        instanceService: () => mockedInstanceService,
+      },
     });
     instanceModal = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   describe('active profiles', () => {
