@@ -85,15 +85,21 @@ public class SecurityConfiguration {
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
+            // jhcc-custom : need to be deleted -- begin
             .pathMatchers("/api/authenticate").permitAll()
             .pathMatchers("/api/**").permitAll()
             .pathMatchers("/swagger-resources/**").permitAll()
             .pathMatchers("/v2/api-docs").permitAll()
             .pathMatchers("/gateway/**").permitAll()
+            // jhcc-custom : need to be deleted -- end
+            // .pathMatchers("/api/**").authenticated()
+            // .pathMatchers("/services/**", "/swagger-resources/**", "/v2/api-docs").authenticated()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
+            // jhcc-custom : need to be deleted
             .pathMatchers("/management/**").permitAll();
+        // .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // @formatter:on
         return http.build();
     }

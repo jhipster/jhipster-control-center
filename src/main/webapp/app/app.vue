@@ -1,3 +1,4 @@
+<!-- jhcc-custom begin -->
 <template>
   <div id="app">
     <ribbon></ribbon>
@@ -24,3 +25,4 @@
 
 <script lang="ts" src="./app.component.ts">
 </script>
+<!-- jhcc-custom end -->
