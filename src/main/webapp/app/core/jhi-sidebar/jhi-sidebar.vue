@@ -30,7 +30,7 @@
             <font-awesome-icon icon="list" />
             <span>Configuration</span>
           </b-nav-item>
-          <b-nav-item to="/admin/logs">
+          <b-nav-item to="/applications/loggers">
             <font-awesome-icon icon="tasks" />
             <span>Logs</span>
           </b-nav-item>

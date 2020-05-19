@@ -23,6 +23,8 @@ import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
+import RoutesService from '@/shared/routes/routes.service';
+import LoggersService from '@/applications/loggers/loggers.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 
 /* tslint:disable */
@@ -48,6 +50,7 @@ const alertService = new AlertService(store);
 const loginService = new LoginService();
 const accountService = new AccountService(store, router);
 const refreshService = new RefreshService(store);
+const routesService = new RoutesService(store);
 
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
@@ -86,7 +89,9 @@ new Vue({
     accountService: () => accountService,
 
     instanceService: () => new InstanceService(),
-    refreshService: () => refreshService
+    refreshService: () => refreshService,
+    routesService: () => routesService,
+    loggersService: () => new LoggersService()
   },
   store
 });
