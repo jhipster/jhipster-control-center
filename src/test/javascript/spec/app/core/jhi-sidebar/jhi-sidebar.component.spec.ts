@@ -7,6 +7,7 @@ import router from '@/router';
 const localVue = createLocalVue();
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
+localVue.component('font-awesome-icon', {});
 localVue.component('b-sidebar', {});
 localVue.component('b-nav', {});
 localVue.component('b-nav-item', {});
@@ -14,7 +15,7 @@ localVue.component('b-nav-item', {});
 describe('JhiSidebar', () => {
   let jhiSidebar: JhiSidebarClass;
   let wrapper: Wrapper<JhiSidebarClass>;
-  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn() };
+  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
 
   beforeEach(() => {
     wrapper = shallowMount<JhiSidebarClass>(JhiSidebar, {
