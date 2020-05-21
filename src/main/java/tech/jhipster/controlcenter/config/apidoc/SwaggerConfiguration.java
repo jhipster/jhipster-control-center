@@ -19,6 +19,7 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 
 /**
+ * jhcc-custom
  * Retrieves all registered microservices Swagger resources.
  */
 @Component

@@ -18,7 +18,7 @@ const jhcc_route = {
   serviceId: 'JHIPSTER-CONTROL-CENTER',
   instanceId: 'JHIPSTER-CONTROL-CENTER',
   instanceUri: '',
-  order: 0
+  order: 0,
 } as Route;
 
 const service_test_route = {
@@ -28,7 +28,7 @@ const service_test_route = {
   serviceId: 'service-test',
   instanceId: 'service-test-instance',
   instanceUri: '',
-  order: 0
+  order: 0,
 } as Route;
 
 const routes: Route[] = [jhcc_route, service_test_route];
@@ -43,14 +43,10 @@ describe('Routes Component', () => {
       localVue,
       provide: {
         routesService: () => new RoutesService(store),
-        refreshService: () => new RefreshService(store)
-      }
+        refreshService: () => new RefreshService(store),
+      },
     });
     routesSelectorComponent = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   it('should set active route', () => {

@@ -3,12 +3,10 @@ import {
   BFormInput,
   BFormCheckbox,
   BFormGroup,
-  BImg,
   BProgress,
   BProgressBar,
   BPagination,
   BButton,
-  BNav,
   BNavbar,
   BNavbarNav,
   BNavbarBrand,
@@ -22,14 +20,18 @@ import {
   BLink,
   BAlert,
   BModal,
-  BSidebar,
   VBModal,
+  // jhcc-custom begin
+  BImg,
+  BNav,
+  BSidebar,
   VBToggle,
   BFormSelect,
   BCard,
   BContainer,
   BRow,
-  BCol
+  BCol,
+  // jhcc-custom end
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -55,8 +57,10 @@ export function initBootstrapVue(vue) {
   vue.component('b-nav-item', BNavItem);
   vue.component('b-nav-item-dropdown', BNavItemDropdown);
   vue.component('b-modal', BModal);
-  vue.component('b-button', BButton);
   vue.directive('b-modal', VBModal);
+
+  // jhcc-custom begin
+  vue.component('b-button', BButton);
   vue.directive('bToggle', VBToggle);
   vue.component('b-sidebar', BSidebar);
   vue.component('b-img', BImg);
@@ -66,4 +70,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-container', BContainer);
   vue.component('b-row', BRow);
   vue.component('b-col', BCol);
+  // jhcc-custom end
 }

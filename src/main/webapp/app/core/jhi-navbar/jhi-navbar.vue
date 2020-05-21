@@ -1,3 +1,4 @@
+<!-- jhcc-custom begin -->
 <template>
   <b-navbar toggleable="md" type="dark" class="bg-primary">
     <b-row>
@@ -210,3 +211,4 @@ Navbar
   filter: drop-shadow(0 0 0.05rem white);
 }
 </style>
+<!-- jhcc-custom end -->

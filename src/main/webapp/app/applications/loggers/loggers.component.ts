@@ -1,5 +1,4 @@
-import { Component, Inject } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import LoggersService, { Level, Log } from './loggers.service';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
@@ -10,10 +9,11 @@ import { Subject } from 'rxjs';
 
 @Component({
   components: {
-    'routes-selector': RoutesSelectorVue
-  }
+    'routes-selector': RoutesSelectorVue,
+  },
+  mixins: [Vue2Filters.mixin],
 })
-export default class JhiLoggers extends mixins(Vue2Filters.mixin) {
+export default class JhiLoggers extends Vue {
   private loggers: Log[] = [];
   public filtered = '';
   public orderProp = 'name';

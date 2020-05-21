@@ -19,14 +19,10 @@ describe('Refresh', () => {
       store,
       localVue,
       provide: {
-        refreshService: () => new RefreshService(store)
-      }
+        refreshService: () => new RefreshService(store),
+      },
     });
     refreshSelectorMixin = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   it('should refresh manually refresh subject', async () => {

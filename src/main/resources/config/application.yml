@@ -19,6 +19,7 @@ management:
     web:
       base-path: /management
       exposure:
+        # jhcc-custom
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'gateway', 'service-registry']
   endpoint:
     health:
@@ -94,7 +95,7 @@ spring:
   output:
     ansi:
       console-available: true
-  # Control Center specific config
+  # jhcc-custom
   cloud:
     consul:
       enabled: false
@@ -147,7 +148,7 @@ jhipster:
     license:
     license-url:
 
-# Control Center specific config
+# jhcc-custom
 eureka:
   client:
     enabled: false
