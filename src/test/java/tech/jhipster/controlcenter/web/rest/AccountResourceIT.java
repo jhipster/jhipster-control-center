@@ -2,6 +2,7 @@ package tech.jhipster.controlcenter.web.rest;
 
 import static tech.jhipster.controlcenter.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;

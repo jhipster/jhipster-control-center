@@ -1,3 +1,4 @@
+<!-- jhcc-custom begin -->
 <template>
     <div>
         <h1 class="display-4">Welcome, Java Hipster!</h1>
@@ -35,3 +36,4 @@
 
 <script lang="ts" src="./home.component.ts">
 </script>
+<!-- jhcc-custom end -->

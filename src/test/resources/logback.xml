@@ -31,6 +31,7 @@
     <logger name="springfox" level="WARN"/>
     <logger name="sun.rmi" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
+    <logger name="com.tngtech.archunit.core.importer" level="ERROR"/>
 
     <root>
         <level>WARN</level>

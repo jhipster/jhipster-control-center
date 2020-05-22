@@ -21,12 +21,15 @@ import AccountService from './account/account.service';
 import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
+
+// jhcc-custom begin
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
 import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
 import MetricService from '@/applications/metric/metric.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
+// jhcc-custom end
 
 /* tslint:disable */
 
@@ -38,8 +41,10 @@ config.initVueApp(Vue);
 config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);
 Vue.use(Vue2Filters);
+// jhcc-custom begin
 Vue.use(ToastPlugin);
 Vue.use(ModalPlugin);
+// jhcc-custom end
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
@@ -50,21 +55,24 @@ const store = config.initVueXStore(Vue);
 const alertService = new AlertService(store);
 const loginService = new LoginService();
 const accountService = new AccountService(store, router);
+// jhcc-custom begin
 const refreshService = new RefreshService(store);
 const routesService = new RoutesService(store);
-
+// jhcc-custom end
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
     next('/not-found');
   }
 
   if (to.meta && to.meta.authorities && to.meta.authorities.length > 0) {
-    if (!accountService.hasAnyAuthority(to.meta.authorities)) {
-      sessionStorage.setItem('requested-url', to.fullPath);
-      next('/forbidden');
-    } else {
-      next();
-    }
+    accountService.hasAnyAuthorityAndCheckAuth(to.meta.authorities).then(value => {
+      if (!value) {
+        sessionStorage.setItem('requested-url', to.fullPath);
+        next('/forbidden');
+      } else {
+        next();
+      }
+    });
   } else {
     // no authorities, so just proceed
     next();
@@ -89,11 +97,13 @@ new Vue({
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
 
+    // jhcc-custom begin
     instanceService: () => new InstanceService(),
     refreshService: () => refreshService,
     routesService: () => routesService,
     loggersService: () => new LoggersService(),
-    metricService: () => new MetricService()
+    metricService: () => new MetricService(),
+    // jhcc-custom end
   },
-  store
+  store,
 });

@@ -6,10 +6,17 @@ export default class VueSidebarMenu extends Vue {
   @Inject('accountService')
   private accountService: () => AccountService;
 
+  private hasAnyAuthorityValue = false;
+
   created() {}
 
   public hasAnyAuthority(authorities: any): boolean {
-    return this.accountService().hasAnyAuthority(authorities);
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        this.hasAnyAuthorityValue = value;
+      });
+    return this.hasAnyAuthorityValue;
   }
 
   public get swaggerEnabled(): boolean {

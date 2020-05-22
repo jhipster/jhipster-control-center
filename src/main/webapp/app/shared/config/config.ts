@@ -9,6 +9,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { faBell } from '@fortawesome/free-solid-svg-icons/faBell';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
 import { faCloud } from '@fortawesome/free-solid-svg-icons/faCloud';
+import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faFlag } from '@fortawesome/free-solid-svg-icons/faFlag';
 import { faHdd } from '@fortawesome/free-solid-svg-icons/faHdd';
@@ -36,13 +37,14 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
+// jhcc-custom begin
 import { faSitemap } from '@fortawesome/free-solid-svg-icons/faSitemap';
 import { faCube } from '@fortawesome/free-solid-svg-icons/faCube';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons/faChartLine';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
-import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
+// jhcc-custom end
 
 import VueCookie from 'vue-cookie';
 import Vuelidate from 'vuelidate';
@@ -51,8 +53,10 @@ import Vue2Filters from 'vue2-filters';
 import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { alertStore } from '@/shared/config/store/alert-store';
+// jhcc-custom begin
 import { refreshStore } from '@/shared/config/store/refresh-store';
 import { routesStore } from '@/shared/config/store/routes-store';
+// jhcc-custom end
 
 export function initVueApp(vue) {
   vue.use(VueCookie);
@@ -65,14 +69,13 @@ export function initVueApp(vue) {
 export function initFortAwesome(vue) {
   library.add(
     faArrowLeft,
-    faAngleDoubleLeft,
     faAsterisk,
     faBan,
     faBars,
     faBell,
     faBook,
     faCloud,
-    faChartLine,
+    faCogs,
     faEye,
     faFlag,
     faHdd,
@@ -100,11 +103,15 @@ export function initFortAwesome(vue) {
     faUser,
     faUserPlus,
     faWrench,
+    // jhcc-custom begin
+    faAngleDoubleLeft,
+    faChartLine,
+    faWrench,
     faSitemap,
     faCube,
-    faCogs,
     faEllipsisV,
     faPowerOff
+    // jhcc-custom end
   );
 }
 
@@ -114,8 +121,10 @@ export function initVueXStore(vue) {
     modules: {
       accountStore,
       alertStore,
+      // jhcc-custom begin
       refreshStore,
-      routesStore
-    }
+      routesStore,
+      // jhcc-custom end
+    },
   });
 }
