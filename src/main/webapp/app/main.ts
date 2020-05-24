@@ -25,6 +25,7 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
 import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
+import InstanceHealthService from '@/applications/health/health.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 
 /* tslint:disable */
@@ -91,7 +92,8 @@ new Vue({
     instanceService: () => new InstanceService(),
     refreshService: () => refreshService,
     routesService: () => routesService,
-    loggersService: () => new LoggersService()
+    loggersService: () => new LoggersService(),
+    instanceHealthService: () => new InstanceHealthService()
   },
   store
 });
