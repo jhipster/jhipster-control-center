@@ -53,10 +53,6 @@ describe('Loggers Component', () => {
     loggers = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('when component is mounted', () => {
     it('should set all default values correctly', () => {
       expect(loggers.filtered).toBe('');

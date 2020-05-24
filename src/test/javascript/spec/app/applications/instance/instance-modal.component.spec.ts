@@ -36,10 +36,6 @@ describe('Instance Modal Component', () => {
     instanceModal = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('active profiles', () => {
     it('should refresh profile', async () => {
       // GIVEN

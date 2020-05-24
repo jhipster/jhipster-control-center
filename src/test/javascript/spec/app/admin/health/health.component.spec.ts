@@ -41,10 +41,6 @@ describe('Health Component', () => {
     health = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('baseName and subSystemName', () => {
     it('should return the basename when it has no sub system', () => {
       expect(health.baseName('base')).toBe('base');
@@ -83,6 +79,7 @@ describe('Health Component', () => {
 
       // THEN
       expect(mockedAxios.get).toHaveBeenCalledWith('management/health');
+      await health.$nextTick();
       expect(health.updatingHealth).toEqual(false);
     });
     it('should handle a 503 on refreshing health data', async () => {
@@ -95,6 +92,7 @@ describe('Health Component', () => {
 
       // THEN
       expect(mockedAxios.get).toHaveBeenCalledWith('management/health');
+      await health.$nextTick();
       expect(health.updatingHealth).toEqual(false);
     });
   });

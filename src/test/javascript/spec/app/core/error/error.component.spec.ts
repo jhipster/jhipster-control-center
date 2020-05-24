@@ -28,10 +28,6 @@ describe('Error component', () => {
     error = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   it('should have retrieve custom error on routing', () => {
     error.beforeRouteEnter({ meta: { errorMessage: customErrorMsg } }, null, cb => cb(error));
 

@@ -7,6 +7,7 @@ import router from '@/router';
 const localVue = createLocalVue();
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
+localVue.component('font-awesome-icon', {});
 localVue.component('b-sidebar', {});
 localVue.component('b-nav', {});
 localVue.component('b-nav-item', {});
@@ -14,7 +15,7 @@ localVue.component('b-nav-item', {});
 describe('JhiSidebar', () => {
   let jhiSidebar: JhiSidebarClass;
   let wrapper: Wrapper<JhiSidebarClass>;
-  const accountService = { hasAnyAuthority: jest.fn() };
+  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
 
   beforeEach(() => {
     wrapper = shallowMount<JhiSidebarClass>(JhiSidebar, {
@@ -26,10 +27,6 @@ describe('JhiSidebar', () => {
       }
     });
     jhiSidebar = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   it('should not have user data set', () => {
@@ -45,6 +42,6 @@ describe('JhiSidebar', () => {
   it('should use account service', () => {
     jhiSidebar.hasAnyAuthority('auth');
 
-    expect(accountService.hasAnyAuthority).toHaveBeenCalled();
+    expect(accountService.hasAnyAuthorityAndCheckAuth).toHaveBeenCalled();
   });
 });

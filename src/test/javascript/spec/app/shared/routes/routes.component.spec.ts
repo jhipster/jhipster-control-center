@@ -49,10 +49,6 @@ describe('Routes Component', () => {
     routesSelectorComponent = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   it('should set active route', () => {
     routesSelectorComponent.routes = routes;
 

@@ -26,10 +26,6 @@ describe('Health Modal Component', () => {
     healthModal = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('baseName and subSystemName', () => {
     it('should use healthService', () => {
       healthModal.baseName('base');
@@ -74,10 +70,6 @@ describe('Health Modal Component for diskSpace', () => {
       }
     });
     healthModal = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   describe('readableValue should transform data', () => {

@@ -5,14 +5,14 @@ import RoutesService, { Route } from './routes.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Vue2Filters from 'vue2-filters';
-import { mixins } from 'vue-class-component';
 
 @Component({
   components: {
     'refresh-selector': RefreshSelectorVue
-  }
+  },
+  mixins: [Vue2Filters.mixin]
 })
-export default class RoutesSelectorComponent extends mixins(Vue2Filters.mixin) {
+export default class RoutesSelectorComponent extends Vue {
   // htmlActiveRoute allow us to update dynamically route button content html
   htmlActiveRoute = '';
   activeRoute?: Route;

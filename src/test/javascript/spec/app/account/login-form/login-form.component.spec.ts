@@ -44,10 +44,6 @@ describe('LoginForm Component', () => {
     loginForm = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   it('should not store token if authentication is KO', async () => {
     // GIVEN
     loginForm.login = 'login';
@@ -65,7 +61,7 @@ describe('LoginForm Component', () => {
       password: 'pwd',
       rememberMe: true
     });
-
+    await loginForm.$nextTick();
     expect(loginForm.authenticationError).toBeTruthy();
   });
 
@@ -90,5 +86,28 @@ describe('LoginForm Component', () => {
 
     expect(loginForm.authenticationError).toBeFalsy();
     expect(localStorage.getItem('jhi-authenticationToken')).toEqual(jwtSecret);
+  });
+
+  it('should store token if authentication is OK in session', async () => {
+    // GIVEN
+    loginForm.login = 'login';
+    loginForm.password = 'pwd';
+    loginForm.rememberMe = false;
+    const jwtSecret = 'jwt-secret';
+    mockedAxios.post.mockReturnValue(Promise.resolve({ headers: { authorization: 'Bearer ' + jwtSecret } }));
+
+    // WHEN
+    loginForm.doLogin();
+    await loginForm.$nextTick();
+
+    // THEN
+    expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
+      username: 'login',
+      password: 'pwd',
+      rememberMe: false
+    });
+
+    expect(loginForm.authenticationError).toBeFalsy();
+    expect(sessionStorage.getItem('jhi-authenticationToken')).toEqual(jwtSecret);
   });
 });

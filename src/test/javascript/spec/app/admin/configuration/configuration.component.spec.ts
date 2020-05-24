@@ -24,7 +24,10 @@ describe('Configuration Component', () => {
     mockedAxios.get.mockReset();
     mockedAxios.get.mockReturnValue(
       Promise.resolve({
-        data: { contexts: [{ beans: [{ prefix: 'A' }, { prefix: 'B' }] }], propertySources: [{ properties: { key1: { value: 'value' } } }] }
+        data: {
+          contexts: [{ beans: [{ prefix: 'A' }, { prefix: 'B' }] }],
+          propertySources: [{ properties: { key1: { value: 'value' } } }]
+        }
       })
     );
     wrapper = shallowMount<ConfigurationClass>(Configuration, {
@@ -33,10 +36,6 @@ describe('Configuration Component', () => {
       provide: { configurationService: () => new ConfigurationService() }
     });
     configuration = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   describe('OnRouteEnter', () => {
@@ -56,6 +55,7 @@ describe('Configuration Component', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith('management/configprops');
     });
   });
+
   describe('keys method', () => {
     it('should return the keys of an Object', () => {
       // GIVEN
@@ -67,6 +67,20 @@ describe('Configuration Component', () => {
       // THEN
       expect(configuration.keys(data)).toEqual(['key1', 'key2']);
       expect(configuration.keys(undefined)).toEqual([]);
+    });
+  });
+
+  describe('changeOrder function', () => {
+    it('should change order', () => {
+      // GIVEN
+      const rev = configuration.reverse;
+
+      // WHEN
+      configuration.changeOrder('prefix');
+
+      // THEN
+      expect(configuration.orderProp).toBe('prefix');
+      expect(configuration.reverse).toBe(!rev);
     });
   });
 });

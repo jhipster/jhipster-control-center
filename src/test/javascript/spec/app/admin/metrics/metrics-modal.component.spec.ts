@@ -18,10 +18,6 @@ describe('Metrics Component', () => {
     metricsModal = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('init', () => {
     it('should count the numbers of each thread type', () => {
       wrapper.setProps({

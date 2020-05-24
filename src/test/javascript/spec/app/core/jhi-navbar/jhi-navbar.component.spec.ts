@@ -16,14 +16,18 @@ localVue.component('b-nav-item', {});
 localVue.component('b-nav-item-dropdown', {});
 localVue.component('b-navbar-toggle', {});
 localVue.component('b-navbar-brand', {});
-localVue.component('b-navbar-nav', {});
+
+// jhcc-custom
+localVue.directive('bToggle', {});
+localVue.component('b-col', {});
 localVue.component('b-row', {});
+localVue.component('b-button', {});
 
 describe('JhiNavbar', () => {
   let jhiNavbar: JhiNavbarClass;
   let wrapper: Wrapper<JhiNavbarClass>;
   const loginService = { openLogin: jest.fn() };
-  const accountService = { hasAnyAuthority: jest.fn() };
+  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
 
   beforeEach(() => {
     wrapper = shallowMount<JhiNavbarClass>(JhiNavbar, {
@@ -36,10 +40,6 @@ describe('JhiNavbar', () => {
       }
     });
     jhiNavbar = wrapper.vm;
-  });
-
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   it('should not have user data set', () => {
@@ -69,7 +69,7 @@ describe('JhiNavbar', () => {
   it('should use account service', () => {
     jhiNavbar.hasAnyAuthority('auth');
 
-    expect(accountService.hasAnyAuthority).toHaveBeenCalled();
+    expect(accountService.hasAnyAuthorityAndCheckAuth).toHaveBeenCalled();
   });
 
   it('logout should clear credentials', () => {

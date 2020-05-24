@@ -25,10 +25,6 @@ describe('Refresh', () => {
     refreshSelectorMixin = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   it('should refresh manually refresh subject', async () => {
     const spy = jest.spyOn(refreshSelectorMixin, 'manualRefresh');
     refreshSelectorMixin.manualRefresh();

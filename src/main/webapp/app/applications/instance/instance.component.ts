@@ -1,4 +1,4 @@
-import { Component, Inject, Mixins, Vue } from 'vue-property-decorator';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 import InstanceService, { Instance } from './instance.service';
 import InstanceModalVue from './instance-modal.vue';
 import { takeUntil } from 'rxjs/operators';
