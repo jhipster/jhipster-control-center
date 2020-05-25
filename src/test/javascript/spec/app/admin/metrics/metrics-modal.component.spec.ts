@@ -27,8 +27,8 @@ describe('Metrics Component', () => {
           { name: 'test3', threadState: 'TIMED_WAITING' },
           { name: 'test4', threadState: 'BLOCKED' },
           { name: 'test5', threadState: 'BLOCKED' },
-          { name: 'test5', threadState: 'NONE' }
-        ]
+          { name: 'test5', threadState: 'NONE' },
+        ],
       });
 
       expect(metricsModal.threadDumpData.threadDumpRunnable).toBe(1);

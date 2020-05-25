@@ -9,8 +9,8 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 @Component({
   components: {
     'instance-modal': InstanceModalVue,
-    'refresh-selector': RefreshSelectorVue
-  }
+    'refresh-selector': RefreshSelectorVue,
+  },
 })
 export default class JhiInstance extends Vue {
   public instances?: Array<Instance> = null;
@@ -76,7 +76,7 @@ export default class JhiInstance extends Vue {
       cancelTitle: 'NO',
       footerClass: 'p-2',
       hideHeaderClose: false,
-      centered: true
+      centered: true,
     };
     this.$bvModal
       .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
@@ -97,7 +97,7 @@ export default class JhiInstance extends Vue {
           title: 'Success',
           variant: 'success',
           solid: true,
-          autoHideDelay: 5000
+          autoHideDelay: 5000,
         });
       })
       .catch(err => {
@@ -105,7 +105,7 @@ export default class JhiInstance extends Vue {
           title: `Error`,
           variant: 'danger',
           solid: true,
-          autoHideDelay: 5000
+          autoHideDelay: 5000,
         });
       });
   }

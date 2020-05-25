@@ -13,7 +13,7 @@ config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
-  get: jest.fn()
+  get: jest.fn(),
 }));
 
 describe('Configuration Component', () => {
@@ -26,14 +26,14 @@ describe('Configuration Component', () => {
       Promise.resolve({
         data: {
           contexts: [{ beans: [{ prefix: 'A' }, { prefix: 'B' }] }],
-          propertySources: [{ properties: { key1: { value: 'value' } } }]
-        }
+          propertySources: [{ properties: { key1: { value: 'value' } } }],
+        },
       })
     );
     wrapper = shallowMount<ConfigurationClass>(Configuration, {
       store,
       localVue,
-      provide: { configurationService: () => new ConfigurationService() }
+      provide: { configurationService: () => new ConfigurationService() },
     });
     configuration = wrapper.vm;
   });
@@ -61,7 +61,7 @@ describe('Configuration Component', () => {
       // GIVEN
       const data = {
         key1: 'test',
-        key2: 'test2'
+        key2: 'test2',
       };
 
       // THEN

@@ -30,7 +30,7 @@ import {
   BCard,
   BContainer,
   BRow,
-  BCol
+  BCol,
   // jhcc-custom end
 } from 'bootstrap-vue';
 

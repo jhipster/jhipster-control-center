@@ -5,7 +5,7 @@ import axios from 'axios';
 const mockedAxios: any = axios;
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 
 const data: Array<any> = [
@@ -16,7 +16,7 @@ const data: Array<any> = [
     host: '127.0.0.1',
     port: 8080,
     secure: false,
-    metadata: {}
+    metadata: {},
   },
   {
     serviceId: 'app2',
@@ -25,8 +25,8 @@ const data: Array<any> = [
     host: '127.0.0.1',
     port: 8080,
     secure: false,
-    metadata: {}
-  }
+    metadata: {},
+  },
 ];
 
 describe('Instance Service', () => {
@@ -54,13 +54,13 @@ describe('Instance Service', () => {
       {
         route_id: 'app1:id',
         serviceId: 'app1',
-        otherData: 'test'
+        otherData: 'test',
       },
       {
         route_id: 'app2:id',
         serviceId: 'app2',
-        otherData: 'test'
-      }
+        otherData: 'test',
+      },
     ];
     mockedAxios.get.mockImplementationOnce(() => Promise.resolve(routes));
 
@@ -97,7 +97,7 @@ describe('Instance Service', () => {
   it('should make a post request to the shutdown actuator endpoint', async () => {
     const instance = data[0];
     const returnValue = {
-      message: 'Shutting down, bye...'
+      message: 'Shutting down, bye...',
     };
     mockedAxios.post.mockReturnValue(Promise.resolve(returnValue));
 

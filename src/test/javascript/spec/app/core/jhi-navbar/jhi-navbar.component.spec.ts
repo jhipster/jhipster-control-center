@@ -36,8 +36,8 @@ describe('JhiNavbar', () => {
       localVue,
       provide: {
         loginService: () => loginService,
-        accountService: () => accountService
-      }
+        accountService: () => accountService,
+      },
     });
     jhiNavbar = wrapper.vm;
   });

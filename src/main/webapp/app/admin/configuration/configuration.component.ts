@@ -3,7 +3,7 @@ import Vue2Filters from 'vue2-filters';
 import ConfigurationService from './configuration.service';
 
 @Component({
-  mixins: [Vue2Filters.mixin]
+  mixins: [Vue2Filters.mixin],
 })
 export default class JhiConfiguration extends Vue {
   public orderProp = 'prefix';

@@ -6,7 +6,7 @@ import { Authority } from '@/shared/security/authority';
 Component.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave',
-  'beforeRouteUpdate' // for vue-router 2.2+
+  'beforeRouteUpdate', // for vue-router 2.2+
 ]);
 const Home = () => import('../core/home/home.vue');
 const Error = () => import('../core/error/error.vue');

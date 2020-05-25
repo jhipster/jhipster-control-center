@@ -10,8 +10,8 @@ import InstanceHealthService from './health.service';
 @Component({
   components: {
     'health-modal': JhiHealthModal,
-    'routes-selector': RoutesSelectorVue
-  }
+    'routes-selector': RoutesSelectorVue,
+  },
 })
 export default class JhiInstanceHealth extends Vue {
   public healthData: any = null;

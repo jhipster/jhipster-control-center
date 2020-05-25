@@ -9,9 +9,9 @@ import { Subject } from 'rxjs';
 
 @Component({
   components: {
-    'routes-selector': RoutesSelectorVue
+    'routes-selector': RoutesSelectorVue,
   },
-  mixins: [Vue2Filters.mixin]
+  mixins: [Vue2Filters.mixin],
 })
 export default class JhiLoggers extends Vue {
   private loggers: Log[] = [];

@@ -8,9 +8,9 @@ import Vue2Filters from 'vue2-filters';
 
 @Component({
   components: {
-    'refresh-selector': RefreshSelectorVue
+    'refresh-selector': RefreshSelectorVue,
   },
-  mixins: [Vue2Filters.mixin]
+  mixins: [Vue2Filters.mixin],
 })
 export default class RoutesSelectorComponent extends Vue {
   // htmlActiveRoute allow us to update dynamically route button content html

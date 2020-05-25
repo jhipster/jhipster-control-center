@@ -3,7 +3,7 @@ import Vue2Filters from 'vue2-filters';
 import LogsService from './logs.service';
 
 @Component({
-  mixins: [Vue2Filters.mixin]
+  mixins: [Vue2Filters.mixin],
 })
 export default class JhiLogs extends Vue {
   @Inject('logsService') private logsService: () => LogsService;

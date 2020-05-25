@@ -65,7 +65,7 @@ export default class InstanceHealthService {
     const healthData = {
       name,
       details: undefined,
-      error: undefined
+      error: undefined,
     };
 
     const details = {};

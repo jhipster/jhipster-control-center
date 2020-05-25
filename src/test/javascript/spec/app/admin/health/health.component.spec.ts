@@ -18,7 +18,7 @@ localVue.component('health-modal', HealthModal);
 localVue.directive('b-modal', {});
 
 jest.mock('axios', () => ({
-  get: jest.fn()
+  get: jest.fn(),
 }));
 
 describe('Health Component', () => {
@@ -32,11 +32,11 @@ describe('Health Component', () => {
 
       localVue,
       stubs: {
-        bModal: true
+        bModal: true,
       },
       provide: {
-        healthService: () => new HealthService()
-      }
+        healthService: () => new HealthService(),
+      },
     });
     health = wrapper.vm;
   });

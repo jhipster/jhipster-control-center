@@ -55,7 +55,7 @@ Service workers are commented by default, to enable them please uncomment the fo
 ```html
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').then(function() {
+    navigator.serviceWorker.register('./service-worker.js').then(function () {
       console.log('Service Worker Registered');
     });
   }

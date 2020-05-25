@@ -8,7 +8,7 @@ import * as config from '@/shared/config/config';
 const mockedAxios: any = axios;
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 
 const localVue = createLocalVue();

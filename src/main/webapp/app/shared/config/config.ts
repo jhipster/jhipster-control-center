@@ -123,8 +123,8 @@ export function initVueXStore(vue) {
       alertStore,
       // jhcc-custom begin
       refreshStore,
-      routesStore
+      routesStore,
       // jhcc-custom end
-    }
+    },
   });
 }

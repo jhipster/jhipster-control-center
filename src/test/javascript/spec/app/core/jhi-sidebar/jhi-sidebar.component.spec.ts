@@ -23,8 +23,8 @@ describe('JhiSidebar', () => {
       router,
       localVue,
       provide: {
-        accountService: () => accountService
-      }
+        accountService: () => accountService,
+      },
     });
     jhiSidebar = wrapper.vm;
   });

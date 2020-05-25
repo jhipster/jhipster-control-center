@@ -84,7 +84,7 @@ export default class RoutesService {
     routes.push(this.getRouteOfControlCenter());
     data.map(r => {
       if (r.route_id.split('/')[0].toLowerCase() !== 'consul' && r.route_id !== null) {
-        const route = new class implements Route {
+        const route = new (class implements Route {
           path: string;
           predicate: string;
           filters: Array<string>;
@@ -92,7 +92,7 @@ export default class RoutesService {
           instanceId: string;
           instanceUri: string;
           order: number;
-        }();
+        })();
 
         route.path = r.route_id;
         route.predicate = r.predicate;
@@ -109,7 +109,7 @@ export default class RoutesService {
 
   /** get default route of control center */
   private getRouteOfControlCenter(): Route {
-    const route = new class implements Route {
+    const route = new (class implements Route {
       path: string;
       predicate: string;
       filters: Array<string>;
@@ -117,7 +117,7 @@ export default class RoutesService {
       instanceId: string;
       instanceUri: string;
       order: number;
-    }();
+    })();
     route.path = '';
     route.predicate = '';
     route.filters = [];

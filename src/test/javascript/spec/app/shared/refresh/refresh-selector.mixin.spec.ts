@@ -19,8 +19,8 @@ describe('Refresh', () => {
       store,
       localVue,
       provide: {
-        refreshService: () => new RefreshService(store)
-      }
+        refreshService: () => new RefreshService(store),
+      },
     });
     refreshSelectorMixin = wrapper.vm;
   });

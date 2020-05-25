@@ -22,7 +22,7 @@ const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 
 describe('LoginForm Component', () => {
@@ -38,8 +38,8 @@ describe('LoginForm Component', () => {
       store,
       localVue,
       provide: {
-        accountService: () => new AccountService(store, router)
-      }
+        accountService: () => new AccountService(store, router),
+      },
     });
     loginForm = wrapper.vm;
   });
@@ -59,7 +59,7 @@ describe('LoginForm Component', () => {
     expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
       username: 'login',
       password: 'pwd',
-      rememberMe: true
+      rememberMe: true,
     });
     await loginForm.$nextTick();
     expect(loginForm.authenticationError).toBeTruthy();
@@ -81,7 +81,7 @@ describe('LoginForm Component', () => {
     expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
       username: 'login',
       password: 'pwd',
-      rememberMe: true
+      rememberMe: true,
     });
 
     expect(loginForm.authenticationError).toBeFalsy();
@@ -104,7 +104,7 @@ describe('LoginForm Component', () => {
     expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
       username: 'login',
       password: 'pwd',
-      rememberMe: false
+      rememberMe: false,
     });
 
     expect(loginForm.authenticationError).toBeFalsy();

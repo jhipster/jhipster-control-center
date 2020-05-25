@@ -16,12 +16,12 @@ describe('Health Modal Component', () => {
   beforeEach(() => {
     wrapper = shallowMount<HealthModalClass>(HealthModal, {
       propsData: {
-        currentHealth: {}
+        currentHealth: {},
       },
       localVue,
       provide: {
-        healthService: () => healthsService
-      }
+        healthService: () => healthsService,
+      },
     });
     healthModal = wrapper.vm;
   });
@@ -62,12 +62,12 @@ describe('Health Modal Component for diskSpace', () => {
   beforeEach(() => {
     wrapper = shallowMount<HealthModalClass>(HealthModal, {
       propsData: {
-        currentHealth: { name: 'diskSpace' }
+        currentHealth: { name: 'diskSpace' },
       },
       localVue,
       provide: {
-        healthService: () => healthsService
-      }
+        healthService: () => healthsService,
+      },
     });
     healthModal = wrapper.vm;
   });

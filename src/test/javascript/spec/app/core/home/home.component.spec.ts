@@ -18,8 +18,8 @@ describe('Home', () => {
       store,
       localVue,
       provide: {
-        loginService: () => loginService
-      }
+        loginService: () => loginService,
+      },
     });
     home = wrapper.vm;
   });

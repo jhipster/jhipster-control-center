@@ -100,8 +100,8 @@ new Vue({
     instanceService: () => new InstanceService(),
     refreshService: () => refreshService,
     routesService: () => routesService,
-    loggersService: () => new LoggersService()
+    loggersService: () => new LoggersService(),
     // jhcc-custom end
   },
-  store
+  store,
 });

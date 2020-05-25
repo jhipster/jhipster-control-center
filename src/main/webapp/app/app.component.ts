@@ -13,7 +13,7 @@ import JhiSidebar from '@/core/jhi-sidebar/jhi-sidebar.vue';
     'jhi-navbar': JhiNavbar,
     'jhi-sidebar': JhiSidebar, // jhcc-custom
     'login-form': LoginForm,
-    'jhi-footer': JhiFooter
-  }
+    'jhi-footer': JhiFooter,
+  },
 })
 export default class App extends Vue {}

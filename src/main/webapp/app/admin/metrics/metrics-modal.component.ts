@@ -2,7 +2,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 
 @Component({
-  mixins: [Vue2Filters.mixin]
+  mixins: [Vue2Filters.mixin],
 })
 export default class JhiMetricsModal extends Vue {
   @Prop()
@@ -16,7 +16,7 @@ export default class JhiMetricsModal extends Vue {
       threadDumpBlocked: 0,
       threadDumpRunnable: 0,
       threadDumpTimedWaiting: 0,
-      threadDumpWaiting: 0
+      threadDumpWaiting: 0,
     };
     if (this.threadDump) {
       this.threadDump.forEach(value => {

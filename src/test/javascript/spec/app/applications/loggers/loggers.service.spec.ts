@@ -13,7 +13,7 @@ config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 const jhcc_route = {
   path: '',
@@ -22,7 +22,7 @@ const jhcc_route = {
   serviceId: 'JHIPSTER-CONTROL-CENTER',
   instanceId: 'JHIPSTER-CONTROL-CENTER',
   instanceUri: '',
-  order: 0
+  order: 0,
 } as Route;
 const service_test_route = {
   path: 'service-test/service-test:number',
@@ -31,7 +31,7 @@ const service_test_route = {
   serviceId: 'service-test',
   instanceId: 'service-test-instance',
   instanceUri: '',
-  order: 0
+  order: 0,
 } as Route;
 const routes: Route[] = [jhcc_route, service_test_route];
 
@@ -47,8 +47,8 @@ describe('Loggers Component', () => {
       provide: {
         loggersService: () => new LoggersService(),
         refreshService: () => new RefreshService(store),
-        routesService: () => new RoutesService(store)
-      }
+        routesService: () => new RoutesService(store),
+      },
     });
     loggers = wrapper.vm;
   });
@@ -115,7 +115,7 @@ describe('Loggers Component', () => {
 
     // THEN
     expect(mockedAxios.post).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/loggers/main', {
-      configuredLevel: 'ERROR'
+      configuredLevel: 'ERROR',
     });
   });
 });

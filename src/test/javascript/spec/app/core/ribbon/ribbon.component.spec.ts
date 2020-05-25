@@ -15,7 +15,7 @@ describe('Ribbon', () => {
   const wrap = async (managementInfo?: any) => {
     wrapper = shallowMount<RibbonClass>(Ribbon, {
       store,
-      localVue
+      localVue,
     });
     ribbon = wrapper.vm;
     await ribbon.$nextTick();

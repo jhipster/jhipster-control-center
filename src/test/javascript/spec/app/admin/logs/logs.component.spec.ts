@@ -14,7 +14,7 @@ const store = config.initVueXStore(localVue);
 
 jest.mock('axios', () => ({
   get: jest.fn(),
-  post: jest.fn()
+  post: jest.fn(),
 }));
 
 describe('Logs Component', () => {

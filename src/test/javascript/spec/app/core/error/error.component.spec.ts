@@ -22,8 +22,8 @@ describe('Error component', () => {
       router,
       localVue,
       provide: {
-        loginService: () => loginService
-      }
+        loginService: () => loginService,
+      },
     });
     error = wrapper.vm;
   });

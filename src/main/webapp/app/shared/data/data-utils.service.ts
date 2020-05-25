@@ -49,7 +49,7 @@ export default class JhiDataUtils extends Vue {
       }
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], {
-        type: contentType
+        type: contentType,
       });
       window.navigator.msSaveOrOpenBlob(blob);
     } else {
@@ -139,7 +139,7 @@ export default class JhiDataUtils extends Vue {
     }
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], {
-      type: contentType
+      type: contentType,
     });
     const tempLink = document.createElement('a');
     tempLink.href = window.URL.createObjectURL(blob);
