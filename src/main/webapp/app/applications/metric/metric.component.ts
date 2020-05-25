@@ -13,8 +13,8 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
   components: {
     'refresh-selector': RefreshSelectorVue,
     'routes-selector': RoutesSelectorVue,
-    'metrics-modal': JhiMetricModal
-  }
+    'metrics-modal': JhiMetricModal,
+  },
 })
 export default class JhiMetric extends Vue {
   public metrics: any = {};
@@ -91,7 +91,7 @@ export default class JhiMetric extends Vue {
       day: 86400000,
       hour: 3600000,
       minute: 60000,
-      second: 1000
+      second: 1000,
     };
     let time_string = '';
     let plural = '';
@@ -124,7 +124,7 @@ export default class JhiMetric extends Vue {
       threadDumpWaiting: 0,
       threadDumpTimedWaiting: 0,
       threadDumpBlocked: 0,
-      threadDumpAll: 0
+      threadDumpAll: 0,
     };
 
     this.threads.forEach(value => {
