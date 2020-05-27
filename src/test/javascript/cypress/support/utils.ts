@@ -1,4 +1,3 @@
-// Maybe add chai assertion instead
 Cypress.Commands.add(
   'shouldTextBe',
   {
