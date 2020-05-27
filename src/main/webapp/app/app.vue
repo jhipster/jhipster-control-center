@@ -11,8 +11,8 @@
         <div class="card jh-card">
           <router-view></router-view>
         </div>
-        <b-modal id="login-page" hide-footer lazy>
-          <span slot="modal-title" id="login-title">Sign in</span>
+        <b-modal id="login-page" data-e2e-container=login-modal hide-footer lazy>
+          <span slot="modal-title" id="login-title" data-e2e-element=title>Sign in</span>
           <login-form></login-form>
         </b-modal>
       </b-row>

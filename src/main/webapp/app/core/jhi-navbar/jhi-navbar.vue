@@ -1,6 +1,6 @@
 <!-- jhcc-custom begin -->
 <template>
-  <b-navbar toggleable="md" type="dark" class="bg-primary">
+  <b-navbar toggleable="md" type="dark" class="bg-primary" data-e2e-container=navbar>
     <b-row>
       <div class="jh-logo-container" my-auto>
         <div class="icon-sidebar" id="sidebar-icon" exact v-if="hasAnyAuthority('ROLE_ADMIN')">
@@ -50,6 +50,7 @@
           :class="{ 'router-link-active': subIsActive('/applications') }"
           active-class="active"
           class="pointer"
+          data-e2e-element=admin-menu
         >
           <span slot="button-content" class="navbar-dropdown-menu">
             <font-awesome-icon icon="cogs" />
@@ -57,23 +58,23 @@
           </span>
           <b-dropdown-item to="/admin/jhi-metrics">
             <font-awesome-icon icon="tachometer-alt" />
-            <span id="collapse-1">Metrics</span>
+            <span id="collapse-1" data-e2e-element=metrics-title>Metrics</span>
           </b-dropdown-item>
           <b-dropdown-item to="/admin/jhi-health">
             <font-awesome-icon icon="heart" />
-            <span>Health</span>
+            <span data-e2e-element=health-title>Health</span>
           </b-dropdown-item>
           <b-dropdown-item to="/admin/jhi-configuration">
             <font-awesome-icon icon="list" />
-            <span>Configuration</span>
+            <span data-e2e-element=configuration-title>Configuration</span>
           </b-dropdown-item>
           <b-dropdown-item to="/admin/logs">
             <font-awesome-icon icon="tasks" />
-            <span>Logs</span>
+            <span data-e2e-element=logs-title >Logs</span>
           </b-dropdown-item>
           <b-dropdown-item v-if="swaggerEnabled" to="/admin/docs">
             <font-awesome-icon icon="book" />
-            <span>API</span>
+            <span data-e2e-element=api>API</span>
           </b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown
@@ -83,6 +84,7 @@
           :class="{ 'router-link-active': subIsActive('/account') }"
           active-class="active"
           class="pointer"
+          data-e2e-element=account-menu
         >
           <span slot="button-content" class="navbar-dropdown-menu">
             <font-awesome-icon icon="user" />
@@ -94,7 +96,7 @@
             <font-awesome-icon icon="sign-out-alt" />
             <span>Sign out</span>
           </b-dropdown-item>
-          <b-dropdown-item v-if="!authenticated" v-on:click="openLogin()" id="login">
+          <b-dropdown-item v-if="!authenticated" v-on:click="openLogin()" id="login" data-e2e-element=login>
             <font-awesome-icon icon="sign-in-alt" />
             <span>Sign in</span>
           </b-dropdown-item>

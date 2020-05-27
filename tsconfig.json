@@ -16,12 +16,10 @@
     "lib": ["es7", "dom"],
     "typeRoots": ["node_modules/@types"],
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/main/webapp/app/*"]
-    },
+    "paths": { "@/*": ["src/main/webapp/app/*"] },
     "importHelpers": true,
     "allowJs": true
   },
   "include": ["src/main/webapp/app", "src/test/javascript/spec"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/test/javascript/cypress"]
 }
