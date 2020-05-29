@@ -1,25 +1,24 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Router from 'vue-router';
-import { Authority } from '@/shared/security/authority';
-
 Component.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave',
   'beforeRouteUpdate', // for vue-router 2.2+
 ]);
+import Router from 'vue-router';
+import { Authority } from '@/shared/security/authority';
 const Home = () => import('../core/home/home.vue');
 const Error = () => import('../core/error/error.vue');
 const JhiConfigurationComponent = () => import('../admin/configuration/configuration.vue');
 const JhiDocsComponent = () => import('../admin/docs/docs.vue');
 const JhiHealthComponent = () => import('../admin/health/health.vue');
-const JhiInstanceHealthComponent = () => import('../applications/health/health.vue');
 const JhiLogsComponent = () => import('../admin/logs/logs.vue');
 const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 
 // jhcc-custom begin
 const InstanceComponent = () => import('../applications/instance/instance.vue');
 const LoggersComponent = () => import('../applications/loggers/loggers.vue');
+const MetricComponent = () => import('../applications/metric/metric.vue');
 // jhcc-custom end
 
 /* tslint:disable */
@@ -93,10 +92,10 @@ export default new Router({
       meta: { authorities: [Authority.ADMIN] }
     },
     {
-      path: '/applications/health',
-      name: 'JhiInstanceHealthComponent',
-      component: JhiInstanceHealthComponent,
-      meta: { authorities: [Authority.ADMIN]}
+      path: '/applications/metric',
+      name: 'MetricComponent',
+      component: MetricComponent,
+      meta: { authorities: [Authority.ADMIN] }
     }
     // jhcc-custom end
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

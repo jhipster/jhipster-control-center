@@ -27,6 +27,7 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 import InstanceService from '@/applications/instance/instance.service';
 import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
+import MetricService from '@/applications/metric/metric.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 // jhcc-custom end
 
@@ -101,6 +102,7 @@ new Vue({
     refreshService: () => refreshService,
     routesService: () => routesService,
     loggersService: () => new LoggersService(),
+    metricService: () => new MetricService(),
     // jhcc-custom end
   },
   store,
