@@ -20,6 +20,7 @@ const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 // jhcc-custom begin
 const InstanceComponent = () => import('../applications/instance/instance.vue');
 const LoggersComponent = () => import('../applications/loggers/loggers.vue');
+const MetricComponent = () => import('../applications/metric/metric.vue');
 // jhcc-custom end
 
 /* tslint:disable */
@@ -97,6 +98,12 @@ export default new Router({
       name: 'JhiInstanceHealthComponent',
       component: JhiInstanceHealthComponent,
       meta: { authorities: [Authority.ADMIN]}
+    },
+    {
+      path: '/applications/metric',
+      name: 'MetricComponent',
+      component: MetricComponent,
+      meta: { authorities: [Authority.ADMIN] }
     }
     // jhcc-custom end
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
