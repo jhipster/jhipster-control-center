@@ -55,7 +55,7 @@ export default class InstanceService extends Vue {
   parseJsonArrayInstancesToArray(data: any): Array<Instance> {
     const instances: Array<Instance> = [];
     data.map(instance => {
-      const inst = new class implements Instance {
+      const inst = new (class implements Instance {
         serviceId: string;
         instanceId: string;
         uri: string;
@@ -63,7 +63,7 @@ export default class InstanceService extends Vue {
         port: number;
         secure: boolean;
         metadata: Metadata;
-      }();
+      })();
       inst.serviceId = instance.serviceId;
       inst.instanceId = instance.instanceId;
       inst.uri = instance.uri;

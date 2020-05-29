@@ -18,6 +18,7 @@ const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 // jhcc-custom begin
 const InstanceComponent = () => import('../applications/instance/instance.vue');
 const LoggersComponent = () => import('../applications/loggers/loggers.vue');
+const MetricComponent = () => import('../applications/metric/metric.vue');
 // jhcc-custom end
 
 /* tslint:disable */
@@ -88,6 +89,12 @@ export default new Router({
       path: '/applications/loggers',
       name: 'LoggersComponent',
       component: LoggersComponent,
+      meta: { authorities: [Authority.ADMIN] }
+    },
+    {
+      path: '/applications/metric',
+      name: 'MetricComponent',
+      component: MetricComponent,
       meta: { authorities: [Authority.ADMIN] }
     }
     // jhcc-custom end

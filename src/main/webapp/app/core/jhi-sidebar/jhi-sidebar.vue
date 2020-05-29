@@ -18,7 +18,7 @@
             <font-awesome-icon icon="chart-line" />
             <span>DashBoard</span>
           </b-nav-item>
-          <b-nav-item to="/admin/jhi-metrics">
+          <b-nav-item to="/applications/metric">
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
