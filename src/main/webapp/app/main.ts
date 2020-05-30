@@ -29,6 +29,7 @@ import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
 import MetricService from '@/applications/metric/metric.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
+import InstanceHealthService from '@/applications/health/health.service';
 // jhcc-custom end
 
 /* tslint:disable */
@@ -103,6 +104,7 @@ new Vue({
     routesService: () => routesService,
     loggersService: () => new LoggersService(),
     metricService: () => new MetricService(),
+    instanceHealthService: () => new InstanceHealthService(),
     // jhcc-custom end
   },
   store,
