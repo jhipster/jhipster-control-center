@@ -25,7 +25,10 @@ export default class JhiInstance extends Vue {
   public mounted(): void {
     this.refreshService()
       .refreshReload$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this.refreshInstancesData());
+      .subscribe(() => {
+        this.refreshInstancesData();
+        this.refreshInstancesRoute();
+      });
     this.refreshInstancesData();
     this.refreshInstancesRoute();
   }
