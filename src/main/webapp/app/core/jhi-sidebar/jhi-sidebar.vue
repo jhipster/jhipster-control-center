@@ -54,8 +54,20 @@
     display: none;
   }
   .hipster {
-    display: none !important;
+    max-height: 100px !important;
   }
+}
+
+@media screen and (min-height: 500px) and (max-height: 600px){
+  .hipster {
+    max-height: 100px !important;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .hipster {
+    display: none !important;
+  } 
 }
 
 .btn-block {
