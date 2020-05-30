@@ -327,10 +327,10 @@ Sidebar
 .b-sidebar-body .hipster.img-fluid {
   display: inline-block;
   width: 150px;
-  height: 497px;
+  max-height: 200px;
   background: url('../images/jhipster_family_member_3.svg') no-repeat center bottom;
   background-size: contain;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
