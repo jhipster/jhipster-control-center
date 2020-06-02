@@ -22,7 +22,7 @@
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
-          <b-nav-item to="/admin/jhi-health">
+          <b-nav-item to="/applications/health">
             <font-awesome-icon icon="heart" />
             <span>Health</span>
           </b-nav-item>
