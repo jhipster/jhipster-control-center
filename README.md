@@ -24,7 +24,7 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 To run the cloned project
 
-- For development run `./mvnw -Pdev,consul` or `./mvnw -Pdev,eureka`.
+- For development run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
 - To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
 
 ### Docker image
