@@ -20,6 +20,19 @@ In order to work properly, the Control Center has to be started with a spring pr
 - `localhost:7419/gateway/<serviceName>/<instanceName>/<urlPath>`: proxy request to `instanceName`'s urlPath.
   For example, when using Eureka, it would look like: `localhost:7419/gateway/eurekaservice1/eurekaservice1:3d38fb89771e502111b495064d739ef8/management/info`
 
+## Running locally
+
+To run the cloned project
+
+- For development run `./mvnw -Pdev,consul` or `./mvnw -Pdev,eureka`.
+- To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
+
+### Docker image
+
+- A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest` 
+
+Note: Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project, run ` docker-compose -f src/main/docker/consul.yml up -d ` or ` docker-compose -f src/main/docker/jhipster-registry.yml up -d ` for Eureka.
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
