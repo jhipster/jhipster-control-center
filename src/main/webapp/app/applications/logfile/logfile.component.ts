@@ -16,7 +16,7 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
   mixins: [Vue2Filters.mixin],
 })
 export default class JhiLogfile extends Vue {
-  public logtxt: string = '';
+  public logtxt = '';
 
   public filtered = '';
   public orderProp = 'name';
