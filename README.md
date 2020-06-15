@@ -22,16 +22,21 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 ## Running locally
 
-### Step 1 : Run Docker image of Spring Cloud discovery backend
+### Step 1 : Run server use by Spring Cloud discovery backend
 
-- A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest` 
+Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
 
-Note: Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project, run ` docker-compose -f src/main/docker/consul.yml up -d ` or ` docker-compose -f src/main/docker/jhipster-registry.yml up -d ` for Eureka.
+For Consul : run ` docker-compose -f src/main/docker/consul.yml up -d `
+For Eureka : run ` docker-compose -f src/main/docker/jhipster-registry.yml up -d ` for Eureka.
 
 ### Step 2 : Run the cloned project
 
 - For development run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
 - To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
+
+## Running from Docker
+
+A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest` 
 
 ## Development
 
