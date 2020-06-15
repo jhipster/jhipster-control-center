@@ -26,8 +26,8 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
 
-For Consul : run ` docker-compose -f src/main/docker/consul.yml up -d `
-For Eureka : run ` docker-compose -f src/main/docker/jhipster-registry.yml up -d ` for Eureka.
+- for Consul : run ` docker-compose -f src/main/docker/consul.yml up -d `
+- for Eureka : run ` docker-compose -f src/main/docker/jhipster-registry.yml up -d ` for Eureka.
 
 ### Step 2 : Run the cloned project
 
