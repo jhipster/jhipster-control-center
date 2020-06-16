@@ -18,10 +18,6 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 export default class JhiLogfile extends Vue {
   public logtxt = '';
 
-  public filtered = '';
-  public orderProp = 'name';
-  public reverse = false;
-
   activeRoute: Route;
   routes: Route[];
   unsubscribe$ = new Subject();
@@ -53,6 +49,7 @@ export default class JhiLogfile extends Vue {
             this.logtxt = logtxt;
           },
           error => {
+            /* istanbul ignore next */
             if (error.status === 503 || error.status === 500 || error.status === 404) {
               this.logtxt =
                 'No available logfile. Please note that it is not available by default, you need to set up the Spring Boot properties below! \n' +
@@ -70,14 +67,12 @@ export default class JhiLogfile extends Vue {
     }
   }
 
-  searchByAppName(): Route[] {
-    return this.routes!.filter(route => route.serviceId === this.activeRoute!.serviceId);
-  }
-
+  /* istanbul ignore next */
   scrollToBottom(): void {
     this.$el.querySelector('#logfile').scrollTop = this.$el.querySelector('#logfile').scrollHeight;
   }
 
+  /* istanbul ignore next */
   scrollToTop(): void {
     this.$el.querySelector('#logfile').scrollTop = 0;
   }
