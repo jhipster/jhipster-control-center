@@ -28,26 +28,19 @@ export default class JhiLogfile extends Vue {
 
   @Inject('logfileService') private logfileService: () => LogfileService;
   @Inject('routesService') private routesService: () => RoutesService;
-  @Inject('refreshService') private refreshService: () => RefreshService;
 
   /* istanbul ignore next */
   public mounted(): void {
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(route => {
-        this.displayActiveRouteLog();
         this.activeRoute = route;
+        this.displayActiveRouteLog();
       });
 
     this.routesService()
       .routesChanged$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(routes => (this.routes = routes));
-
-    this.refreshService()
-      .refreshReload$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.displayActiveRouteLog();
-      });
   }
 
   displayActiveRouteLog(): void {

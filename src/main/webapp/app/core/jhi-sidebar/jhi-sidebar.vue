@@ -35,7 +35,7 @@
             <span>Logs</span>
           </b-nav-item>
           <b-nav-item to="/applications/logfile">
-            <font-awesome-icon icon="tasks" />
+            <font-awesome-icon icon="indent" />
             <span>Logfile</span>
           </b-nav-item>
           <b-nav-item v-if="swaggerEnabled" to="/admin/docs">
