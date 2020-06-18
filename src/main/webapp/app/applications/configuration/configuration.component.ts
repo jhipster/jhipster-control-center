@@ -42,8 +42,10 @@ export default class JhiConfiguration extends Vue {
       .subscribe(routes => (this.routes = routes));
   }
 
+  /** get beans and properties of active route */
   refreshActiveRouteBeans(): void {
     if (this.activeRoute) {
+      /* istanbul ignore next */
       this.instanceConfigurationService()
         .findBeans(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
@@ -57,6 +59,7 @@ export default class JhiConfiguration extends Vue {
           }
         );
 
+      /* istanbul ignore next */
       this.instanceConfigurationService()
         .findPropertySources(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
@@ -67,6 +70,7 @@ export default class JhiConfiguration extends Vue {
   }
 
   filterAndSortBeans(): void {
+    /* istanbul ignore next */
     this.beans = this.allBeans
       .filter(bean => !this.beansFilter || bean.prefix.toLowerCase().includes(this.beansFilter.toLowerCase()))
       .sort((a, b) => (a.prefix < b.prefix ? (this.beansAscending ? -1 : 1) : this.beansAscending ? 1 : -1));
