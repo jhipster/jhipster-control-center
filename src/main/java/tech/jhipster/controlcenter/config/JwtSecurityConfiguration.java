@@ -91,12 +91,14 @@ public class JwtSecurityConfiguration {
             .pathMatchers("/api/authenticate").permitAll()
             .pathMatchers("/api/**").authenticated()
             // jhcc-custom : begin
-            .pathMatchers("/services/**", "/gateway/**", "/v2/api-docs", "/swagger-ui/index.html").authenticated()
+            .pathMatchers("/services/**", "/gateway/**").authenticated()
+            .pathMatchers("/v2/api-docs", "/swagger-ui/index.html").permitAll()
             .pathMatchers("/swagger-resources/**").permitAll()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
             .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+            // jhcc-custom : end
         // @formatter:on
         return http.build();
     }
