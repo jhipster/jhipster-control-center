@@ -30,6 +30,7 @@ import LoggersService from '@/applications/loggers/loggers.service';
 import MetricService from '@/applications/metric/metric.service';
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 import InstanceHealthService from '@/applications/health/health.service';
+import AccountOauth2Service from './account/account-oauth2.service';
 // jhcc-custom end
 
 /* tslint:disable */
@@ -55,7 +56,23 @@ const store = config.initVueXStore(Vue);
 
 const alertService = new AlertService(store);
 const loginService = new LoginService();
-const accountService = new AccountService(store, router);
+const accountService = new AccountOauth2Service(store, (<any>Vue).cookie, router);
+
+/**
+loginService
+  .getProfileInfo()
+    .then(response => {
+      console.log("DEBUT");
+      const profiles: string[] = response.data['activeProfiles'];
+      console.log("profiles : " + profiles);
+      if(profiles.includes('oauth2')) {
+        accountService = new AccountOauth2Service(store, (<any>Vue).cookie, router);
+      } else {
+        accountService = new AccountService(store, router);
+      }
+  });
+*/
+
 // jhcc-custom begin
 const refreshService = new RefreshService(store);
 const routesService = new RoutesService(store);

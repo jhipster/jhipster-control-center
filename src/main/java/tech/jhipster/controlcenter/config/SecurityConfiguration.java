@@ -5,6 +5,7 @@ import static org.springframework.security.web.server.util.matcher.ServerWebExch
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -29,6 +30,7 @@ import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
+@Profile("!" + Constants.PROFILE_OAUTH2)
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
 
@@ -84,6 +86,7 @@ public class SecurityConfiguration {
             .authorizeExchange()
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
+            .pathMatchers("/api/account").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
             // jhcc-custom : need to be deleted -- begin
             .pathMatchers("/api/authenticate").permitAll()
