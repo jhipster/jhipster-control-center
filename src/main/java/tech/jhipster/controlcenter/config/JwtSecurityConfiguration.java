@@ -31,12 +31,12 @@ import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
 @Profile("!" + Constants.PROFILE_OAUTH2)
-public class SecurityConfiguration {
+public class JwtSecurityConfiguration {
     private final TokenProvider tokenProvider;
 
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
+    public JwtSecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
         this.tokenProvider = tokenProvider;
         this.problemSupport = problemSupport;
     }
@@ -86,7 +86,6 @@ public class SecurityConfiguration {
             .authorizeExchange()
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
-            .pathMatchers("/api/account").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
             // jhcc-custom : need to be deleted -- begin
             .pathMatchers("/api/authenticate").permitAll()

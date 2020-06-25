@@ -16,6 +16,11 @@ localVue.component('b-form-group', {});
 localVue.component('b-form-checkbox', {});
 localVue.component('b-link', {});
 const mockedAxios: any = axios;
+const mockedCookie = {
+  get: jest.fn(() => {
+    return 'token';
+  }),
+};
 
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
@@ -38,7 +43,7 @@ describe('LoginForm Component', () => {
       store,
       localVue,
       provide: {
-        accountService: () => new AccountService(store, router),
+        accountService: () => new AccountService(store, mockedCookie, router),
       },
     });
     loginForm = wrapper.vm;
