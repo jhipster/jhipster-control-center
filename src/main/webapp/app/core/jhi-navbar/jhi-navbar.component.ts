@@ -31,7 +31,16 @@ export default class JhiNavbar extends Vue {
   }
 
   public openLogin(): void {
-    this.loginService().openLogin((<any>this).$root);
+    this.loginService()
+      .getProfileInfo()
+      .then(response => {
+        const profiles: string[] = response.data['activeProfiles'];
+        if (profiles.includes('oauth2')) {
+          this.loginService().login();
+        } else {
+          this.loginService().openLogin((<any>this).$root);
+        }
+      });
   }
 
   public get authenticated(): boolean {
