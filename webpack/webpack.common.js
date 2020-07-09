@@ -36,7 +36,8 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               appendTsSuffixTo: ['\\.vue$'],
-              happyPackMode: false
+              happyPackMode: true,
+              transpileOnly: true
             }
           }
         ],
@@ -87,7 +88,7 @@ module.exports = {
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, globOptions: { ignore: ['index.html'] } },
+        { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, globOptions: { ignore: ['**/index.html'] } },
         { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui' },
         { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui' },
         { from: './src/main/webapp/content/', to: 'content' },
@@ -102,6 +103,7 @@ module.exports = {
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
+      base: '/',
       template: './src/main/webapp/index.html',
       chunks: ['vendors', 'main', 'global'],
       chunksSortMode: 'manual',

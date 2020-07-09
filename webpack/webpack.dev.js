@@ -45,7 +45,7 @@ module.exports = merge(baseWebpackConfig, {
         target: 'http://127.0.0.1:7419',
         secure: false,
         headers: { host: 'localhost:9000' }
-      }
+      },
     ],
     watchOptions: {
       ignored: /node_modules/
@@ -64,7 +64,7 @@ module.exports = merge(baseWebpackConfig, {
         host: 'localhost',
         port: 9000,
         proxy: {
-          target: 'http://localhost:9060'
+          target: 'http://localhost:9060',
         },
         socket: {
           clients: {
