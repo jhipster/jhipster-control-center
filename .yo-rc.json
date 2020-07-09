@@ -1,0 +1,52 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "tech.jhipster.controlcenter"
+    },
+    "jhipsterVersion": "6.9.0",
+    "applicationType": "monolith",
+    "baseName": "jhipsterControlCenter",
+    "packageName": "tech.jhipster.controlcenter",
+    "packageFolder": "tech/jhipster/controlcenter",
+    "serverPort": "7419",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "no",
+    "devDatabaseType": "no",
+    "prodDatabaseType": "no",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MDc2YTJkMGVmMTc3ZjQ3MjgwNjVkMDRhYmE1MThmZmNlZGMyMjgzNjgxMTMyZGY3MzlhOTA1Mjk1NzUwODgyOTZhODM1ZTYyZmI5YmJjZWVkNjVhZWM5NDgzMzU2OWZkYzUzNjVkYTNiMTIxZTlhMWRkYjJhMTg2ZWJmMzgxMjQ=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "vue",
+    "clientTheme": "pulse",
+    "clientThemeVariant": "dark",
+    "creationTimestamp": 1581262319851,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-vuejs",
+        "version": "1.8.0"
+      }
+    ],
+    "enableTranslation": false,
+    "blueprints": [
+      {
+        "name": "generator-jhipster-vuejs",
+        "version": "1.8.0"
+      }
+    ],
+    "reactive": true,
+    "prettierJava": true
+  }
+}
