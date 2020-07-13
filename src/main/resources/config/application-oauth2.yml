@@ -15,4 +15,4 @@ spring:
   cloud:
     gateway:
       default-filters:
-        - TokenRelay
+        - TokenRelayWithTokenRefresh
