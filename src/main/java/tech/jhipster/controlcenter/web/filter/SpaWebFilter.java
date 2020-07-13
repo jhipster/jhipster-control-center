@@ -19,6 +19,7 @@ public class SpaWebFilter implements WebFilter {
             !path.startsWith("/api") &&
             !path.startsWith("/management") &&
             // jhcc-custom
+            !path.startsWith("/login") &&
             !path.startsWith("/gateway") &&
             !path.startsWith("/services") &&
             !path.startsWith("/swagger") &&

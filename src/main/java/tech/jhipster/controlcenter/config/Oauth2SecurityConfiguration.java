@@ -27,8 +27,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
-import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -43,7 +41,6 @@ import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
@@ -66,6 +63,12 @@ import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 public class Oauth2SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
+
+    @Value("${spring.security.oauth2.client.registration.oidc.client-id}")
+    private String cliendId;
+
+    @Value("${spring.security.oauth2.client.registration.oidc.client-secret}")
+    private String clientSecret;
 
     private final TokenProvider tokenProvider;
 
@@ -100,18 +103,12 @@ public class Oauth2SecurityConfiguration {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(
-        ServerHttpSecurity http,
-        ReactiveClientRegistrationRepository clientRegistrationRepository
-    ) {
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         // Authenticate through configured OpenID Provider
         http.oauth2Login();
 
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
         http.oauth2Client();
-
-        // Also logout at the OpenID Connect provider
-        http.logout(logout -> logout.logoutSuccessHandler(new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
 
         http
             .securityMatcher(
@@ -122,6 +119,8 @@ public class Oauth2SecurityConfiguration {
                     )
                 )
             )
+            .addFilterAt(new CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
+            .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
             .exceptionHandling()
             .accessDeniedHandler(problemSupport)
