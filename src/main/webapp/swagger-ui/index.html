@@ -17,7 +17,16 @@
 
 
 <script type="text/javascript">
-
+    function getCSRF() {
+        var name = "XSRF-TOKEN=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1);
+            if (c.indexOf(name) !== -1) return c.substring(name.length,c.length);
+        }
+        return "";
+    }
 
     window.onload = function () {
         var urls = [];
@@ -41,13 +50,27 @@
                 plugins: [
                     SwaggerUIBundle.plugins.DownloadUrl
                 ],
-                requestInterceptor: function(req) {
-                    var authToken = localStorage.getItem("jhi-authenticationToken")
-                        || sessionStorage.getItem("jhi-authenticationToken");
-                    if (authToken) {
-                        req.headers['Authorization'] = "Bearer " + authToken;
-                    }
-                    return req;
+                requestInterceptor: function (req) {
+                    return axios.get("/management/info").then(function(response) {
+                        var oauth2 = false;
+                        response.data.activeProfiles.forEach(function (activeProfile) {
+                            if (activeProfile === 'oauth2') {
+                                oauth2 = true;
+                            }
+                        });
+                        if (oauth2) {
+                            // OAuth2
+                            req.headers['X-XSRF-TOKEN'] = getCSRF();
+                        } else {
+                            // working only with JWT authentication
+                            var authToken = JSON.parse(localStorage.getItem("jhi-authenticationtoken")
+                                || sessionStorage.getItem("jhi-authenticationtoken"));
+                            if (authToken) {
+                                req.headers['Authorization'] = "Bearer " + authToken;
+                            }
+                        }
+                        return req;
+                    });
                 }
             });
 
