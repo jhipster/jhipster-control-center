@@ -9,6 +9,13 @@ spring:
           oidc:
             client-id: jhipster-control-center
             client-secret: jhipster-control-center
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/auth/realms/jhipster
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
 
 server:
   servlet:

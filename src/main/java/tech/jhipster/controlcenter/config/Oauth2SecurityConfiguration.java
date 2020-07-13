@@ -27,6 +27,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -43,6 +45,7 @@ import org.springframework.security.oauth2.server.resource.authentication.Reacti
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
+import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.util.StringUtils;
@@ -50,6 +53,8 @@ import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport
 import reactor.core.publisher.Mono;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.SecurityUtils;
+import tech.jhipster.controlcenter.security.jwt.JWTFilter;
+import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 import tech.jhipster.controlcenter.security.oauth2.AudienceValidator;
 import tech.jhipster.controlcenter.security.oauth2.JwtGrantedAuthorityConverter;
 import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
@@ -62,11 +67,18 @@ public class Oauth2SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
+    private final TokenProvider tokenProvider;
+
     private final JHipsterProperties jHipsterProperties;
 
     private final SecurityProblemSupport problemSupport;
 
-    public Oauth2SecurityConfiguration(JHipsterProperties jHipsterProperties, SecurityProblemSupport problemSupport) {
+    public Oauth2SecurityConfiguration(
+        TokenProvider tokenProvider,
+        JHipsterProperties jHipsterProperties,
+        SecurityProblemSupport problemSupport
+    ) {
+        this.tokenProvider = tokenProvider;
         this.jHipsterProperties = jHipsterProperties;
         this.problemSupport = problemSupport;
     }
@@ -88,49 +100,77 @@ public class Oauth2SecurityConfiguration {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        // @formatter:off
-        http
-            .securityMatcher(new NegatedServerWebExchangeMatcher(new OrServerWebExchangeMatcher(
-                pathMatchers("/app/**", "/i18n/**", "/content/**", "/swagger-ui/**", "/test/**", "/webjars/**"),
-                pathMatchers(HttpMethod.OPTIONS, "/**")
-            )))
-            .csrf()
-                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-        .and()
-            .addFilterAt(new CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
-            .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
-            .exceptionHandling()
-                .accessDeniedHandler(problemSupport)
-                .authenticationEntryPoint(problemSupport)
-        .and()
-            .headers()
-                .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:")
-            .and()
-                .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-            .and()
-                .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
-            .and()
-                .frameOptions().disable()
-        .and()
-            .authorizeExchange()
-            .pathMatchers("/").permitAll()
-            .pathMatchers("/*.*").permitAll()
-            .pathMatchers("/api/auth-info").permitAll()
-            .pathMatchers("/api/**").authenticated()
-            .pathMatchers("/services/**", "/swagger-resources/**", "/v2/api-docs").authenticated()
-            .pathMatchers("/management/health").permitAll()
-            .pathMatchers("/management/info").permitAll()
-            .pathMatchers("/management/prometheus").permitAll()
-            .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+    public SecurityWebFilterChain springSecurityFilterChain(
+        ServerHttpSecurity http,
+        ReactiveClientRegistrationRepository clientRegistrationRepository
+    ) {
+        // Authenticate through configured OpenID Provider
+        http.oauth2Login();
 
-        http.oauth2Login()
-            .and()
-            .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
         http.oauth2Client();
-        // @formatter:on
+
+        // Also logout at the OpenID Connect provider
+        http.logout(logout -> logout.logoutSuccessHandler(new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
+
+        http
+            .securityMatcher(
+                new NegatedServerWebExchangeMatcher(
+                    new OrServerWebExchangeMatcher(
+                        pathMatchers("/app/**", "/i18n/**", "/content/**", "/swagger-ui/**", "/test/**", "/webjars/**"),
+                        pathMatchers(HttpMethod.OPTIONS, "/**")
+                    )
+                )
+            )
+            .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
+            .exceptionHandling()
+            .accessDeniedHandler(problemSupport)
+            .authenticationEntryPoint(problemSupport)
+            .and()
+            .headers()
+            .contentSecurityPolicy(
+                "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
+            )
+            .and()
+            .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+            .and()
+            .featurePolicy(
+                "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'"
+            );
+
+        // Require authentication for all requests
+        http
+            .authorizeExchange()
+            .pathMatchers("/")
+            .permitAll()
+            .pathMatchers("/*.*")
+            .permitAll()
+            .pathMatchers("/api/auth-info")
+            .permitAll()
+            .pathMatchers("/api/authenticate")
+            .permitAll()
+            .pathMatchers("/api/**")
+            .authenticated()
+            // jhcc-custom : begin
+            .pathMatchers("/services/**", "/gateway/**", "/v2/api-docs", "/swagger-ui/index.html")
+            .authenticated()
+            .pathMatchers("/swagger-resources/**")
+            .permitAll()
+            .pathMatchers("/management/health")
+            .permitAll()
+            .pathMatchers("/management/info")
+            .permitAll()
+            .pathMatchers("/management/prometheus")
+            .permitAll()
+            .pathMatchers("/management/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN);
+        // jhcc-custom : end
+
+        // Allow showing /home within a frame
+        http.headers().frameOptions().mode(XFrameOptionsServerHttpHeadersWriter.Mode.SAMEORIGIN);
+
+        // Disable CSRF in the gateway to prevent conflicts with proxied service CSRF
+        http.csrf().disable();
         return http.build();
     }
 
