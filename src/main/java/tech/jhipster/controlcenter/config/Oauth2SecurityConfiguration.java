@@ -41,8 +41,8 @@ import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
-import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.util.StringUtils;
@@ -104,6 +104,7 @@ public class Oauth2SecurityConfiguration {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        // @formatter:off
         // Authenticate through configured OpenID Provider
         http.oauth2Login();
 
@@ -123,53 +124,43 @@ public class Oauth2SecurityConfiguration {
             .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
             .exceptionHandling()
-            .accessDeniedHandler(problemSupport)
-            .authenticationEntryPoint(problemSupport)
+                .accessDeniedHandler(problemSupport)
+                .authenticationEntryPoint(problemSupport)
             .and()
-            .headers()
-            .contentSecurityPolicy(
-                "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
-            )
-            .and()
-            .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-            .and()
-            .featurePolicy(
-                "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'"
-            );
+                .headers()
+                    .contentSecurityPolicy(
+                        "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
+                    )
+                .and()
+                    .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+                .and()
+                    .featurePolicy(
+                        "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'"
+                    )
+                .and()
+                    .frameOptions().disable();
 
         // Require authentication for all requests
         http
             .authorizeExchange()
-            .pathMatchers("/")
-            .permitAll()
-            .pathMatchers("/*.*")
-            .permitAll()
-            .pathMatchers("/api/auth-info")
-            .permitAll()
-            .pathMatchers("/api/authenticate")
-            .permitAll()
-            .pathMatchers("/api/**")
-            .authenticated()
+            .pathMatchers("/").permitAll()
+            .pathMatchers("/*.*").permitAll()
+            .pathMatchers("/api/auth-info").permitAll()
+            .pathMatchers("/api/authenticate").permitAll()
+            .pathMatchers("/api/**").authenticated()
             // jhcc-custom : begin
-            .pathMatchers("/services/**", "/gateway/**", "/v2/api-docs", "/swagger-ui/index.html")
-            .authenticated()
-            .pathMatchers("/swagger-resources/**")
-            .permitAll()
-            .pathMatchers("/management/health")
-            .permitAll()
-            .pathMatchers("/management/info")
-            .permitAll()
-            .pathMatchers("/management/prometheus")
-            .permitAll()
-            .pathMatchers("/management/**")
-            .hasAuthority(AuthoritiesConstants.ADMIN);
+            .pathMatchers("/services/**", "/gateway/**", "/v2/api-docs", "/swagger-ui/index.html").authenticated()
+            .pathMatchers("/swagger-resources/**").permitAll()
+            .pathMatchers("/management/health").permitAll()
+            .pathMatchers("/management/info").permitAll()
+            .pathMatchers("/management/prometheus").permitAll()
+            .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // jhcc-custom : end
 
-        // Allow showing /home within a frame
-        http.headers().frameOptions().mode(XFrameOptionsServerHttpHeadersWriter.Mode.SAMEORIGIN);
+        // for xsrf-token
+        http.csrf().csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
 
-        // Disable CSRF in the gateway to prevent conflicts with proxied service CSRF
-        http.csrf().disable();
+        // @formatter:on
         return http.build();
     }
 
