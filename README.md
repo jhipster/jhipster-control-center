@@ -10,7 +10,7 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 - `eureka`: Connect to an Eureka server and fetch its registered instances, configured in `application-eureka.yml`
 - `consul`: Connect to a Consul server and fetch its registered instances, configured in `application-consul.yml`
-- `staticdiscovery`: Uses a static list of instances provided as properties, configured in `application-staticdiscovery.yml`
+- `static`: Uses a static list of instances provided as properties, configured in `application-static.yml`
 - `kubernetes`: To be developed
 
 ### Control Center API
@@ -26,8 +26,8 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
 
-- for Consul : run ` docker-compose -f src/main/docker/consul.yml up -d `
-- for Eureka : run ` docker-compose -f src/main/docker/jhipster-registry.yml up -d `
+- for Consul : run `docker-compose -f src/main/docker/consul.yml up -d`
+- for Eureka : run `docker-compose -f src/main/docker/jhipster-registry.yml up -d`
 
 ### Step 2 : Run the cloned project
 
@@ -36,7 +36,7 @@ Eureka and Consul docker-compose files exist under `src/main/docker` to ease tes
 
 ## Running from Docker
 
-A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest` 
+A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest`
 
 ## Development
 
