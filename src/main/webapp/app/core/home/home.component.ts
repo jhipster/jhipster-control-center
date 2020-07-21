@@ -7,6 +7,8 @@ export default class Home extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
 
+  // jhcc-custom
+  /* istanbul ignore next */
   public openLogin(): void {
     this.loginService()
       .getProfileInfo()

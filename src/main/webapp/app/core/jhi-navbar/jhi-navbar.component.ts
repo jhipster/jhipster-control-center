@@ -2,6 +2,7 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 import { VERSION } from '@/constants';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
+import { profile } from 'console';
 
 @Component
 export default class JhiNavbar extends Vue {
@@ -23,11 +24,13 @@ export default class JhiNavbar extends Vue {
     });
   }
 
+  // jhcc-custom
+  /* istanbul ignore next */
   public logout(): void {
     this.loginService()
       .getProfileInfo()
-      .then(response => {
-        const profiles: string[] = response.data['activeProfiles'];
+      .then(profileInfo => {
+        const profiles: string[] = profileInfo.data['activeProfiles'];
         if (profiles.includes('oauth2')) {
           this.loginService()
             .logout()
