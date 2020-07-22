@@ -36,7 +36,8 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               appendTsSuffixTo: ['\\.vue$'],
-              happyPackMode: false,
+              happyPackMode: true,
+              transpileOnly: true,
             },
           },
         ],
@@ -107,6 +108,7 @@ module.exports = {
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
+      base: '/',
       template: './src/main/webapp/index.html',
       chunks: ['vendors', 'main', 'global'],
       chunksSortMode: 'manual',

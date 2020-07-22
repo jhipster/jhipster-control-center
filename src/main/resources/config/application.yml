@@ -145,7 +145,7 @@ jhipster:
     contact-name:
     contact-url:
     contact-email:
-    license:
+    license: unlicensed
     license-url:
 
 # jhcc-custom
