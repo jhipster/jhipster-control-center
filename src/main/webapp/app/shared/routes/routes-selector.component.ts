@@ -55,7 +55,7 @@ export default class RoutesSelectorComponent extends Vue {
   }
 
   /* istanbul ignore next */
-  private updateRoute(): void {
+  public updateRoute(): void {
     this.updatingRoutes = true;
     this.routesService()
       .findAll()

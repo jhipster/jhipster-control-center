@@ -7,7 +7,7 @@
                               v-model="searchedInstance" v-on:input="searchByAppName()" v-on:click.stop/>
             </p>
             <div v-for="route in routes" :key="route.path">
-                <button class="dropdown-item" v-on:click="[setActiveRoute(route),htmlActiveRoute = getActiveRoute(),$refs.dd.hide()]">
+                <button class="dropdown-item" v-on:click="[updateRoute(), setActiveRoute(route),htmlActiveRoute = getActiveRoute(),$refs.dd.hide()]">
                     <span>{{ route.serviceId.toUpperCase() }} {{ route.path ? '(' + route.path + ')' : '' }}</span>
                 </button>
             </div>
