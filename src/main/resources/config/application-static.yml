@@ -9,10 +9,11 @@ spring:
     #      - org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration
     #      - org.springframework.cloud.consul.ConsulAutoConfiguration
     #      - org.springframework.cloud.consul.discovery.ConsulCatalogWatchAutoConfiguration
-  cloud:
-    discovery:
-      client:
-        simple:
-          instances:
-            service1:
-              - uri: http://localhost:8081
+## Uncomment following lines to add a service to discover
+# cloud:
+#   discovery:
+#     client:
+#       simple:
+#         instances:
+#           service1:
+#             - uri: http://localhost:8081
