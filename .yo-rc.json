@@ -43,7 +43,8 @@
     "blueprints": [
       {
         "name": "generator-jhipster-vuejs",
-        "version": "1.8.0"
+        "version": "1.8.0",
+        "latestBlueprintVersion": "1.9.1"
       }
     ],
     "reactive": true,

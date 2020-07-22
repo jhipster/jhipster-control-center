@@ -26,7 +26,7 @@
             <font-awesome-icon icon="heart" />
             <span>Health</span>
           </b-nav-item>
-          <b-nav-item to="/admin/jhi-configuration">
+          <b-nav-item to="/applications/configuration">
             <font-awesome-icon icon="list" />
             <span>Configuration</span>
           </b-nav-item>
