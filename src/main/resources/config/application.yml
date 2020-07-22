@@ -106,6 +106,10 @@ spring:
       default-filters:
         - JWTRelay
 
+logging:
+  file:
+    name: target/jhipster-control-center.log
+
 server:
   servlet:
     session:

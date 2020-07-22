@@ -23,6 +23,7 @@ const InstanceComponent = () => import('../applications/instance/instance.vue');
 const LoggersComponent = () => import('../applications/loggers/loggers.vue');
 const MetricComponent = () => import('../applications/metric/metric.vue');
 const HealthComponent = () => import('../applications/health/health.vue');
+const LogfileComponent = () => import('../applications/logfile/logfile.vue');
 const ConfigurationComponent = () => import('../applications/configuration/configuration.vue');
 // jhcc-custom end
 
@@ -109,6 +110,12 @@ export default new Router({
       path: '/applications/health',
       name: 'InstanceHealthComponent',
       component: HealthComponent,
+      meta:  {authorities : [Authority.ADMIN]}
+    },
+    {
+      path: '/applications/logfile',
+      name: 'LogfileComponent',
+      component: LogfileComponent,
       meta:  {authorities : [Authority.ADMIN]}
     },
     {
