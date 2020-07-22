@@ -36,13 +36,6 @@
             <span>Home</span>
           </span>
         </b-nav-item>
-        <b-nav-item-dropdown right id="entity-menu" v-if="authenticated" active-class="active" class="pointer">
-          <span slot="button-content" class="navbar-dropdown-menu">
-            <font-awesome-icon icon="th-list" />
-            <span>Entities</span>
-          </span>
-          <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-        </b-nav-item-dropdown>
         <b-nav-item-dropdown
           right
           id="applications-menu"

@@ -10,7 +10,6 @@ import { Authority } from '@/shared/security/authority';
 const Home = () => import('../core/home/home.vue');
 const Error = () => import('../core/error/error.vue');
 import admin from '@/router/admin.ts';
-import entities from '@/router/entities.ts';
 import pages from '@/router/pages.ts';
 const JhiConfigurationComponent = () => import('../admin/configuration/configuration.vue');
 const JhiDocsComponent = () => import('../admin/docs/docs.vue');
@@ -85,7 +84,6 @@ export default new Router({
       meta: { authorities: [Authority.ADMIN] }
     },
     ...admin,
-    ...entities,
     ...pages,
     // jhcc-custom begin
     {
