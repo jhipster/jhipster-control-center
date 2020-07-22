@@ -50,7 +50,7 @@ export default class JhiLogfile extends Vue {
           },
           error => {
             /* istanbul ignore next */
-            let errorStatus = error.response.status;
+            const errorStatus = error.response.status;
             if (errorStatus === 404) {
               this.logtxt =
                 'No available logfile. Please note that it is not available by default, you need to set up the Spring Boot properties below! \n' +
