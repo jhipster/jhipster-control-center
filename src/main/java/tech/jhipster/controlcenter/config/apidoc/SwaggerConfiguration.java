@@ -3,7 +3,6 @@ package tech.jhipster.controlcenter.config.apidoc;
 import io.github.jhipster.config.JHipsterConstants;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,16 +43,22 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
         List<SwaggerResource> resources = new ArrayList<>();
         resources.add(swaggerResource("jhipster-control-center", "/v2/api-docs"));
         //Add the registered microservices swagger docs as additional swagger resources
-        List<Route> routes = routeLocator.getRoutes().collectList().block();
-        routes.forEach(
-            route -> {
-                String predicate = route.getPredicate().toString();
-                if (!predicate.contains("consul")) {
-                    String path = predicate.substring(predicate.indexOf("[") + 1, predicate.indexOf("]"));
-                    resources.add(swaggerResource(route.getId(), path.replace("**", "v2/api-docs")));
+        routeLocator
+            .getRoutes()
+            .collectList()
+            .subscribe(
+                routes -> {
+                    routes.forEach(
+                        route -> {
+                            String predicate = route.getPredicate().toString();
+                            if (!predicate.contains("consul")) {
+                                String path = predicate.substring(predicate.indexOf("[") + 1, predicate.indexOf("]"));
+                                resources.add(swaggerResource(route.getId(), path.replace("**", "v2/api-docs")));
+                            }
+                        }
+                    );
                 }
-            }
-        );
+            );
         return resources;
     }
 
