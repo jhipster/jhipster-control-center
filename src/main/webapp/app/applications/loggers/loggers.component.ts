@@ -6,6 +6,7 @@ import RoutesService, { Route } from '@/shared/routes/routes.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import AbstractComponent from '@/applications/abstract.component';
 
 @Component({
   components: {
@@ -13,7 +14,7 @@ import { Subject } from 'rxjs';
   },
   mixins: [Vue2Filters.mixin],
 })
-export default class JhiLoggers extends Vue {
+export default class JhiLoggers extends AbstractComponent {
   private loggers: Log[] = [];
   public filtered = '';
   public orderProp = 'name';
@@ -63,7 +64,13 @@ export default class JhiLoggers extends Vue {
     this.loggersService()
       .findAll(this.activeRoute)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(res => (this.loggers = res));
+      .subscribe(
+        res => {
+          this.loggers = res;
+          this.resetError();
+        },
+        error => (this.error = error)
+      );
   }
 
   /* istanbul ignore next */
