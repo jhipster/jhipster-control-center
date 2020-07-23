@@ -1,3 +1,16 @@
+## How to set authentication mode
+### Authentication mode
+# JHCC support two kinds of authentication mode: JWT or OAuth2
+### Authentication properties
+# According to the authentication mode chosen as a Spring profile, you have to set the right properties
+# Please note that current properties are set to run JHCC with default values, personalize them if needed
+# and remove those from other modes. You can only have one mode active.
+# By default, JWT is used.
+# In order to use OAuth2 mode, please:
+# - add to SPRING_PROFILES_ACTIVE this profile: oauth2
+# - uncomment keycloak part
+
+
 version: '2'
 services:
   jhipstercontrolcenter-app:
@@ -6,13 +19,13 @@ services:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
-      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=jhipster-control-center
-      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=jhipster-control-center
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+#      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
+#      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
+#      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
     ports:
       - 7419:7419
-  keycloak:
-    extends:
-      file: keycloak.yml
-      service: keycloak
+#  keycloak:
+#    extends:
+#      file: keycloak.yml
+#      service: keycloak
