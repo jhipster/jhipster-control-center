@@ -5,6 +5,7 @@ import RoutesService, { Route } from '@/shared/routes/routes.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import ConfigurationService, { Bean, PropertySource } from './configuration.service';
+import AbstractComponent from '@/applications/abstract.component';
 
 @Component({
   components: {
@@ -12,7 +13,7 @@ import ConfigurationService, { Bean, PropertySource } from './configuration.serv
   },
   mixins: [Vue2Filters.mixin],
 })
-export default class JhiConfiguration extends Vue {
+export default class JhiConfiguration extends AbstractComponent {
   allBeans: Bean[] = [];
   beans: Bean[] = [];
   propertySources: PropertySource[] = [];
@@ -53,9 +54,10 @@ export default class JhiConfiguration extends Vue {
           beans => {
             this.allBeans = beans;
             this.filterAndSortBeans();
+            this.resetError();
           },
-          () => {
-            this.routesService().routeDown(this.activeRoute);
+          error => {
+            this.error = error;
           }
         );
 
@@ -63,7 +65,13 @@ export default class JhiConfiguration extends Vue {
       this.instanceConfigurationService()
         .findPropertySources(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(propertySources => (this.propertySources = propertySources));
+        .subscribe(
+          propertySources => {
+            this.propertySources = propertySources;
+            this.resetError();
+          },
+          error => (this.error = error)
+        );
     } else {
       this.routesService().routeDown(this.activeRoute);
     }

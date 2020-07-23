@@ -51,7 +51,7 @@ export default class ConfigurationService {
     return Observable.create(observer => {
       const beansControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/configprops';
       const beansOfAnInstance = 'gateway/' + route.path + '/management/configprops';
-      const url = route && route.path && route.path.length > 0 ? beansOfAnInstance : beansControlCenter;
+      const url = route?.path?.length > 0 ? beansOfAnInstance : beansControlCenter;
 
       axios
         .get(url)
