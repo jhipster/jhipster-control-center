@@ -11,16 +11,11 @@ import JhiItemCountComponent from './shared/jhi-item-count.vue';
 import JhiSortIndicatorComponent from './shared/sort/jhi-sort-indicator.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 
-import HealthService from './admin/health/health.service';
-import MetricsService from './admin/metrics/metrics.service';
-import LogsService from './admin/logs/logs.service';
-
 import LoginService from './account/login.service';
 import AccountService from './account/account.service';
 
 import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
-import ConfigurationService from '@/admin/configuration/configuration.service';
 
 // jhcc-custom begin
 import { RefreshService } from '@/shared/refresh/refresh.service';
@@ -92,11 +87,6 @@ new Vue({
   provide: {
     loginService: () => loginService,
 
-    healthService: () => new HealthService(),
-
-    configurationService: () => new ConfigurationService(),
-    logsService: () => new LogsService(),
-    metricsService: () => new MetricsService(),
     alertService: () => alertService,
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,

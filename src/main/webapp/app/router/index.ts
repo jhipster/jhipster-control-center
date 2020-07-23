@@ -9,13 +9,7 @@ import Router from 'vue-router';
 import { Authority } from '@/shared/security/authority';
 const Home = () => import('../core/home/home.vue');
 const Error = () => import('../core/error/error.vue');
-import admin from '@/router/admin.ts';
 import pages from '@/router/pages.ts';
-const JhiConfigurationComponent = () => import('../admin/configuration/configuration.vue');
-const JhiDocsComponent = () => import('../admin/docs/docs.vue');
-const JhiHealthComponent = () => import('../admin/health/health.vue');
-const JhiLogsComponent = () => import('../admin/logs/logs.vue');
-const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 
 // jhcc-custom begin
 const InstanceComponent = () => import('../applications/instance/instance.vue');
@@ -52,38 +46,6 @@ export default new Router({
       component: Error,
       meta: { error404: true }
     },
-    {
-      path: '/admin/docs',
-      name: 'JhiDocsComponent',
-      component: JhiDocsComponent,
-      meta: { authorities: [Authority.ADMIN] }
-    },
-
-    {
-      path: '/admin/jhi-health',
-      name: 'JhiHealthComponent',
-      component: JhiHealthComponent,
-      meta: { authorities: [Authority.ADMIN] }
-    },
-    {
-      path: '/admin/logs',
-      name: 'JhiLogsComponent',
-      component: JhiLogsComponent,
-      meta: { authorities: [Authority.ADMIN] }
-    },
-    {
-      path: '/admin/jhi-metrics',
-      name: 'JhiMetricsComponent',
-      component: JhiMetricsComponent,
-      meta: { authorities: [Authority.ADMIN] }
-    },
-    {
-      path: '/admin/jhi-configuration',
-      name: 'JhiConfigurationComponent',
-      component: JhiConfigurationComponent,
-      meta: { authorities: [Authority.ADMIN] }
-    },
-    ...admin,
     ...pages,
     // jhcc-custom begin
     {
