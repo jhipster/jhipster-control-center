@@ -38,39 +38,6 @@
         </b-nav-item>
         <b-nav-item-dropdown
           right
-          id="applications-menu"
-          v-if="hasAnyAuthority('ROLE_ADMIN')"
-          :class="{ 'router-link-active': subIsActive('/applications') }"
-          active-class="active"
-          class="pointer"
-        >
-          <span slot="button-content" class="navbar-dropdown-menu">
-            <font-awesome-icon icon="cogs" />
-            <span>Administration</span>
-          </span>
-          <b-dropdown-item to="/admin/jhi-metrics">
-            <font-awesome-icon icon="tachometer-alt" />
-            <span id="collapse-1">Metrics</span>
-          </b-dropdown-item>
-          <b-dropdown-item to="/admin/jhi-health">
-            <font-awesome-icon icon="heart" />
-            <span>Health</span>
-          </b-dropdown-item>
-          <b-dropdown-item to="/admin/jhi-configuration">
-            <font-awesome-icon icon="list" />
-            <span>Configuration</span>
-          </b-dropdown-item>
-          <b-dropdown-item to="/admin/logs">
-            <font-awesome-icon icon="tasks" />
-            <span>Logs</span>
-          </b-dropdown-item>
-          <b-dropdown-item v-if="swaggerEnabled" to="/admin/docs">
-            <font-awesome-icon icon="book" />
-            <span>API</span>
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
-        <b-nav-item-dropdown
-          right
           href="javascript:void(0);"
           id="account-menu"
           :class="{ 'router-link-active': subIsActive('/account') }"
