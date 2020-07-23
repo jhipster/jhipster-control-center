@@ -67,7 +67,7 @@ describe('Loggers Component', () => {
       await loggers.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers');
+      expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers/');
     });
 
     it('should refresh active route logs if it is a service', async () => {
@@ -77,7 +77,7 @@ describe('Loggers Component', () => {
       await loggers.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/loggers');
+      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/loggers/');
     });
   });
 
@@ -101,7 +101,7 @@ describe('Loggers Component', () => {
 
     // THEN
     expect(mockedAxios.post).toHaveBeenCalledWith('/management/loggers/main', { configuredLevel: 'ERROR' });
-    expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers');
+    expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers/');
   });
 
   it('should change log level correctly of a service', async () => {

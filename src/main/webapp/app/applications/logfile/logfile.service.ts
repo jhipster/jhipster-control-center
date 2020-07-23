@@ -1,17 +1,13 @@
-import Vue from 'vue';
 import axios from 'axios';
-import Component from 'vue-class-component';
 import { Route } from '@/shared/routes/routes.service';
 import { Observable } from 'rxjs';
-import { SERVER_API_URL } from '@/constants';
+import AbstractService from '@/applications/abstract.service';
 
-export default class LogfileService {
+export default class LogfileService extends AbstractService {
   /** return logfile of a route */
   public find(route: Route): Observable<string> {
     return Observable.create(observer => {
-      const logfileControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/logfile';
-      const logfileOfAnInstance = 'gateway/' + route.path + '/management/logfile';
-      const url = route && route.path && route.path.length > 0 ? logfileOfAnInstance : logfileControlCenter;
+      const url = this.generateUri(route, '/management/logfile/');
 
       axios
         .get(url)

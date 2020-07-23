@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil } from 'rxjs/operators';
 import InstanceHealthService from './health.service';
+import AbstractComponent from '@/applications/abstract.component';
 
 @Component({
   components: {
@@ -13,7 +14,7 @@ import InstanceHealthService from './health.service';
     'routes-selector': RoutesSelectorVue,
   },
 })
-export default class JhiInstanceHealth extends Vue {
+export default class JhiInstanceHealth extends AbstractComponent {
   public healthData: any = null;
   public currentHealth: any = null;
 
@@ -43,15 +44,11 @@ export default class JhiInstanceHealth extends Vue {
       .checkHealth(this.activeRoute)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        health => (this.healthData = this.instanceHealthService().transformHealthData(health)),
-        error => {
-          if (error.status === 503 || error.status === 500 || error.status === 404) {
-            this.healthData = this.instanceHealthService().transformHealthData(error.error);
-            if (error.status === 500 || error.status === 404) {
-              this.routesService().routeDown(this.activeRoute);
-            }
-          }
-        }
+        health => {
+          this.healthData = this.instanceHealthService().transformHealthData(health);
+          this.resetError();
+        },
+        error => (this.error = error)
       );
   }
 

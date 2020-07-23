@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { Observable } from 'rxjs';
 import { SERVER_API_URL } from '@/constants';
+import AbstractService from '@/applications/abstract.service';
 
 interface Route {
   path: string;
@@ -12,20 +13,19 @@ interface Route {
   order: number;
 }
 
-export default class InstanceHealthService {
+export default class InstanceHealthService extends AbstractService {
   public separator: string;
   private axios: AxiosInstance;
 
   constructor() {
+    super();
     this.separator = '.';
     this.axios = axios;
   }
 
   public checkHealth(route: Route): Observable<any> {
     return Observable.create(observer => {
-      const healthControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/health';
-      const healthOfAnInstance = 'gateway/' + route.path + '/management/health';
-      const url = route && route.path && route.path.length > 0 ? healthOfAnInstance : healthControlCenter;
+      const url = this.generateUri(route, '/management/health/');
 
       axios
         .get(url)

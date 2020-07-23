@@ -80,7 +80,7 @@ describe('Health Component', () => {
       health.refreshActiveRouteHealth();
       await health.$nextTick();
 
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/health');
+      expect(mockedAxios.get).toHaveBeenCalledWith('/management/health/');
     });
 
     it('should refresh active route health if it is a service', async () => {
@@ -89,7 +89,7 @@ describe('Health Component', () => {
       health.refreshActiveRouteHealth();
       await health.$nextTick();
 
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/health');
+      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/health/');
     });
   });
 

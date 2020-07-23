@@ -1,10 +1,9 @@
-import Vue from 'vue';
 import axios from 'axios';
 import Component from 'vue-class-component';
 import { Route } from '@/shared/routes/routes.service';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { SERVER_API_URL } from '@/constants';
+import AbstractService from '@/applications/abstract.service';
 
 export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
 
@@ -23,7 +22,7 @@ export class Log {
 }
 
 @Component
-export default class LoggersService extends Vue {
+export default class LoggersService extends AbstractService {
   /** convert json array of loggers to loggersResponse */
   /* istanbul ignore next */
   private static parseJsonToArrayOfLog(data: any): Log[] {
@@ -40,9 +39,7 @@ export default class LoggersService extends Vue {
     const changeLoggersLevelResponses: Observable<{}>[] = [];
     for (let i = 0; i < routes.length; i++) {
       const loggersLevelResponses = Observable.create(observer => {
-        const logsControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/loggers/' + name;
-        const logsOfAnInstance = 'gateway/' + routes[i].path + '/management/loggers/' + name;
-        const url = routes[i] && routes[i].path && routes[i].path.length > 0 ? logsOfAnInstance : logsControlCenter;
+        const url = this.generateUri(routes[i], '/management/loggers/', name);
 
         axios
           .post(url, { configuredLevel })
@@ -59,9 +56,7 @@ export default class LoggersService extends Vue {
   /** return all log of a route */
   public findAll(route: Route): Observable<Log[]> {
     return Observable.create(observer => {
-      const logsControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/loggers';
-      const logsOfAnInstance = 'gateway/' + route.path + '/management/loggers';
-      const url = route && route.path && route.path.length > 0 ? logsOfAnInstance : logsControlCenter;
+      const url = this.generateUri(route, '/management/loggers/');
 
       axios
         .get(url)

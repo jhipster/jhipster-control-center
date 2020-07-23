@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Route } from '@/shared/routes/routes.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SERVER_API_URL } from '@/constants';
+import AbstractService from '@/applications/abstract.service';
 
 export interface ConfigProps {
   contexts: Contexts;
@@ -45,13 +45,11 @@ export interface Property {
   origin?: string;
 }
 
-export default class ConfigurationService {
+export default class ConfigurationService extends AbstractService {
   /** return beans of a route */
   public findBeans(route: Route): Observable<Bean[]> {
     return Observable.create(observer => {
-      const beansControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/configprops';
-      const beansOfAnInstance = 'gateway/' + route.path + '/management/configprops';
-      const url = route && route.path && route.path.length > 0 ? beansOfAnInstance : beansControlCenter;
+      const url = this.generateUri(route, '/management/configprops/');
 
       axios
         .get(url)
@@ -76,9 +74,7 @@ export default class ConfigurationService {
   /** return property sources of a route */
   public findPropertySources(route: Route): Observable<PropertySource[]> {
     return Observable.create(observer => {
-      const propertySourceControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/env';
-      const propertySourceOfAnInstance = 'gateway/' + route.path + '/management/env';
-      const url = route && route.path && route.path.length > 0 ? propertySourceOfAnInstance : propertySourceControlCenter;
+      const url = this.generateUri(route, '/management/env/');
 
       axios
         .get(url)

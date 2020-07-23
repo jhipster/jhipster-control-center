@@ -4,7 +4,10 @@
             <span id="health-page-heading">Health Checks</span>
             <routes-selector  class="float-right refresh-left-side"></routes-selector>
         </h2>
-        <div class="table-responsive">
+        <div v-if="isError">
+            <span v-html="renderErrorMessage()"></span>
+        </div>
+        <div v-else class="table-responsive">
             <table id="healthCheck" class="table table-striped">
                 <thead>
                 <tr>
