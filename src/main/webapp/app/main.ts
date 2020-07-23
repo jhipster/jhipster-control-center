@@ -57,7 +57,8 @@ const store = config.initVueXStore(Vue);
 
 const alertService = new AlertService(store);
 const loginService = new LoginService();
-const accountService = new AccountService(store, router);
+const accountService = new AccountService(store, (<any>Vue).cookie, router);
+
 // jhcc-custom begin
 const refreshService = new RefreshService(store);
 const routesService = new RoutesService(store);

@@ -59,6 +59,7 @@
         <archunit-junit5.version>0.14.1</archunit-junit5.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
         <springfox.version>3.0.0-SNAPSHOT</springfox.version>
+        <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -309,6 +310,16 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!-- Spring Oauth2 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <version>${oauth2-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
         </dependency>
 
         <!-- jhipster-needle-maven-add-dependency -->
@@ -769,6 +780,15 @@
         </pluginManagement>
     </build>
     <profiles>
+        <profile>
+            <id>oauth2</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-security</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>swagger</id>
             <properties>

@@ -5,6 +5,7 @@ import static org.springframework.security.web.server.util.matcher.ServerWebExch
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -29,12 +30,13 @@ import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
-public class SecurityConfiguration {
+@Profile("!" + Constants.PROFILE_OAUTH2)
+public class JwtSecurityConfiguration {
     private final TokenProvider tokenProvider;
 
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
+    public JwtSecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
         this.tokenProvider = tokenProvider;
         this.problemSupport = problemSupport;
     }

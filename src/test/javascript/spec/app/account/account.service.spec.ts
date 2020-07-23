@@ -10,6 +10,11 @@ jest.mock('axios', () => ({
   get: jest.fn(),
   post: jest.fn(),
 }));
+const mockedCookie = {
+  get: jest.fn(() => {
+    return 'token';
+  }),
+};
 
 const localVue = createLocalVue();
 
@@ -26,7 +31,7 @@ describe('Account Service test suite', () => {
   it('should init service and do not retrieve account', async () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({ data: { 'display-ribbon-on-profiles': 'dev', activeProfiles: ['dev', 'test'] } }));
 
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     expect(store.getters.logon).toBe(false);
     expect(accountService.authenticated).toBe(false);
@@ -41,7 +46,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     expect((<any>router).history.current.fullPath).toBe('/');
     expect(store.getters.logon).toBe(false);
@@ -54,7 +59,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     mockedAxios.get = jest.fn(apiName => (apiName === 'api/account' ? Promise.reject() : Promise.resolve({})));
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     expect((<any>router).history.current.fullPath).toBe('/');
     expect(accountService.authenticated).toBe(false);
@@ -66,7 +71,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     mockedAxios.get = jest.fn(apiName => Promise.reject());
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect(value).toBe(false);
@@ -77,7 +82,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     mockedAxios.get.mockReturnValue(Promise.resolve({ data: { authorities: ['USER'] } }));
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect(value).toBe(true);
@@ -86,7 +91,7 @@ describe('Account Service test suite', () => {
 
   it('should init service as not authentified and not return any authorities admin and not retrieve account', async () => {
     mockedAxios.get = jest.fn(apiName => (apiName === 'api/account' ? Promise.reject() : Promise.resolve({})));
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('ADMIN').then((value: boolean) => {
       expect(value).toBe(false);
@@ -95,7 +100,7 @@ describe('Account Service test suite', () => {
 
   it('should init service as not authentified and return authority user', async () => {
     mockedAxios.get = jest.fn(apiName => (apiName === 'api/account' ? Promise.reject() : Promise.resolve({})));
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, mockedCookie, router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect(value).toBe(true);

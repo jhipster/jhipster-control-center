@@ -151,6 +151,11 @@ jhipster:
     contact-email:
     license: unlicensed
     license-url:
+  security:
+    oauth2:
+      audience:
+        - account
+        - api://default
 
 # jhcc-custom
 eureka:

@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
 @Component
 public class JWTRelayGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {

@@ -2,6 +2,7 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 import { VERSION } from '@/constants';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
+import { profile } from 'console';
 
 @Component
 export default class JhiNavbar extends Vue {
@@ -23,15 +24,50 @@ export default class JhiNavbar extends Vue {
     });
   }
 
+  // jhcc-custom
+  /* istanbul ignore next */
   public logout(): void {
-    localStorage.removeItem('jhi-authenticationToken');
-    sessionStorage.removeItem('jhi-authenticationToken');
-    this.$store.commit('logout');
-    this.$router.push('/');
+    this.loginService()
+      .getProfileInfo()
+      .then(profileInfo => {
+        const profiles: string[] = profileInfo.data['activeProfiles'];
+        if (profiles.includes('oauth2')) {
+          this.loginService()
+            .logout()
+            .then(response => {
+              this.$store.commit('logout');
+              this.$router.push('/');
+              const data = response.data;
+              let logoutUrl = data.logoutUrl;
+              // if Keycloak, uri has protocol/openid-connect/token
+              if (logoutUrl.indexOf('/protocol') > -1) {
+                logoutUrl = logoutUrl + '?redirect_uri=' + window.location.origin;
+              } else {
+                // Okta
+                logoutUrl = logoutUrl + '?id_token_hint=' + data.idToken + '&post_logout_redirect_uri=' + window.location.origin;
+              }
+              window.location.href = logoutUrl;
+            });
+        } else {
+          localStorage.removeItem('jhi-authenticationToken');
+          sessionStorage.removeItem('jhi-authenticationToken');
+          this.$store.commit('logout');
+          this.$router.push('/');
+        }
+      });
   }
 
   public openLogin(): void {
-    this.loginService().openLogin((<any>this).$root);
+    this.loginService()
+      .getProfileInfo()
+      .then(response => {
+        const profiles: string[] = response.data['activeProfiles'];
+        if (profiles.includes('oauth2')) {
+          this.loginService().login();
+        } else {
+          this.loginService().openLogin((<any>this).$root);
+        }
+      });
   }
 
   public get authenticated(): boolean {
