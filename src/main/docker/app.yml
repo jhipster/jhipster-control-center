@@ -8,6 +8,7 @@
 # By default, JWT is used.
 # In order to use OAuth2 mode, please:
 # - add to SPRING_PROFILES_ACTIVE this profile: oauth2
+# - uncomment SPRING_SECURITY_OAUTH2_CLIENT properties
 # - uncomment keycloak part
 
 
