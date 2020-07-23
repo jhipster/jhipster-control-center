@@ -25,7 +25,7 @@ export default class InstanceHealthService {
     return Observable.create(observer => {
       const healthControlCenter = (SERVER_API_URL !== undefined ? SERVER_API_URL : '') + '/management/health';
       const healthOfAnInstance = 'gateway/' + route.path + '/management/health';
-      const url = route && route.path && route.path.length > 0 ? healthOfAnInstance : healthControlCenter;
+      const url = route?.path?.length > 0 ? healthOfAnInstance : healthControlCenter;
 
       axios
         .get(url)
