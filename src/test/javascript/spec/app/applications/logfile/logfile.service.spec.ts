@@ -61,7 +61,7 @@ describe('Logfile Component', () => {
       await logfile.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/logfile');
+      expect(mockedAxios.get).toHaveBeenCalledWith('/management/logfile/');
     });
 
     it('should refresh active route logfile if it is a service', async () => {
@@ -71,7 +71,7 @@ describe('Logfile Component', () => {
       await logfile.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/logfile');
+      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/logfile/');
     });
   });
 });

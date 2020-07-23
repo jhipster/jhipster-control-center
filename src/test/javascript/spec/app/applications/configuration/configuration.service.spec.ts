@@ -87,8 +87,8 @@ describe('Configuration Component', () => {
       await configuration.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/configprops');
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/env');
+      expect(mockedAxios.get).toHaveBeenCalledWith('/management/configprops/');
+      expect(mockedAxios.get).toHaveBeenCalledWith('/management/env/');
     });
 
     it('should refresh active route beans if it is a service', async () => {
@@ -98,8 +98,8 @@ describe('Configuration Component', () => {
       await configuration.$nextTick();
 
       // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/configprops');
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/env');
+      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/configprops/');
+      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/env/');
     });
   });
 
