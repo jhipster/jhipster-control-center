@@ -8,6 +8,7 @@ import { takeUntil, map, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
+import AbstractComponent from '@/applications/abstract.component';
 
 @Component({
   components: {
@@ -16,7 +17,7 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
     'metrics-modal': JhiMetricModal,
   },
 })
-export default class JhiMetric extends Vue {
+export default class JhiMetric extends AbstractComponent {
   public metrics: any = {};
   public threads: any = null;
   public threadStats: any = {};
@@ -59,7 +60,12 @@ export default class JhiMetric extends Vue {
             )
         )
       )
-      .subscribe();
+      .subscribe(
+        () => {
+          this.resetError();
+        },
+        error => (this.error = error)
+      );
   }
 
   /** open modal for thread's metrics */

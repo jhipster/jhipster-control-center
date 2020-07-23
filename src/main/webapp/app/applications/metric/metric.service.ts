@@ -16,11 +16,16 @@ export default class MetricService {
       const metricsOfAnInstance = 'gateway/' + route.path + '/management/jhimetrics/';
       const url = route && route.path && route.path.length > 0 ? metricsOfAnInstance : metricsControlCenter;
 
-      axios.get(url).then(res => {
-        const metrics: Metrics = res.data;
-        observer.next(metrics);
-        observer.complete();
-      });
+      axios
+        .get(url)
+        .then(res => {
+          const metrics: Metrics = res.data;
+          observer.next(metrics);
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error);
+        });
     });
   }
 
