@@ -6,9 +6,9 @@ export default class AbstractComponent extends Vue {
 
   renderErrorMessage(): string {
     return (
-      `<div><p>unable to reach the instance at ${this.internalError.path}</p>` +
-      '<p>please be sure the application is available <p>' +
-      `<p>error message: ${this.internalError.message}</p></div>`
+      `<div><p>Unable to reach the instance at ${this.internalError.path}</p>` +
+      '<p>Please, be sure the application is available.<p>' +
+      `<p>Error message: ${this.internalError.message}</p></div>`
     );
   }
 
