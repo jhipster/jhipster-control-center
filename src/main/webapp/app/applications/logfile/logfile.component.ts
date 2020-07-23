@@ -2,11 +2,11 @@ import { Component, Vue, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
-import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import LogfileService from './logfile.service';
 import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
+import AbstractComponent from '@/applications/abstract.component';
 
 @Component({
   components: {
@@ -15,8 +15,8 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
   },
   mixins: [Vue2Filters.mixin],
 })
-export default class JhiLogfile extends Vue {
-  public logtxt = '';
+export default class JhiLogfile extends AbstractComponent {
+  public logFileContent = '';
 
   activeRoute: Route;
   routes: Route[];
@@ -45,14 +45,15 @@ export default class JhiLogfile extends Vue {
         .find(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
-          logtxt => {
-            this.logtxt = logtxt;
+          logFileContent => {
+            this.logFileContent = logFileContent;
+            this.resetError();
           },
           error => {
             /* istanbul ignore next */
             const errorStatus = error.response.status;
             if (errorStatus === 404) {
-              this.logtxt =
+              this.logFileContent =
                 'No available logfile. Please note that it is not available by default, you need to set up the Spring Boot properties below! \n' +
                 'Please check:\n ' +
                 '- if the microservice is up\n ' +
@@ -63,8 +64,7 @@ export default class JhiLogfile extends Vue {
                 '- https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html\n ' +
                 '- https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html';
             } else {
-              this.logtxt =
-                'Error during retrieving log file for the current application. Please be sure the application is available. \n' + error;
+              this.error = error;
             }
           }
         );
