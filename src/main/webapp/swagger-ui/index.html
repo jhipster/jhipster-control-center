@@ -63,8 +63,8 @@
                             req.headers['X-XSRF-TOKEN'] = getCSRF();
                         } else {
                             // working only with JWT authentication
-                            var authToken = JSON.parse(localStorage.getItem("jhi-authenticationtoken")
-                                || sessionStorage.getItem("jhi-authenticationtoken"));
+                            var authToken = JSON.parse(localStorage.getItem("jhi-authenticationToken")
+                                || sessionStorage.getItem("jhi-authenticationToken"));
                             if (authToken) {
                                 req.headers['Authorization'] = "Bearer " + authToken;
                             }
