@@ -23,6 +23,7 @@ import org.springframework.security.web.server.util.matcher.NegatedServerWebExch
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.util.StringUtils;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
+import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
@@ -87,21 +88,15 @@ public class JwtSecurityConfiguration {
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
-            // jhcc-custom : need to be deleted -- begin
             .pathMatchers("/api/authenticate").permitAll()
-            .pathMatchers("/api/**").permitAll()
+            .pathMatchers("/api/**").authenticated()
+            // jhcc-custom : begin
+            .pathMatchers("/services/**", "/gateway/**", "/v2/api-docs", "/swagger-ui/index.html").authenticated()
             .pathMatchers("/swagger-resources/**").permitAll()
-            .pathMatchers("/v2/api-docs").permitAll()
-            .pathMatchers("/gateway/**").permitAll()
-            // jhcc-custom : need to be deleted -- end
-            // .pathMatchers("/api/**").authenticated()
-            // .pathMatchers("/services/**", "/swagger-resources/**", "/v2/api-docs").authenticated()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
-            // jhcc-custom : need to be deleted
-            .pathMatchers("/management/**").permitAll();
-        // .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+            .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // @formatter:on
         return http.build();
     }

@@ -38,7 +38,7 @@
             <font-awesome-icon icon="indent" />
             <span>Logfile</span>
           </b-nav-item>
-          <b-nav-item v-if="swaggerEnabled" to="/admin/docs">
+          <b-nav-item v-if="swaggerEnabled" to="/applications/docs">
             <font-awesome-icon icon="book" />
             <span>API</span>
           </b-nav-item>

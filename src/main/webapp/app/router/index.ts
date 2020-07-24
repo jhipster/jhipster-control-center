@@ -18,6 +18,7 @@ const MetricComponent = () => import('../applications/metric/metric.vue');
 const HealthComponent = () => import('../applications/health/health.vue');
 const LogfileComponent = () => import('../applications/logfile/logfile.vue');
 const ConfigurationComponent = () => import('../applications/configuration/configuration.vue');
+const DocsComponent = () => import('../applications/docs/docs.vue');
 // jhcc-custom end
 
 /* tslint:disable */
@@ -82,6 +83,12 @@ export default new Router({
       path: '/applications/configuration',
       name: 'InstanceConfigurationComponent',
       component: ConfigurationComponent,
+      meta:  {authorities : [Authority.ADMIN]}
+    },
+    {
+      path: '/applications/docs',
+      name: 'DocsComponent',
+      component: DocsComponent,
       meta:  {authorities : [Authority.ADMIN]}
     },
     // jhcc-custom end
