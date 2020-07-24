@@ -3,7 +3,7 @@
     <refresh-selector class="float-right"></refresh-selector>
     <routes-selector class="float-right mr-2"></routes-selector>
     <h2>
-      <span id="metrics-page-heading">Application Metrics</span>
+      <span id="metrics-page-heading" data-cy="metrics-page-heading">Application Metrics</span>
     </h2>
     <div v-if="isError">
       <span v-html="renderErrorMessage()"></span>

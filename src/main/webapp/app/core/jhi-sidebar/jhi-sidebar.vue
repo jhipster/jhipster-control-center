@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar" v-if="hasAnyAuthority('ROLE_ADMIN')">
-    <b-sidebar bg-variant="dark" text-variant="light" id="sidebar-footer" no-close-on-route-change no-close-on-esc visible>
+    <b-sidebar bg-variant="dark" text-variant="light" id="sidebar-footer" data-cy="sidebar" no-close-on-route-change no-close-on-esc visible>
       <template v-slot:footer="{ hide }">
         <div class="d-flex text-light align-items-center">
           <b-button block variant="primary" @click="hide">
@@ -18,27 +18,27 @@
             <font-awesome-icon icon="chart-line" />
             <span>DashBoard</span>
           </b-nav-item>
-          <b-nav-item to="/applications/metric">
+          <b-nav-item to="/applications/metric" data-cy="metrics-menu">
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
-          <b-nav-item to="/applications/health">
+          <b-nav-item to="/applications/health" data-cy="health-menu">
             <font-awesome-icon icon="heart" />
             <span>Health</span>
           </b-nav-item>
-          <b-nav-item to="/applications/configuration">
+          <b-nav-item to="/applications/configuration" data-cy="configuration-menu">
             <font-awesome-icon icon="list" />
             <span>Configuration</span>
           </b-nav-item>
-          <b-nav-item to="/applications/loggers">
+          <b-nav-item to="/applications/loggers" data-cy="logs-menu">
             <font-awesome-icon icon="tasks" />
             <span>Logs</span>
           </b-nav-item>
-          <b-nav-item to="/applications/logfile">
+          <b-nav-item to="/applications/logfile" data-cy="logsfile-menu">
             <font-awesome-icon icon="indent" />
             <span>Logfile</span>
           </b-nav-item>
-          <b-nav-item v-if="swaggerEnabled" to="/applications/docs">
+          <b-nav-item v-if="swaggerEnabled" to="/applications/docs" data-cy="swagger-menu">
             <font-awesome-icon icon="book" />
             <span>API</span>
           </b-nav-item>

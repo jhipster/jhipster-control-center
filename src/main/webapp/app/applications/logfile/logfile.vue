@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head">
-      <h2 class="d-inline-block">View Logs</h2>
+      <h2 class="d-inline-block" data-cy="logsfile-page-heading">View Logs</h2>
       <refresh-selector class="float-right refresh-left-side">button</refresh-selector>
       <routes-selector class="float-right refresh-left-side mr-2"></routes-selector>
     </div>
