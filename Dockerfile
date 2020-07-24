@@ -17,7 +17,8 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JAVA_OPTS="" \
     SPRING_PROFILES_ACTIVE=prod
 EXPOSE 7419
-RUN apt-get install -y curl net-tools && \
+RUN apt-get update && \
+    apt-get install -y curl iproute2 && \
     apt-get clean && \
     mkdir /target && \
     chmod g+rwx /target
