@@ -6,8 +6,8 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th class="text-left">Name</th>
-                        <th class="text-left">Value</th>
+                        <th scope="col" class="text-left">Name</th>
+                        <th scope="col" class="text-left">Value</th>
                     </tr>
                     </thead>
                     <tbody>

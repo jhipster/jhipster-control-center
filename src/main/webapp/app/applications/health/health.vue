@@ -11,9 +11,9 @@
             <table id="healthCheck" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Service Name</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Details</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col" class="text-center">Status</th>
+                    <th scope="col" class="text-center">Details</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -16,8 +16,8 @@
             <table class="table table-striped table-bordered table-responsive d-table table-dark" aria-describedby="spring-configuration">
                 <thead>
                     <tr>
-                        <th class="w-40" v-on:click="changeOrder('prefix')"><span class="mr-1">Prefix</span><font-awesome-icon icon="sort" /></th>
-                        <th class="w-60" v-on:click="changeOrder('properties')"><span class="mr-1">Properties</span><font-awesome-icon icon="sort" /></th>
+                        <th scope= "col" class="w-40" v-on:click="changeOrder('prefix')"><span class="mr-1">Prefix</span><font-awesome-icon icon="sort" /></th>
+                        <th scope= "col" class="w-60" v-on:click="changeOrder('properties')"><span class="mr-1">Properties</span><font-awesome-icon icon="sort" /></th>
                     </tr>
                 </thead>
                 <tbody>

@@ -8,12 +8,12 @@
             <table class="table table-striped table-bordered table-responsive d-table">
                 <thead>
                 <tr>
-                    <th class="w-20">Service</th>
-                    <th class="w-30">Instance</th>
-                    <th class="w-30">Profile</th>
-                    <th class="w-30">Git</th>
-                    <th class="text-center">Detail</th>
-                    <th class="text-center">Kill</th>
+                    <th scope="col" class="w-20">Service</th>
+                    <th scope="col" class="w-30">Instance</th>
+                    <th scope="col" class="w-30">Profile</th>
+                    <th scope="col" class="w-30">Git</th>
+                    <th scope="col" class="text-center">Detail</th>
+                    <th scope="col" class="text-center">Kill</th>
                 </tr>
                 </thead>
                 <tbody>
