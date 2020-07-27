@@ -5,9 +5,10 @@ import * as config from '@/shared/config/config';
 import InstanceVue from '@/applications/instance/instance.vue';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
-import InstanceService, { Instance, Metadata } from '@/applications/instance/instance.service';
+import InstanceService, { Instance } from '@/applications/instance/instance.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { BootstrapVue } from 'bootstrap-vue';
+import { Observable } from 'rxjs';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -19,6 +20,29 @@ localVue.directive('b-modal', {});
 localVue.use(BootstrapVue);
 
 const store = config.initVueXStore(localVue);
+console.log = jest.fn();
+const instanceService = new InstanceService();
+const refreshService = new RefreshService(store);
+refreshService.refreshReload$ = new Observable(subscriber => {
+  subscriber.next();
+});
+
+const inst: Instance = {
+  serviceId: 'app1',
+  instanceId: 'app1-id',
+  uri: 'http://127.0.0.01:8080',
+  host: '127.0.0.1',
+  port: 8080,
+  secure: false,
+  metadata: {},
+};
+
+const instanceList: Array<Instance> = [inst];
+
+const instancesRoute = [
+  { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
+  { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
+];
 
 jest.mock('axios', () => ({
   get: jest.fn(),
@@ -28,19 +52,15 @@ jest.mock('axios', () => ({
 const stubbedModal = {
   template: '<div></div>',
   methods: {
-    show() {},
+    show: () => jest.fn(),
   },
-};
-
-const RefreshSelectorMixin = {
-  inject: ['refreshService'],
 };
 
 describe('Instance Component', () => {
   let wrapper: Wrapper<InstanceClass>;
   let instance: InstanceClass;
 
-  beforeEach(() => {
+  beforeAll(() => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = mount<InstanceClass>(InstanceVue, {
       localVue,
@@ -48,158 +68,94 @@ describe('Instance Component', () => {
         bModal: stubbedModal,
       },
       provide: {
-        instanceService: () => new InstanceService(),
-        refreshService: () => new RefreshService(store),
+        instanceService: () => instanceService,
+        refreshService: () => refreshService,
       },
     });
     instance = wrapper.vm;
   });
 
-  describe('should refresh list of instance data', () => {
-    it('should call refreshInstancesData on init', async () => {
-      // GIVEN
-      mockedAxios.get.mockReturnValue(Promise.resolve({}));
+  it('when component is mounted', async () => {
+    const refreshInstancesData = jest.fn();
+    const refreshInstancesRoute = jest.fn();
 
-      // WHEN
-      instance.refreshInstancesData();
-      await instance.$nextTick();
-
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('api/services/instances');
+    mount<InstanceClass>(InstanceVue, {
+      localVue,
+      stubs: {
+        bModal: stubbedModal,
+      },
+      provide: {
+        instanceService: () => instanceService,
+        refreshService: () => refreshService,
+      },
+      methods: {
+        refreshInstancesData,
+        refreshInstancesRoute,
+      },
     });
-    it('should handle error on refreshing instance data', async () => {
-      // GIVEN
-      mockedAxios.get.mockReturnValue(Promise.reject({}));
 
-      // WHEN
-      instance.refreshInstancesData();
-      await instance.$nextTick();
-
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('api/services/instances');
-    });
+    expect(refreshInstancesData).toHaveBeenCalledTimes(2);
+    expect(refreshInstancesRoute).toHaveBeenCalledTimes(2);
   });
 
-  describe('should refresh list of instance route data', () => {
-    it('should call refreshInstancesRoute on init', async () => {
-      // GIVEN
-      mockedAxios.get.mockReturnValue(Promise.resolve({}));
+  it('should refresh instances list', async () => {
+    mockedAxios.get.mockImplementation(() => Promise.resolve({ data: instanceList }));
+    const spy = jest.spyOn(instanceService, 'findAllInstance');
 
-      // WHEN
-      instance.refreshInstancesRoute();
-      await instance.$nextTick();
+    instance.refreshInstancesData();
+    await instance.$nextTick();
 
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('management/gateway/routes');
-    });
-    it('should handle error on refreshing instance route data', async () => {
-      // GIVEN
-      mockedAxios.get.mockReturnValue(Promise.reject({}));
-
-      // WHEN
-      instance.refreshInstancesRoute();
-      await instance.$nextTick();
-
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('management/gateway/routes');
-    });
+    expect(spy).toHaveBeenCalled();
+    expect(instance.instances).toHaveLength(1);
+    spy.mockRestore();
   });
 
-  describe('should call showInstance', () => {
-    it('should show selected instance', async () => {
-      // GIVEN
-      const spy = jest.spyOn(instance, 'showInstance');
-      const inst: Instance = new (class implements Instance {
-        serviceId: string;
-        instanceId: string;
-        uri: string;
-        host: string;
-        port: number;
-        secure: boolean;
-        metadata: Metadata;
-      })();
-      inst.serviceId = 'app1';
-      inst.instanceId = 'app1-id';
-      inst.uri = 'http://127.0.0.01:8080';
-      inst.host = '127.0.0.1';
-      inst.port = 8080;
-      inst.secure = false;
-      inst.metadata = {};
-      const uri = 'http://127.0.0.01:8080';
-      instance.instancesRoute = [
-        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
-      ];
+  it('should refresh instancesRoute list', async () => {
+    mockedAxios.get.mockImplementation(() => Promise.resolve({ data: instancesRoute }));
+    const spy = jest.spyOn(instanceService, 'findAllGatewayRoute');
 
-      // WHEN
-      instance.showInstance(inst, uri);
-      await instance.$nextTick();
-      // THEN
-      expect(spy).toHaveBeenCalled();
-      spy.mockRestore();
-    });
+    instance.refreshInstancesRoute();
+    await instance.$nextTick();
+
+    expect(spy).toHaveBeenCalled();
+    expect(instance.instancesRoute).toHaveLength(2);
+    spy.mockRestore();
+  });
+
+  it('should handle error on refreshing instance route data', async () => {
+    console.warn = jest.fn();
+    mockedAxios.get.mockReturnValue(Promise.reject('error'));
+    instance.refreshInstancesRoute();
+    await instance.$nextTick();
+    expect(console.warn).toHaveBeenCalledWith('error');
+  });
+
+  it('should call showInstance', async () => {
+    const spy = jest.spyOn(instance, 'showInstance');
+    const uri = 'http://127.0.0.01:8080';
+    instance.instancesRoute = instancesRoute;
+    instance.showInstance(inst, uri);
+    await instance.$nextTick();
+    expect(spy).toHaveBeenCalled();
+    expect(instance.instanceModal).not.toBeNull();
+    spy.mockRestore();
   });
 
   describe('should kill the selected instance', () => {
-    it('should show confirm dialog', async () => {
-      // GIVEN
+    it('should call confirmShutdown', async () => {
       const spy = jest.spyOn(instance, 'confirmShutdown');
-      const inst: Instance = new (class implements Instance {
-        serviceId: string;
-        instanceId: string;
-        uri: string;
-        host: string;
-        port: number;
-        secure: boolean;
-        metadata: Metadata;
-      })();
-      inst.serviceId = 'app1';
-      inst.instanceId = 'app1-id';
-      inst.uri = 'http://127.0.0.01:8080';
-      inst.host = '127.0.0.1';
-      inst.port = 8080;
-      inst.secure = false;
-      inst.metadata = {};
-      const uri = 'http://127.0.0.01:8080';
-      instance.instancesRoute = [
-        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
-      ];
-      // WHEN
+      instance.instancesRoute = instancesRoute;
       instance.confirmShutdown(inst);
       await instance.$nextTick();
-      // THEN
       expect(spy).toBeCalledWith(inst);
       spy.mockRestore();
     });
 
     it('should fire a post request ', async () => {
       mockedAxios.post.mockReturnValue(Promise.resolve({}));
-      const inst: Instance = new (class implements Instance {
-        serviceId: string;
-        instanceId: string;
-        uri: string;
-        host: string;
-        port: number;
-        secure: boolean;
-        metadata: Metadata;
-      })();
-      inst.serviceId = 'app1';
-      inst.instanceId = 'app1-id';
-      inst.uri = 'http://127.0.0.01:8080';
-      inst.host = '127.0.0.1';
-      inst.port = 8080;
-      inst.secure = false;
-      inst.metadata = {};
-      const uri = 'http://127.0.0.01:8080';
-      instance.instancesRoute = [
-        { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-        { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
-      ];
-
+      instance.instancesRoute = instancesRoute;
       instance.shutdownInstance(inst);
       await instance.$nextTick();
-
       expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1-id/management/shutdown');
     });
   });

@@ -38,10 +38,10 @@ describe('Instance Service', () => {
   });
 
   it('should get list of instances', async () => {
-    const spy = jest.spyOn(instanceService, 'findAll').mockReturnValue(Observable.of(data));
+    const spy = jest.spyOn(instanceService, 'findAllInstance').mockReturnValue(Observable.of(data));
 
     expect(
-      instanceService.findAll().subscribe(res => {
+      instanceService.findAllInstance().subscribe(res => {
         expect(res).toEqual(data);
       })
     );

@@ -19,8 +19,7 @@ export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' |
 
 @Component
 export default class InstanceService extends Vue {
-  /** get all instances */
-  public findAll(): Observable<Array<Instance>> {
+  public findAllInstance(): Observable<Array<Instance>> {
     return Observable.create(observer => {
       axios
         .get('api/services/instances')
@@ -36,7 +35,6 @@ export default class InstanceService extends Vue {
     });
   }
 
-  /** get all gateway routes of instances */
   public findAllGatewayRoute(): AxiosPromise<any> {
     return axios.get('management/gateway/routes');
   }
@@ -46,7 +44,6 @@ export default class InstanceService extends Vue {
     return axios.get(`gateway/${String(gatewayRoute)}/management/info`);
   }
 
-  /* shutdown an instance */
   public shutdownInstance({ serviceId, instanceId }): AxiosPromise<any> {
     return axios.post(`/gateway/${serviceId}/${instanceId}/management/shutdown`);
   }
