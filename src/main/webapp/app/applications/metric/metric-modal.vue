@@ -25,6 +25,7 @@
                 </div>
             </div>
             <table class="table table-sm table-responsive">
+                <caption>Thread detail metrics</caption>
                 <thead>
                 <tr>
                     <th scope="col">Blocked Time</th>

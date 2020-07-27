@@ -6,6 +6,7 @@
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-responsive d-table">
+                <caption>Application Instances</caption>
                 <thead>
                 <tr>
                     <th scope="col" class="w-20">Service</th>

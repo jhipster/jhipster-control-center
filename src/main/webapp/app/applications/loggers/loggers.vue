@@ -15,6 +15,7 @@
                 <span>Filter</span> <input type="text" v-model="filtered" class="form-control">
 
                 <table class="table table-sm table-striped table-bordered">
+                    <caption>Application loggers list</caption>
                     <thead>
                     <tr title="click to order">
                         <th scope="col" v-on:click="changeOrder('name')"><span>Name</span></th>

@@ -14,6 +14,7 @@
             <h3 id="spring-configuration">Spring configuration</h3>
 
             <table class="table table-striped table-bordered table-responsive d-table table-dark" aria-describedby="spring-configuration">
+                <caption>Application Spring configurations</caption>
                 <thead>
                     <tr>
                         <th scope= "col" class="w-40" v-on:click="changeOrder('prefix')"><span class="mr-1">Prefix</span><font-awesome-icon icon="sort" /></th>
@@ -39,6 +40,7 @@
                 <h4><span>{{ propertySource.name }}</span></h4>
 
                 <table class="table table-sm table-striped table-bordered table-responsive d-table table-dark">
+                    <caption>Application Spring property sources</caption>
                     <thead>
                         <tr>
                             <th scope="col" class="w-40">Property</th>

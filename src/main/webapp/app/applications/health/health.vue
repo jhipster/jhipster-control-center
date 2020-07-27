@@ -9,6 +9,7 @@
         </div>
         <div v-else class="table-responsive">
             <table id="healthCheck" class="table table-striped">
+                <caption>Application health</caption>
                 <thead>
                 <tr>
                     <th scope="col">Service Name</th>

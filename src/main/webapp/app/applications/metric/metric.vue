@@ -172,6 +172,7 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
+            <caption>garbage collector metrics</caption>
             <thead>
               <tr>
                 <th scope="col"></th>
@@ -204,7 +205,8 @@
 
       <h3>HTTP requests (time in millisecond)</h3>
       <table class="table table-striped" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'http.server.requests')">
-        <thead>
+          <caption>HTTP server requests metrics</caption>
+          <thead>
           <tr>
             <th scope="col">Code</th>
             <th scope="col">Count</th>
@@ -231,7 +233,8 @@
       <h3>Endpoints requests (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics">
         <table class="table table-striped">
-          <thead>
+            <caption>Endpoints server requests metrics</caption>
+            <thead>
             <tr>
               <th scope="col">Method</th>
               <th scope="col">Endpoint url</th>
@@ -255,7 +258,8 @@
       <h3>Cache statistics</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'cache')">
         <table class="table table-striped">
-          <thead>
+            <caption>Cache metrics</caption>
+            <thead>
             <tr>
               <th scope="col">Cache name</th>
               <th scope="col" class="text-right" data-translate="metrics.cache.hits">Cache Hits</th>
@@ -291,7 +295,8 @@
       <h3>DataSource statistics (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isObjectExistingAndNotEmpty(metrics, 'databases')">
         <table class="table table-striped">
-          <thead>
+            <caption>Datasource statistic metrics</caption>
+            <thead>
             <tr>
               <th scope="col">
                 <span>Connection Pool Usage</span> (active: {{ metrics.databases.active.value }}, min: {{ metrics.databases.min.value }},

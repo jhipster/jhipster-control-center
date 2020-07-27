@@ -4,6 +4,7 @@
             <h5>Properties</h5>
             <div class="table-responsive">
                 <table class="table table-striped">
+                    <caption>Application health details</caption>
                     <thead>
                     <tr>
                         <th scope="col" class="text-left">Name</th>
