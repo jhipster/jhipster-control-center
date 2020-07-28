@@ -26,5 +26,14 @@ jobs:
                   ./mvnw -ntp clean verify -P-webpack
             - name: Run frontend test
               run: npm run test
+            - name: Sonar analysis
+              run: |
+                  ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
+                  -Dsonar.host.url=https://sonarcloud.io \
+                  -Dsonar.projectKey=jhipster-control-center \
+                  -Dsonar.organization=jhipster \
+                  -Dsonar.login=$SONAR_TOKEN
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
+              env:
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
