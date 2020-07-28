@@ -10,5 +10,13 @@ eureka:
 spring:
   autoconfigure:
     exclude:
+        # Disable Consul autoconfigurations
         - org.springframework.cloud.consul.serviceregistry.ConsulAutoServiceRegistrationAutoConfiguration
         - org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration
+        - org.springframework.cloud.consul.ConsulAutoConfiguration
+        - org.springframework.cloud.consul.discovery.ConsulCatalogWatchAutoConfiguration
+        # Disable Kubernetes autoconfigurations
+        - org.springframework.cloud.kubernetes.KubernetesAutoConfiguration
+        - org.springframework.cloud.kubernetes.discovery.KubernetesCatalogWatchAutoConfiguration
+        - org.springframework.cloud.kubernetes.discovery.reactive.KubernetesReactiveDiscoveryClientAutoConfiguration
+        - org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration

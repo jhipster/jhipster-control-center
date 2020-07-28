@@ -1,4 +1,10 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.kubernetes.KubernetesAutoConfiguration
+      - org.springframework.cloud.kubernetes.discovery.KubernetesCatalogWatchAutoConfiguration
+      - org.springframework.cloud.kubernetes.discovery.reactive.KubernetesReactiveDiscoveryClientAutoConfiguration
+      - org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration
   cloud:
     consul:
       enabled: true
