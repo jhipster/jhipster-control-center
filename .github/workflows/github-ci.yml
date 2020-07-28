@@ -30,7 +30,7 @@ jobs:
               run: |
                   ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
                   -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.projectKey=jhipster-control-center \
+                  -Dsonar.projectKey=jhipster_jhipster-control-center \
                   -Dsonar.organization=jhipster \
                   -Dsonar.login=$SONAR_TOKEN
               env:
