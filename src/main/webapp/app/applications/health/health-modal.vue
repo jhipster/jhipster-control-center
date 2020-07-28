@@ -4,10 +4,11 @@
             <h5>Properties</h5>
             <div class="table-responsive">
                 <table class="table table-striped">
+                    <caption>Application health details</caption>
                     <thead>
                     <tr>
-                        <th class="text-left">Name</th>
-                        <th class="text-left">Value</th>
+                        <th scope="col" class="text-left">Name</th>
+                        <th scope="col" class="text-left">Value</th>
                     </tr>
                     </thead>
                     <tbody>

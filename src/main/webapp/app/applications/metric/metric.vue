@@ -172,17 +172,18 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
+            <caption>garbage collector metrics</caption>
             <thead>
               <tr>
-                <th></th>
-                <th class="text-right">Count</th>
-                <th class="text-right">Mean</th>
-                <th class="text-right">Min</th>
-                <th class="text-right">p50</th>
-                <th class="text-right">p75</th>
-                <th class="text-right">p95</th>
-                <th class="text-right">p99</th>
-                <th class="text-right">Max</th>
+                <th scope="col"></th>
+                <th scope="col" class="text-right">Count</th>
+                <th scope="col" class="text-right">Mean</th>
+                <th scope="col" class="text-right">Min</th>
+                <th scope="col" class="text-right">p50</th>
+                <th scope="col" class="text-right">p75</th>
+                <th scope="col" class="text-right">p95</th>
+                <th scope="col" class="text-right">p99</th>
+                <th scope="col" class="text-right">Max</th>
               </tr>
             </thead>
             <tbody>
@@ -204,12 +205,13 @@
 
       <h3>HTTP requests (time in millisecond)</h3>
       <table class="table table-striped" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'http.server.requests')">
-        <thead>
+          <caption>HTTP server requests metrics</caption>
+          <thead>
           <tr>
-            <th>Code</th>
-            <th>Count</th>
-            <th class="text-right">Mean</th>
-            <th class="text-right">Max</th>
+            <th scope="col">Code</th>
+            <th scope="col">Count</th>
+            <th scope="col" class="text-right">Mean</th>
+            <th scope="col" class="text-right">Max</th>
           </tr>
         </thead>
         <tbody>
@@ -231,12 +233,13 @@
       <h3>Endpoints requests (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics">
         <table class="table table-striped">
-          <thead>
+            <caption>Endpoints server requests metrics</caption>
+            <thead>
             <tr>
-              <th>Method</th>
-              <th>Endpoint url</th>
-              <th class="text-right">Count</th>
-              <th class="text-right">Mean</th>
+              <th scope="col">Method</th>
+              <th scope="col">Endpoint url</th>
+              <th scope="col" class="text-right">Count</th>
+              <th scope="col" class="text-right">Mean</th>
             </tr>
           </thead>
           <tbody>
@@ -255,17 +258,18 @@
       <h3>Cache statistics</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'cache')">
         <table class="table table-striped">
-          <thead>
+            <caption>Cache metrics</caption>
+            <thead>
             <tr>
-              <th>Cache name</th>
-              <th class="text-right" data-translate="metrics.cache.hits">Cache Hits</th>
-              <th class="text-right" data-translate="metrics.cache.misses">Cache Misses</th>
-              <th class="text-right" data-translate="metrics.cache.gets">Cache Gets</th>
-              <th class="text-right" data-translate="metrics.cache.puts">Cache Puts</th>
-              <th class="text-right" data-translate="metrics.cache.removals">Cache Removals</th>
-              <th class="text-right" data-translate="metrics.cache.evictions">Cache Evictions</th>
-              <th class="text-right" data-translate="metrics.cache.hitPercent">Cache Hit %</th>
-              <th class="text-right" data-translate="metrics.cache.missPercent">Cache Miss %</th>
+              <th scope="col">Cache name</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.hits">Cache Hits</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.misses">Cache Misses</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.gets">Cache Gets</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.puts">Cache Puts</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.removals">Cache Removals</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.evictions">Cache Evictions</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.hitPercent">Cache Hit %</th>
+              <th scope="col" class="text-right" data-translate="metrics.cache.missPercent">Cache Miss %</th>
             </tr>
           </thead>
           <tbody>
@@ -291,20 +295,21 @@
       <h3>DataSource statistics (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isObjectExistingAndNotEmpty(metrics, 'databases')">
         <table class="table table-striped">
-          <thead>
+            <caption>Datasource statistic metrics</caption>
+            <thead>
             <tr>
-              <th>
+              <th scope="col">
                 <span>Connection Pool Usage</span> (active: {{ metrics.databases.active.value }}, min: {{ metrics.databases.min.value }},
                 max: {{ metrics.databases.max.value }}, idle: {{ metrics.databases.idle.value }})
               </th>
-              <th class="text-right">Count</th>
-              <th class="text-right">Mean</th>
-              <th class="text-right">Min</th>
-              <th class="text-right">p50</th>
-              <th class="text-right">p75</th>
-              <th class="text-right">p95</th>
-              <th class="text-right">p99</th>
-              <th class="text-right">Max</th>
+              <th scope="col" class="text-right">Count</th>
+              <th scope="col" class="text-right">Mean</th>
+              <th scope="col" class="text-right">Min</th>
+              <th scope="col" class="text-right">p50</th>
+              <th scope="col" class="text-right">p75</th>
+              <th scope="col" class="text-right">p95</th>
+              <th scope="col" class="text-right">p99</th>
+              <th scope="col" class="text-right">Max</th>
             </tr>
           </thead>
           <tbody>

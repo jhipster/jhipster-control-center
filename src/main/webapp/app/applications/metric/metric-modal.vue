@@ -25,13 +25,14 @@
                 </div>
             </div>
             <table class="table table-sm table-responsive">
+                <caption>Thread detail metrics</caption>
                 <thead>
                 <tr>
-                    <th>Blocked Time</th>
-                    <th>Blocked Count</th>
-                    <th>Waited Time</th>
-                    <th>Waited Count</th>
-                    <th>Lock Name</th>
+                    <th scope="col">Blocked Time</th>
+                    <th scope="col">Blocked Count</th>
+                    <th scope="col">Waited Time</th>
+                    <th scope="col">Waited Count</th>
+                    <th scope="col">Lock Name</th>
                 </tr>
                 </thead>
                 <tbody>

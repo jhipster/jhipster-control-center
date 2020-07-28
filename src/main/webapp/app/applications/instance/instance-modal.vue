@@ -3,6 +3,19 @@
         <div v-if="selectedInstance && selectedInstanceRoute">
             <div class="table">
                 <table class="table table-bordered">
+                    <caption>Application Instance details</caption>
+                    <thead>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col" v-if="activeProfiles"></th>
+                    <th scope="col" v-if="selectedInstance.metadata
+                            && selectedInstance.hasOwnProperty('git-version')
+                            && selectedInstance.hasOwnProperty('git-commit')
+                            && selectedInstance.hasOwnProperty('git-branch')"></th>
+                    <th scope="col" v-if="selectedInstance.metadata && selectedInstance.metadata.version"></th>
+                    </thead>
                     <tbody>
                         <tr>
                             <td class="text-left align-middle">

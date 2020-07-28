@@ -15,10 +15,11 @@
                 <span>Filter</span> <input type="text" v-model="filtered" class="form-control">
 
                 <table class="table table-sm table-striped table-bordered">
+                    <caption>Application loggers list</caption>
                     <thead>
                     <tr title="click to order">
-                        <th v-on:click="changeOrder('name')"><span>Name</span></th>
-                        <th v-on:click="changeOrder('level')"><span>Level</span></th>
+                        <th scope="col" v-on:click="changeOrder('name')"><span>Name</span></th>
+                        <th scope="col" v-on:click="changeOrder('level')"><span>Level</span></th>
                     </tr>
                     </thead>
 
