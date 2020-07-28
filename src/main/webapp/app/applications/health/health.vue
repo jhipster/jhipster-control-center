@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>
-            <span id="health-page-heading">Health Checks</span>
+            <span id="health-page-heading" data-cy="health-page-heading">Health Checks</span>
             <routes-selector  class="float-right refresh-left-side"></routes-selector>
         </h2>
         <div v-if="isError">

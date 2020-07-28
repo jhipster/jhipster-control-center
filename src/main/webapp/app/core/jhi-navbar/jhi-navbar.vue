@@ -1,6 +1,6 @@
 <!-- jhcc-custom begin -->
 <template>
-  <b-navbar toggleable="md" type="dark" class="bg-primary">
+  <b-navbar toggleable="md" type="dark" class="bg-primary" data-cy="navbar">
     <b-row>
       <div class="jh-logo-container" my-auto>
         <div class="icon-sidebar" id="sidebar-icon" exact v-if="hasAnyAuthority('ROLE_ADMIN')">
@@ -43,6 +43,7 @@
           :class="{ 'router-link-active': subIsActive('/account') }"
           active-class="active"
           class="pointer"
+          data-cy="account-menu"
         >
           <span slot="button-content" class="navbar-dropdown-menu">
             <font-awesome-icon icon="user" />
@@ -50,11 +51,11 @@
               Account
             </span>
           </span>
-          <b-dropdown-item v-if="authenticated" v-on:click="logout()" id="logout">
+          <b-dropdown-item v-if="authenticated" v-on:click="logout()" id="logout" data-cy="logout">
             <font-awesome-icon icon="sign-out-alt" />
             <span>Sign out</span>
           </b-dropdown-item>
-          <b-dropdown-item v-if="!authenticated" v-on:click="openLogin()" id="login">
+          <b-dropdown-item v-if="!authenticated" v-on:click="openLogin()" id="login" data-cy="login">
             <font-awesome-icon icon="sign-in-alt" />
             <span>Sign in</span>
           </b-dropdown-item>

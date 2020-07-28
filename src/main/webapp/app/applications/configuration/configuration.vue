@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="head">
-            <h2 id="configuration-page-heading" class="d-inline-block">Configuration</h2>
+            <h2 id="configuration-page-heading" class="d-inline-block" data-cy="configuration-page-heading">Configuration</h2>
             <routes-selector class="float-right refresh-left-side"></routes-selector>
         </div>
         <div v-if="isError">
