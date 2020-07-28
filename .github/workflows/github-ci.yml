@@ -27,6 +27,7 @@ jobs:
             - name: Run frontend test
               run: npm run test
             - name: Sonar analysis
+              if: github.repository == 'jhipster/jhipster-control-center' && github.ref == 'refs/heads/master'
               run: |
                   ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
                   -Dsonar.host.url=https://sonarcloud.io \
