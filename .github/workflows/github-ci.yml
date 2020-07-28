@@ -33,7 +33,7 @@ jobs:
                   -Dsonar.projectKey=jhipster-control-center \
                   -Dsonar.organization=jhipster \
                   -Dsonar.login=$SONAR_TOKEN
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
-              env:
-                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
