@@ -98,6 +98,7 @@ spring:
   # jhcc-custom
   cloud:
     kubernetes:
+      enabled: false
       discovery:
         enabled: false
     consul:
