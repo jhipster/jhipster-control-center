@@ -1,6 +1,13 @@
 import { Route } from '@/shared/routes/routes.service';
-import { Bean, Properties, PropertySource } from '@/applications/configuration/configuration.service';
+import { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import { Instance } from '@/applications/instance/instance.service';
+
+const stubbedModal = {
+  template: '<div></div>',
+  methods: {
+    show: () => jest.fn(),
+  },
+};
 
 const inst: Instance = {
   serviceId: 'app1',
@@ -82,7 +89,82 @@ const property_b: PropertySource = {
 
 const property_source: PropertySource[] = [property_a, property_b];
 
+const jhcc_health = {
+  status: 'UP',
+  components: {
+    consul: {
+      status: 'UP',
+      details: {
+        leader: '127.0.0.1:8300',
+        services: {
+          consul: [],
+          store: ['profile=dev', 'version=0.0.1-SNAPSHOT', 'git-version=', 'git-commit=', 'git-branch=', 'secure=false'],
+        },
+      },
+    },
+    discoveryComposite: {
+      status: 'UP',
+      components: {
+        discoveryClient: {
+          status: 'UP',
+          details: {
+            services: ['consul', 'store'],
+          },
+        },
+      },
+    },
+    diskSpace: {
+      status: 'UP',
+      details: {
+        total: 502468108288,
+        free: 387328499712,
+        threshold: 10485760,
+      },
+    },
+    hystrix: {
+      status: 'UP',
+    },
+    ping: {
+      status: 'UP',
+    },
+    reactiveDiscoveryClients: {
+      status: 'UP',
+      components: {
+        'Simple Reactive Discovery Client': {
+          status: 'UP',
+          details: {
+            services: [],
+          },
+        },
+        'Spring Cloud Consul Reactive Discovery Client': {
+          status: 'UP',
+          details: {
+            services: ['consul', 'store'],
+          },
+        },
+      },
+    },
+    refreshScope: {
+      status: 'UP',
+    },
+  },
+};
+
+const jhcc_health_element = {
+  consul: {
+    status: 'UP',
+    details: {
+      leader: '127.0.0.1:8300',
+      services: {
+        consul: [],
+        store: ['profile=dev', 'version=0.0.1-SNAPSHOT', 'git-version=', 'git-commit=', 'git-branch=', 'secure=false'],
+      },
+    },
+  },
+};
+
 export {
+  stubbedModal,
   inst,
   instanceList,
   jhcc_profiles,
@@ -97,4 +179,6 @@ export {
   jhcc_beans,
   service_test_beans,
   property_source,
+  jhcc_health,
+  jhcc_health_element,
 };

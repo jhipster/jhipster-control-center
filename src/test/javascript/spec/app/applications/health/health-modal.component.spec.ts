@@ -5,11 +5,9 @@ import HealthModalClass from '@/applications/health/health-modal.component';
 import InstanceHealthService from '@/applications/health/health.service';
 
 const localVue = createLocalVue();
-config.initVueApp(localVue);
-const store = config.initVueXStore(localVue);
-
 localVue.component('font-awesome-icon', {});
-const healthsService = { getBaseName: jest.fn(), getSubSystemName: jest.fn() };
+config.initVueApp(localVue);
+const healthsService = new InstanceHealthService();
 
 describe('Health Modal Component', () => {
   let wrapper: Wrapper<HealthModalClass>;
@@ -28,34 +26,30 @@ describe('Health Modal Component', () => {
     healthModal = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('baseName and subSystemName', () => {
-    it('should use healthService', () => {
+    it('should use getBaseName from healthService', () => {
+      const spy = jest.spyOn(healthsService, 'getBaseName');
       healthModal.baseName('base');
-
-      expect(healthsService.getBaseName).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
+      spy.mockRestore();
     });
 
-    it('should use healthService', () => {
+    it('should use getSubSystemName from healthService', () => {
+      const spy = jest.spyOn(healthsService, 'getSubSystemName');
       healthModal.subSystemName('base');
-
-      expect(healthsService.getSubSystemName).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
+      spy.mockRestore();
     });
   });
 
   describe('readableValue should transform data', () => {
     it('to string when is an object', () => {
       const result = healthModal.readableValue({ data: 1000 });
-
       expect(result).toBe('{"data":1000}');
     });
 
     it('to string when is a string', () => {
       const result = healthModal.readableValue('data');
-
       expect(result).toBe('data');
     });
   });

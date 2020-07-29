@@ -1,96 +1,102 @@
-import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
+import { createLocalVue, mount, shallowMount, Wrapper } from '@vue/test-utils';
 import axios from 'axios';
 import * as config from '@/shared/config/config';
-import HealthClass from '@/applications/health/health.component';
-import RoutesService, { Route } from '@/shared/routes/routes.service';
-import { RefreshService } from '@/shared/refresh/refresh.service';
-import InstanceHealthService from '@/applications/health/health.service';
 import Health from '@/applications/health/health.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import HealthClass from '@/applications/health/health.component';
 import HealthModal from '@/applications/health/health-modal.vue';
+import InstanceHealthService from '@/applications/health/health.service';
+import RoutesService from '@/shared/routes/routes.service';
+import { Observable } from 'rxjs';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { jhcc_route, routes, stubbedModal, jhcc_health, jhcc_health_element } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
-const mockedAxios: any = axios;
-config.initVueApp(localVue);
-const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('health-modal', HealthModal);
 localVue.directive('b-modal', {});
+const mockedAxios: any = axios;
+const store = config.initVueXStore(localVue);
+config.initVueApp(localVue);
+
+const instanceHealthService = new InstanceHealthService();
+const routesService = new RoutesService(store);
+routesService.routeChanged$ = new Observable(subscriber => {
+  subscriber.next(jhcc_route);
+});
+routesService.routesChanged$ = new Observable(subscriber => {
+  subscriber.next(routes);
+});
 
 jest.mock('axios', () => ({
   get: jest.fn(),
   post: jest.fn(),
 }));
 
-const jhcc_route = {
-  path: '',
-  predicate: '',
-  filters: [],
-  serviceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceUri: '',
-  order: 0,
-} as Route;
-const service_test_route = {
-  path: 'service-test/service-test:number',
-  predicate: '',
-  filters: [],
-  serviceId: 'service-test',
-  instanceId: 'service-test-instance',
-  instanceUri: '',
-  order: 0,
-} as Route;
-
-const routes: Route[] = [jhcc_route, service_test_route];
-
 describe('Health Component', () => {
   let wrapper: Wrapper<HealthClass>;
   let health: HealthClass;
 
-  beforeEach(() => {
+  beforeAll(() => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
     wrapper = shallowMount<HealthClass>(Health, {
       store,
       localVue,
       stubs: {
-        bModal: true,
+        bModal: stubbedModal,
       },
       provide: {
-        instanceHealthService: () => new InstanceHealthService(),
-        refreshService: () => new RefreshService(store),
-        routesService: () => new RoutesService(store),
+        instanceHealthService: () => instanceHealthService,
+        routesService: () => routesService,
+      },
+      methods: {
+        resetError: () => jest.fn(),
       },
     });
     health = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
+  afterAll(() => {
+    health.beforeDestroy();
   });
 
-  describe('when component is mounted', () => {
-    it('should set all default values correctly', () => {
-      expect(health.currentHealth).toBe(null);
-      expect(health.healthData).toBe(null);
+  it('when component is mounted', async () => {
+    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    const refreshActiveRouteHealth = jest.fn();
+    const wrapperToTestMounted = shallowMount<HealthClass>(Health, {
+      store,
+      localVue,
+      stubs: {
+        bModal: stubbedModal,
+      },
+      provide: {
+        instanceHealthService: () => instanceHealthService,
+        routesService: () => routesService,
+      },
+      methods: {
+        refreshActiveRouteHealth,
+      },
     });
+    const healthToTestMounted = wrapperToTestMounted.vm;
+    await healthToTestMounted.$nextTick();
 
-    it('should refresh active route health if it is jhcc', async () => {
-      health.activeRoute = jhcc_route;
+    expect(refreshActiveRouteHealth).toHaveBeenCalled();
+    expect(healthToTestMounted.activeRoute).toBe(jhcc_route);
+    expect(healthToTestMounted.routes).toBe(routes);
+  });
 
-      health.refreshActiveRouteHealth();
-      await health.$nextTick();
+  it('should refresh health data', async () => {
+    health.activeRoute = jhcc_route;
+    const spy = jest.spyOn(instanceHealthService, 'checkHealth').mockReturnValue(
+      new Observable<any>(subscriber => {
+        subscriber.next(jhcc_health);
+      })
+    );
+    health.refreshActiveRouteHealth();
+    await health.$nextTick();
 
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/health/');
-    });
-
-    it('should refresh active route health if it is a service', async () => {
-      health.activeRoute = service_test_route;
-
-      health.refreshActiveRouteHealth();
-      await health.$nextTick();
-
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/health/');
-    });
+    expect(spy).toHaveBeenCalled();
+    expect(health.healthData).toStrictEqual(instanceHealthService.transformHealthData(jhcc_health));
+    spy.mockRestore();
   });
 
   describe('baseName and subSystemName', () => {
@@ -117,6 +123,13 @@ describe('Health Component', () => {
       const downBadgeClass = health.getBadgeClass('DOWN');
       expect(upBadgeClass).toEqual('badge-success');
       expect(downBadgeClass).toEqual('badge-danger');
+    });
+  });
+
+  describe('showHealth', () => {
+    it('should set data of selected health element', () => {
+      health.showHealth(jhcc_health_element);
+      expect(health.currentHealth).toStrictEqual(jhcc_health_element);
     });
   });
 });

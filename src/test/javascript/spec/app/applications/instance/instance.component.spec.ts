@@ -9,7 +9,7 @@ import InstanceService from '@/applications/instance/instance.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { BootstrapVue } from 'bootstrap-vue';
 import { Observable } from 'rxjs';
-import { inst, instanceList, instancesRoute } from '../../../fixtures/jhcc.fixtures';
+import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -32,13 +32,6 @@ jest.mock('axios', () => ({
   post: jest.fn(),
 }));
 
-const stubbedModal = {
-  template: '<div></div>',
-  methods: {
-    show: () => jest.fn(),
-  },
-};
-
 describe('Instance Component', () => {
   let wrapper: Wrapper<InstanceClass>;
   let instance: InstanceClass;
@@ -56,6 +49,10 @@ describe('Instance Component', () => {
       },
     });
     instance = wrapper.vm;
+  });
+
+  afterAll(() => {
+    instance.beforeDestroy();
   });
 
   it('when component is mounted', async () => {

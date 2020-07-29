@@ -1,4 +1,4 @@
-import { createLocalVue, Wrapper, mount, shallowMount } from '@vue/test-utils';
+import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 import ConfigurationService, { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import ConfigurationClass from '@/applications/configuration/configuration.component';
 import Configuration from '@/applications/configuration/configuration.vue';
@@ -58,6 +58,10 @@ describe('Configuration Component', () => {
       },
     });
     configuration = wrapper.vm;
+  });
+
+  afterAll(() => {
+    configuration.beforeDestroy();
   });
 
   it('when component is mounted', async () => {

@@ -24,7 +24,6 @@ export default class JhiInstanceHealth extends AbstractComponent {
 
   @Inject('instanceHealthService') private instanceHealthService: () => InstanceHealthService;
   @Inject('routesService') private routesService: () => RoutesService;
-  @Inject('refreshService') private refreshService: () => RefreshService;
 
   public mounted(): void {
     this.routesService()
