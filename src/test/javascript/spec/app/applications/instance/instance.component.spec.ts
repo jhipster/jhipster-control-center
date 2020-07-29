@@ -5,10 +5,11 @@ import * as config from '@/shared/config/config';
 import InstanceVue from '@/applications/instance/instance.vue';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
-import InstanceService, { Instance } from '@/applications/instance/instance.service';
+import InstanceService from '@/applications/instance/instance.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { BootstrapVue } from 'bootstrap-vue';
 import { Observable } from 'rxjs';
+import { inst, instanceList, instancesRoute } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -20,29 +21,11 @@ localVue.directive('b-modal', {});
 localVue.use(BootstrapVue);
 
 const store = config.initVueXStore(localVue);
-console.log = jest.fn();
 const instanceService = new InstanceService();
 const refreshService = new RefreshService(store);
 refreshService.refreshReload$ = new Observable(subscriber => {
   subscriber.next();
 });
-
-const inst: Instance = {
-  serviceId: 'app1',
-  instanceId: 'app1-id',
-  uri: 'http://127.0.0.01:8080',
-  host: '127.0.0.1',
-  port: 8080,
-  secure: false,
-  metadata: {},
-};
-
-const instanceList: Array<Instance> = [inst];
-
-const instancesRoute = [
-  { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-  { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
-];
 
 jest.mock('axios', () => ({
   get: jest.fn(),

@@ -3,7 +3,7 @@ import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class JhiInstanceModal extends Vue {
-  public activeProfiles: any = null;
+  public activeProfiles: any = {};
   @Prop() selectedInstance!: Instance;
   @Prop() selectedInstanceRoute!: any;
   @Inject('instanceService') private instanceService: () => InstanceService;
@@ -12,9 +12,8 @@ export default class JhiInstanceModal extends Vue {
     this.refreshProfile();
   }
 
-  /** Update profile of current application instance */
+  /** Update profile of selected application instance */
   public refreshProfile(): void {
-    /* istanbul ignore else */
     if (this.selectedInstance.serviceId !== 'consul') {
       this.instanceService()
         .findActiveProfiles(this.selectedInstanceRoute)
@@ -22,7 +21,7 @@ export default class JhiInstanceModal extends Vue {
           this.activeProfiles = res.data;
         })
         .catch(error => {
-          this.activeProfiles = error.error;
+          console.warn(error);
         });
     } else {
       this.activeProfiles = {};

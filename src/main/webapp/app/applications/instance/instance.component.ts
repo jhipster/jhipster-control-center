@@ -66,7 +66,7 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
-  /* Modal dialog */
+  /* Modal dialog to confirm shutdown */
   public confirmShutdown(instance: Instance): void {
     const config = {
       title: 'Please Confirm',
