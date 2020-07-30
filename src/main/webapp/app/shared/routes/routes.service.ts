@@ -25,6 +25,28 @@ export default class RoutesService {
   routeDown$: Observable<Route>;
   routeReload$: Observable<boolean>;
 
+  /** get default route of control center */
+  /* istanbul next ignore */
+  private static getRouteOfControlCenter(): Route {
+    const route = new (class implements Route {
+      path: string;
+      predicate: string;
+      filters: Array<string>;
+      serviceId: string;
+      instanceId: string;
+      instanceUri: string;
+      order: number;
+    })();
+    route.path = '';
+    route.predicate = '';
+    route.filters = [];
+    route.serviceId = 'JHIPSTER-CONTROL-CENTER';
+    route.instanceId = 'JHIPSTER-CONTROL-CENTER';
+    route.instanceUri = '';
+    route.order = 0;
+    return route;
+  }
+
   constructor(store: Store<{}>) {
     this.store = store;
     this.routeChanged$ = this.routeChangedSource.asObservable();
@@ -34,7 +56,7 @@ export default class RoutesService {
   }
 
   /** Return Spring Cloud Gateway routes */
-  public findAll(): Observable<Route[]> {
+  public findAllRoutes(): Observable<Route[]> {
     return Observable.create(observer => {
       axios
         .get('management/gateway/routes')
@@ -49,22 +71,18 @@ export default class RoutesService {
     });
   }
 
-  /* istanbul ignore next */
   public routeChange(route: Route | undefined): void {
     this.routeChangedSource.next(route);
   }
 
-  /* istanbul ignore next */
   public routesChange(routes: Route[]): void {
     this.routesChangedSource.next(routes);
   }
 
-  /* istanbul ignore next */
   public reloadRoutes(): void {
     this.routeReloadSource.next(true);
   }
 
-  /* istanbul ignore next */
   public routeDown(route: Route | undefined): void {
     this.routeDownSource.next(route);
   }
@@ -78,10 +96,10 @@ export default class RoutesService {
   }
 
   /** transform json array of routes to an array */
-  /* istanbul ignore next */
+  /* istanbul next ignore */
   private parseJsonArrayOfRoutesToArray(data: any): Array<Route> {
     const routes: Array<Route> = [];
-    routes.push(this.getRouteOfControlCenter());
+    routes.push(RoutesService.getRouteOfControlCenter());
     data.map(r => {
       if (r.route_id.split('/')[0].toLowerCase() !== 'consul' && r.route_id !== null) {
         const route = new (class implements Route {
@@ -105,26 +123,5 @@ export default class RoutesService {
       }
     });
     return routes;
-  }
-
-  /** get default route of control center */
-  private getRouteOfControlCenter(): Route {
-    const route = new (class implements Route {
-      path: string;
-      predicate: string;
-      filters: Array<string>;
-      serviceId: string;
-      instanceId: string;
-      instanceUri: string;
-      order: number;
-    })();
-    route.path = '';
-    route.predicate = '';
-    route.filters = [];
-    route.serviceId = 'JHIPSTER-CONTROL-CENTER';
-    route.instanceId = 'JHIPSTER-CONTROL-CENTER';
-    route.instanceUri = '';
-    route.order = 0;
-    return route;
   }
 }
