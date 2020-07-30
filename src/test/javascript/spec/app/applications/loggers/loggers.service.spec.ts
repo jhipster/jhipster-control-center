@@ -1,39 +1,35 @@
 import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
 import { RefreshService } from '@/shared/refresh/refresh.service';
-import LoggersService from '@/applications/loggers/loggers.service';
+import LoggersService, { Log } from '@/applications/loggers/loggers.service';
 import LoggersClass from '@/applications/loggers/loggers.component';
 import Loggers from '@/applications/loggers/loggers.vue';
 import * as config from '@/shared/config/config';
 import axios from 'axios';
-import RoutesService, { Route } from '@/shared/routes/routes.service';
+import RoutesService from '@/shared/routes/routes.service';
+import { Observable } from 'rxjs';
+import { jhcc_logs, jhcc_route, routes } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
+
+const loggersService = new LoggersService();
+const refreshService = new RefreshService(store);
+const routesService = new RoutesService(store);
+routesService.routeChanged$ = new Observable(subscriber => {
+  subscriber.next(jhcc_route);
+});
+routesService.routesChanged$ = new Observable(subscriber => {
+  subscriber.next(routes);
+});
+
 jest.mock('axios', () => ({
   get: jest.fn(),
   post: jest.fn(),
 }));
-const jhcc_route = {
-  path: '',
-  predicate: '',
-  filters: [],
-  serviceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceUri: '',
-  order: 0,
-} as Route;
-const service_test_route = {
-  path: 'service-test/service-test:number',
-  predicate: '',
-  filters: [],
-  serviceId: 'service-test',
-  instanceId: 'service-test-instance',
-  instanceUri: '',
-  order: 0,
-} as Route;
-const routes: Route[] = [jhcc_route, service_test_route];
+
+const resetError = jest.fn();
 
 describe('Loggers Component', () => {
   let wrapper: Wrapper<LoggersClass>;
@@ -45,77 +41,76 @@ describe('Loggers Component', () => {
       store,
       localVue,
       provide: {
-        loggersService: () => new LoggersService(),
-        refreshService: () => new RefreshService(store),
-        routesService: () => new RoutesService(store),
+        loggersService: () => loggersService,
+        refreshService: () => refreshService,
+        routesService: () => routesService,
+      },
+      mocks: {
+        resetError,
       },
     });
     loggers = wrapper.vm;
   });
 
-  describe('when component is mounted', () => {
-    it('should set all default values correctly', () => {
-      expect(loggers.filtered).toBe('');
-      expect(loggers.orderProp).toBe('name');
-      expect(loggers.reverse).toBe(false);
+  it('when component is mounted', () => {
+    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    const subscribeRouteChanged = jest.spyOn(routesService.routeChanged$, 'subscribe');
+    const subscribeRoutesChanged = jest.spyOn(routesService.routesChanged$, 'subscribe');
+    const wrapperToTestMounted = shallowMount<LoggersClass>(Loggers, {
+      store,
+      localVue,
+      provide: {
+        loggersService: () => loggersService,
+        refreshService: () => refreshService,
+        routesService: () => routesService,
+      },
     });
+    const loggersToTestMounted = wrapperToTestMounted.vm;
 
-    it('should refresh active route logs if it is jhcc', async () => {
-      // WHEN
-      loggers.activeRoute = jhcc_route;
-      loggers.refreshActiveRouteLogs();
-      await loggers.$nextTick();
-
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers/');
-    });
-
-    it('should refresh active route logs if it is a service', async () => {
-      // WHEN
-      loggers.activeRoute = service_test_route;
-      loggers.refreshActiveRouteLogs();
-      await loggers.$nextTick();
-
-      // THEN
-      expect(mockedAxios.get).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/loggers/');
-    });
+    expect(subscribeRouteChanged).toHaveBeenCalled();
+    expect(subscribeRoutesChanged).toHaveBeenCalled();
+    expect(loggersToTestMounted.filtered).toBe('');
+    expect(loggersToTestMounted.orderProp).toBe('name');
+    expect(loggersToTestMounted.reverse).toBe(false);
+    subscribeRouteChanged.mockRestore();
+    subscribeRoutesChanged.mockRestore();
   });
 
   it('should change order and invert reverse', () => {
-    // WHEN
     loggers.changeOrder('test-order');
-
-    // THEN
     expect(loggers.orderProp).toEqual('test-order');
     expect(loggers.reverse).toBe(true);
   });
 
-  it('should change log level correctly of jhcc logs', async () => {
+  it('should change log level', async () => {
     loggers.routes = routes;
     loggers.activeRoute = jhcc_route;
     mockedAxios.post.mockReturnValue(Promise.resolve({}));
-
-    // WHEN
+    const changeLoggersLevel = jest.spyOn(loggersService, 'changeLoggersLevel');
+    const refreshReload = jest.spyOn(refreshService, 'refreshReload');
     loggers.changeLevel('main', 'ERROR');
     await loggers.$nextTick();
-
-    // THEN
+    expect(changeLoggersLevel).toHaveBeenCalled();
     expect(mockedAxios.post).toHaveBeenCalledWith('/management/loggers/main', { configuredLevel: 'ERROR' });
     expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers/');
+    expect(refreshReload).toHaveBeenCalled();
+    refreshReload.mockRestore();
+    changeLoggersLevel.mockRestore();
   });
 
-  it('should change log level correctly of a service', async () => {
-    loggers.routes = routes;
-    loggers.activeRoute = service_test_route;
-    mockedAxios.post.mockReturnValue(Promise.resolve({}));
-
-    // WHEN
-    loggers.changeLevel('main', 'ERROR');
+  it('should refresh logs of active route', async () => {
+    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    loggers.activeRoute = jhcc_route;
+    const spy = jest.spyOn(loggersService, 'findAllLoggers').mockReturnValue(
+      new Observable<Log[]>(subscriber => {
+        subscriber.next(jhcc_logs);
+      })
+    );
+    loggers.refreshActiveRouteLogs();
     await loggers.$nextTick();
-
-    // THEN
-    expect(mockedAxios.post).toHaveBeenCalledWith('gateway/' + service_test_route.path + '/management/loggers/main', {
-      configuredLevel: 'ERROR',
-    });
+    expect(spy).toHaveBeenCalled();
+    expect(loggers.loggers).toStrictEqual(jhcc_logs);
+    expect(mockedAxios.get).toHaveBeenCalledWith('/management/loggers/');
+    spy.mockRestore();
   });
 });

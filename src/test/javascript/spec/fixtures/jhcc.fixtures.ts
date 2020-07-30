@@ -1,6 +1,7 @@
 import { Route } from '@/shared/routes/routes.service';
 import { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import { Instance } from '@/applications/instance/instance.service';
+import { Log } from '@/applications/loggers/loggers.service';
 
 const stubbedModal = {
   template: '<div></div>',
@@ -176,6 +177,10 @@ const jhcc_logfile_error =
   '- https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html\n ' +
   '- https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html';
 
+const log = new Log('jhcc', 'DEBUG');
+
+const jhcc_logs: Log[] = [log];
+
 export {
   stubbedModal,
   inst,
@@ -196,4 +201,5 @@ export {
   jhcc_health_element,
   jhcc_logfile,
   jhcc_logfile_error,
+  jhcc_logs,
 };
