@@ -1,4 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
@@ -29,7 +29,6 @@ export default class JhiConfiguration extends AbstractComponent {
   @Inject('instanceConfigurationService') private instanceConfigurationService: () => ConfigurationService;
   @Inject('routesService') private routesService: () => RoutesService;
 
-  /* istanbul ignore next */
   public mounted(): void {
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
@@ -46,7 +45,6 @@ export default class JhiConfiguration extends AbstractComponent {
   /** get beans and properties of active route */
   refreshActiveRouteBeans(): void {
     if (this.activeRoute) {
-      /* istanbul ignore next */
       this.instanceConfigurationService()
         .findBeans(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
@@ -61,7 +59,6 @@ export default class JhiConfiguration extends AbstractComponent {
           }
         );
 
-      /* istanbul ignore next */
       this.instanceConfigurationService()
         .findPropertySources(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
@@ -78,7 +75,6 @@ export default class JhiConfiguration extends AbstractComponent {
   }
 
   filterAndSortBeans(): void {
-    /* istanbul ignore next */
     this.beans = this.allBeans
       .filter(bean => !this.beansFilter || bean.prefix.toLowerCase().includes(this.beansFilter.toLowerCase()))
       .sort((a, b) => (a.prefix < b.prefix ? (this.beansAscending ? -1 : 1) : this.beansAscending ? 1 : -1));

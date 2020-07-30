@@ -26,7 +26,6 @@ export default class RoutesSelectorComponent extends Vue {
   @Inject('refreshService') private refreshService: () => RefreshService;
   @Inject('routesService') private routesService: () => RoutesService;
 
-  /* istanbul ignore next */
   public mounted(): void {
     this.activeRoute = this.routesService().getSelectedRoute();
     this.htmlActiveRoute = this.getActiveRoute();
@@ -38,9 +37,6 @@ export default class RoutesSelectorComponent extends Vue {
     this.routesService()
       .routeReload$.pipe(takeUntil(this.unSubscribe$))
       .subscribe(() => this.updateRoute());
-    this.routesService()
-      .routeDown$.pipe(takeUntil(this.unSubscribe$))
-      .subscribe(() => this.setActiveRoute(null));
   }
 
   /** Change active route only if exists, else choose Control Center */
@@ -54,11 +50,10 @@ export default class RoutesSelectorComponent extends Vue {
     this.routesService().routeChange(this.activeRoute);
   }
 
-  /* istanbul ignore next */
-  private updateRoute(): void {
+  public updateRoute(): void {
     this.updatingRoutes = true;
     this.routesService()
-      .findAll()
+      .findAllRoutes()
       .pipe(takeUntil(this.unSubscribe$))
       .subscribe(
         routes => {
@@ -92,8 +87,6 @@ export default class RoutesSelectorComponent extends Vue {
     this.unSubscribe$.next();
     this.unSubscribe$.complete();
   }
-
-  // ========================== UI PART ================================
 
   getActiveRoute(): string {
     return this.activeRoute!.instanceId.toUpperCase();

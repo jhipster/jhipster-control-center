@@ -65,9 +65,6 @@ export default class RefreshSelectorMixin extends Vue {
     this.unsubscribeFromRefreshMixin$.complete();
   }
 
-  /* ==========================================================================
-                                    UI PART
- ========================================================================== */
   classTime(): string {
     if (this.activeRefreshTime <= 0) {
       return 'fa fa-pause';

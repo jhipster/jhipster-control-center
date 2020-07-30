@@ -1,96 +1,137 @@
 import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
+import * as config from '@/shared/config/config';
+import { BootstrapVue } from 'bootstrap-vue';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesSelectorClass from '@/shared/routes/routes-selector.component';
-import RoutesService, { Route } from '@/shared/routes/routes.service';
-import * as config from '@/shared/config/config';
+import RoutesService from '@/shared/routes/routes.service';
 import { RefreshService } from '@/shared/refresh/refresh.service.ts';
-import { BootstrapVue } from 'bootstrap-vue';
+import { Observable } from 'rxjs';
+import { jhcc_route, routes, service_test_route } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 localVue.use(BootstrapVue);
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 
-const jhcc_route = {
-  path: '',
-  predicate: '',
-  filters: [],
-  serviceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceId: 'JHIPSTER-CONTROL-CENTER',
-  instanceUri: '',
-  order: 0,
-} as Route;
-
-const service_test_route = {
-  path: 'service-test/service-test:number',
-  predicate: '',
-  filters: [],
-  serviceId: 'service-test',
-  instanceId: 'service-test-instance',
-  instanceUri: '',
-  order: 0,
-} as Route;
-
-const routes: Route[] = [jhcc_route, service_test_route];
+const routesService = new RoutesService(store);
+const refreshService = new RefreshService(store);
+routesService.routeChanged$ = new Observable(subscriber => {
+  subscriber.next(jhcc_route);
+});
+routesService.routeReload$ = new Observable(subscriber => {
+  subscriber.next();
+});
+refreshService.refreshReload$ = new Observable(subscriber => {
+  subscriber.next();
+});
 
 describe('Routes Component', () => {
   let wrapper: Wrapper<RoutesSelectorClass>;
-  let routesSelectorComponent: RoutesSelectorClass;
+  let routesSelector: RoutesSelectorClass;
 
   beforeEach(() => {
     wrapper = shallowMount<RoutesSelectorClass>(RoutesSelectorVue, {
       store,
       localVue,
       provide: {
-        routesService: () => new RoutesService(store),
-        refreshService: () => new RefreshService(store),
+        routesService: () => routesService,
+        refreshService: () => refreshService,
       },
     });
-    routesSelectorComponent = wrapper.vm;
+    routesSelector = wrapper.vm;
+  });
+
+  it('when component is mounted', async () => {
+    const subscribeRouteReload = jest.spyOn(routesService.routeReload$, 'subscribe');
+    const subscribeRefreshReload = jest.spyOn(refreshService.refreshReload$, 'subscribe');
+    const wrapperToTestMounted = shallowMount<RoutesSelectorClass>(RoutesSelectorVue, {
+      store,
+      localVue,
+      provide: {
+        routesService: () => routesService,
+        refreshService: () => refreshService,
+      },
+    });
+    const routesSelectorToTestMounted = wrapperToTestMounted.vm;
+    await routesSelectorToTestMounted.$nextTick();
+    expect(routesSelectorToTestMounted.activeRoute).toStrictEqual(jhcc_route);
+    expect(subscribeRouteReload).toHaveBeenCalled();
+    expect(subscribeRefreshReload).toHaveBeenCalled();
+    subscribeRefreshReload.mockRestore();
+    subscribeRouteReload.mockRestore();
+  });
+
+  it('should update routes', () => {
+    const routesChange = jest.spyOn(routesService, 'routesChange');
+    const findAllRoutes = jest.spyOn(routesService, 'findAllRoutes').mockReturnValue(
+      new Observable(subscriber => {
+        subscriber.next(routes);
+      })
+    );
+    routesSelector.updateRoute();
+    expect(findAllRoutes).toHaveBeenCalled();
+    expect(routesSelector.savedRoutes).toBe(routes);
+    expect(routesSelector.routes).toBe(routes);
+    expect(routesSelector.searchedInstance).toBe('');
+    expect(routesSelector.updatingRoutes).toBeFalsy();
+    expect(routesChange).toHaveBeenCalledWith(routes);
+    routesChange.mockRestore();
+    findAllRoutes.mockRestore();
+  });
+
+  it('should reset activeRoute when we call updateRoute with 404 error', () => {
+    const setActiveRoute = jest.spyOn(routesSelector, 'setActiveRoute');
+    const findAllRoutes = jest.spyOn(routesService, 'findAllRoutes').mockReturnValue(Observable.throw({ status: 404 }));
+    routesSelector.updateRoute();
+    expect(findAllRoutes).toHaveBeenCalled();
+    expect(setActiveRoute).toHaveBeenCalledWith(null);
+    expect(routesSelector.updatingRoutes).toBeFalsy();
+    setActiveRoute.mockRestore();
+    findAllRoutes.mockRestore();
   });
 
   it('should set active route', () => {
-    routesSelectorComponent.routes = routes;
+    routesSelector.routes = routes;
 
     // an active route already exist
-    routesSelectorComponent.setActiveRoute(service_test_route);
-    expect(routesSelectorComponent.activeRoute).toEqual(service_test_route);
+    routesSelector.setActiveRoute(service_test_route);
+    expect(routesSelector.activeRoute).toEqual(service_test_route);
 
     // no active route
-    routesSelectorComponent.setActiveRoute(null);
-    expect(routesSelectorComponent.activeRoute).toEqual(jhcc_route);
+    routesSelector.setActiveRoute(null);
+    expect(routesSelector.activeRoute).toEqual(jhcc_route);
   });
 
   it('should get active route', () => {
-    routesSelectorComponent.activeRoute = service_test_route;
-    const activeRoute = routesSelectorComponent.getActiveRoute();
+    routesSelector.activeRoute = service_test_route;
+    const activeRoute = routesSelector.getActiveRoute();
     expect(activeRoute).toEqual(service_test_route.instanceId.toUpperCase());
   });
 
   it('should get all routes matches string searchedInstance', () => {
     // searchedInstance is empty
-    routesSelectorComponent.searchedInstance = '';
-    routesSelectorComponent.savedRoutes = routes;
-    routesSelectorComponent.searchByAppName();
-    expect(routesSelectorComponent.routes).toEqual(routesSelectorComponent.savedRoutes);
+    routesSelector.searchedInstance = '';
+    routesSelector.savedRoutes = routes;
+    routesSelector.searchByAppName();
+    expect(routesSelector.routes).toEqual(routesSelector.savedRoutes);
 
     // searchedInstance is not empty
-    routesSelectorComponent.searchedInstance = 'JHIPSTER';
-    routesSelectorComponent.savedRoutes = routes;
-    routesSelectorComponent.searchByAppName();
+    routesSelector.searchedInstance = 'JHIPSTER';
+    routesSelector.savedRoutes = routes;
+    routesSelector.searchByAppName();
     const expectedRoutes = [jhcc_route];
-    expect(routesSelectorComponent.routes).toEqual(expectedRoutes);
+    expect(routesSelector.routes).toEqual(expectedRoutes);
   });
 
   it('should set state of active route', () => {
     // route is active
-    routesSelectorComponent.activeRoute = service_test_route;
-    let result = routesSelectorComponent.state(service_test_route);
+    routesSelector.activeRoute = service_test_route;
+    let result = routesSelector.state(service_test_route);
     expect(result).toBe('active');
 
     // route is not active
-    routesSelectorComponent.activeRoute = jhcc_route;
-    result = routesSelectorComponent.state(service_test_route);
+    routesSelector.activeRoute = jhcc_route;
+    result = routesSelector.state(service_test_route);
     expect(result).toBe('');
   });
 });

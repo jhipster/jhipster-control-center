@@ -1,14 +1,20 @@
 import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
+import * as config from '@/shared/config/config';
+import { BootstrapVue } from 'bootstrap-vue';
 import RefreshSelectorMixinClass from '@/shared/refresh/refresh-selector.mixin.ts';
 import RefreshSelectorMixinVue from '@/shared/refresh/refresh-selector.mixin.vue';
 import { RefreshService } from '@/shared/refresh/refresh.service.ts';
-import * as config from '@/shared/config/config';
-import { BootstrapVue } from 'bootstrap-vue';
+import { Observable } from 'rxjs';
 
 const localVue = createLocalVue();
 localVue.use(BootstrapVue);
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
+
+const refreshService = new RefreshService(store);
+refreshService.refreshChanged$ = new Observable(subscriber => {
+  subscriber.next();
+});
 
 describe('Refresh', () => {
   let refreshSelectorMixin: RefreshSelectorMixinClass;
@@ -19,14 +25,31 @@ describe('Refresh', () => {
       store,
       localVue,
       provide: {
-        refreshService: () => new RefreshService(store),
+        refreshService: () => refreshService,
       },
     });
     refreshSelectorMixin = wrapper.vm;
   });
 
+  it('when component is mounted', async () => {
+    const subscribeRefreshChanged = jest.spyOn(refreshService.refreshChanged$, 'subscribe');
+    const wrapperToTestMounted = shallowMount<RefreshSelectorMixinClass>(RefreshSelectorMixinVue, {
+      store,
+      localVue,
+      provide: {
+        refreshService: () => refreshService,
+      },
+    });
+    const refreshToTestMounted = wrapperToTestMounted.vm;
+    await refreshToTestMounted.$nextTick();
+
+    expect(refreshToTestMounted.activeRefreshTime).toBe(0);
+    expect(refreshToTestMounted.htmlActiveRefreshTime).toBe('disabled');
+    expect(subscribeRefreshChanged).toHaveBeenCalled();
+  });
+
   it('should refresh manually refresh subject', async () => {
-    const spy = jest.spyOn(refreshSelectorMixin, 'manualRefresh');
+    const spy = jest.spyOn(refreshService, 'refreshReload');
     refreshSelectorMixin.manualRefresh();
     await refreshSelectorMixin.$nextTick();
     expect(spy).toHaveBeenCalled();
@@ -34,19 +57,22 @@ describe('Refresh', () => {
   });
 
   it('should set active refresh time', async () => {
-    const spy = jest.spyOn(refreshSelectorMixin, 'setActiveRefreshTime');
+    const refreshChanged = jest.spyOn(refreshService, 'refreshChanged');
+    const storeSelectedRefreshTime = jest.spyOn(refreshService, 'storeSelectedRefreshTime');
     const time = 5;
     refreshSelectorMixin.setActiveRefreshTime(time);
     await refreshSelectorMixin.$nextTick();
-    expect(spy).toHaveBeenCalled();
+    expect(refreshChanged).toHaveBeenCalled();
+    expect(storeSelectedRefreshTime).toHaveBeenCalled();
     expect(refreshSelectorMixin.activeRefreshTime).toBe(time);
 
     const wrongTime = -1;
     refreshSelectorMixin.setActiveRefreshTime(wrongTime);
     await refreshSelectorMixin.$nextTick();
-    expect(spy).toHaveBeenCalled();
+    expect(refreshChanged).toHaveBeenCalled();
+    expect(storeSelectedRefreshTime).toHaveBeenCalled();
     expect(refreshSelectorMixin.activeRefreshTime).toBe(refreshSelectorMixin.refreshTimes[0]);
-    spy.mockRestore();
+    refreshChanged.mockRestore();
   });
 
   it('should init the timer', async () => {
@@ -54,16 +80,16 @@ describe('Refresh', () => {
     refreshSelectorMixin.activeRefreshTime = 5;
     refreshSelectorMixin.subscribe();
     await refreshSelectorMixin.$nextTick();
-    expect(spy).toHaveBeenCalled();
+    expect(refreshSelectorMixin.refreshTimer).not.toBeNull();
     spy.mockRestore();
   });
 
   it('should launch (or relaunch if true) the timer', async () => {
-    const spy = jest.spyOn(refreshSelectorMixin, 'launchTimer');
     refreshSelectorMixin.activeRefreshTime = 5;
     refreshSelectorMixin.subscribe();
     await refreshSelectorMixin.$nextTick();
     const relaunch = true;
+    const spy = jest.spyOn(refreshSelectorMixin, 'subscribe');
     refreshSelectorMixin.launchTimer(relaunch);
     await refreshSelectorMixin.$nextTick();
     expect(spy).toHaveBeenCalled();

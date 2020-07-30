@@ -12,11 +12,6 @@ export interface Logger {
   effectiveLevel: Level;
 }
 
-export interface LoggersResponse {
-  levels: Level[];
-  loggers: { [key: string]: Logger };
-}
-
 export class Log {
   constructor(public name: string, public level: Level) {}
 }
@@ -34,7 +29,6 @@ export default class LoggersService extends AbstractService {
     return logs;
   }
 
-  /** change loggers level */
   public changeLoggersLevel(routes: Route[], name: string, configuredLevel: Level): Observable<{}> {
     const changeLoggersLevelResponses: Observable<{}>[] = [];
     for (let i = 0; i < routes.length; i++) {
@@ -54,7 +48,7 @@ export default class LoggersService extends AbstractService {
   }
 
   /** return all log of a route */
-  public findAll(route: Route): Observable<Log[]> {
+  public findAllLoggers(route: Route): Observable<Log[]> {
     return Observable.create(observer => {
       const url = this.generateUri(route, '/management/loggers/');
 

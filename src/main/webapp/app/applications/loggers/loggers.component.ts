@@ -1,4 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import LoggersService, { Level, Log } from './loggers.service';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
@@ -15,7 +15,7 @@ import AbstractComponent from '@/applications/abstract.component';
   mixins: [Vue2Filters.mixin],
 })
 export default class JhiLoggers extends AbstractComponent {
-  private loggers: Log[] = [];
+  public loggers: Log[] = [];
   public filtered = '';
   public orderProp = 'name';
   public reverse = false;
@@ -28,7 +28,6 @@ export default class JhiLoggers extends AbstractComponent {
   @Inject('routesService') private routesService: () => RoutesService;
   @Inject('refreshService') private refreshService: () => RefreshService;
 
-  /* istanbul ignore next */
   public mounted(): void {
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
@@ -60,9 +59,8 @@ export default class JhiLoggers extends AbstractComponent {
   }
 
   refreshActiveRouteLogs(): void {
-    /* istanbul ignore next */
     this.loggersService()
-      .findAll(this.activeRoute)
+      .findAllLoggers(this.activeRoute)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         res => {

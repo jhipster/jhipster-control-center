@@ -1,36 +1,36 @@
-import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
+import { createLocalVue, Wrapper, mount } from '@vue/test-utils';
 import * as config from '@/shared/config/config';
 import axios from 'axios';
 import InstanceModalClass from '@/applications/instance/instance-modal.component';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
+import InstanceService from '@/applications/instance/instance.service';
+import { inst, jhcc_route, jhcc_profiles } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 config.initVueApp(localVue);
 localVue.component('font-awesome-icon', {});
-const mockedInstanceService = { findActiveProfiles: jest.spyOn(axios, 'get') };
-const app = {
-  serviceId: 'app1',
-  instanceId: 'app1-id',
-  uri: 'http://127.0.0.1:8080',
-  host: '127.0.0.1',
-  port: 8080,
-  secure: false,
-  metadata: {},
-};
+const instanceService = new InstanceService();
+console.warn = jest.fn();
+jest.mock('axios', () => ({
+  get: jest.fn(),
+  post: jest.fn(),
+}));
+const mockedAxios: any = axios;
 
 describe('Instance Modal Component', () => {
   let wrapper: Wrapper<InstanceModalClass>;
   let instanceModal: InstanceModalClass;
 
-  beforeEach(async () => {
-    wrapper = shallowMount<InstanceModalClass>(InstanceModal, {
+  beforeAll(async () => {
+    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    wrapper = mount<InstanceModalClass>(InstanceModal, {
       propsData: {
-        selectedInstance: app,
-        selectedInstanceRoute: {},
+        selectedInstance: inst,
+        selectedInstanceRoute: jhcc_route,
       },
       localVue,
       provide: {
-        instanceService: () => mockedInstanceService,
+        instanceService: () => instanceService,
       },
     });
     instanceModal = wrapper.vm;
@@ -38,29 +38,23 @@ describe('Instance Modal Component', () => {
 
   describe('active profiles', () => {
     it('should refresh profile', async () => {
-      // GIVEN
-      mockedInstanceService.findActiveProfiles.mockReturnValue(Promise.resolve({}));
-      const route = mockedInstanceService.findActiveProfiles.mock.calls[0][0];
-
-      // WHEN
+      mockedAxios.get.mockReturnValue(Promise.resolve({ data: jhcc_profiles }));
+      const spy = jest.spyOn(instanceService, 'findActiveProfiles');
       instanceModal.refreshProfile();
       await instanceModal.$nextTick();
-
-      // THEN
-      expect(mockedInstanceService.findActiveProfiles).toHaveBeenCalledWith(route);
+      expect(spy).toHaveBeenCalled();
+      expect(instanceModal.activeProfiles).not.toBeNull();
+      spy.mockRestore();
     });
 
     it('should get an error when refresh profile', async () => {
-      // GIVEN
-      mockedInstanceService.findActiveProfiles.mockReturnValue(Promise.reject({}));
-      const route = mockedInstanceService.findActiveProfiles.mock.calls[0][0];
-
-      // WHEN
+      mockedAxios.get.mockReturnValue(Promise.reject('error'));
+      const spy = jest.spyOn(instanceService, 'findActiveProfiles');
       instanceModal.refreshProfile();
       await instanceModal.$nextTick();
-
-      // THEN
-      expect(mockedInstanceService.findActiveProfiles).toHaveBeenCalledWith(route);
+      expect(spy).toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalledWith('error');
+      spy.mockRestore();
     });
   });
 });

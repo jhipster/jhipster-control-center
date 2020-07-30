@@ -33,17 +33,15 @@ export default class JhiInstance extends Vue {
     this.refreshInstancesRoute();
   }
 
-  /** Update instancesData which contains list of applications instances */
   public refreshInstancesData(): void {
     this.instanceService()
-      .findAll()
+      .findAllInstance()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(instances => {
         this.instances = instances;
       });
   }
 
-  /** Update instancesRoute which contains list of routes */
   public refreshInstancesRoute(): void {
     this.instanceService()
       .findAllGatewayRoute()
@@ -51,7 +49,7 @@ export default class JhiInstance extends Vue {
         this.instancesRoute = res.data;
       })
       .catch(error => {
-        this.instancesRoute = error.error;
+        console.warn(error);
       });
   }
 
@@ -68,7 +66,7 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
-  /* Modal dialog */
+  /* Modal dialog to confirm shutdown */
   public confirmShutdown(instance: Instance): void {
     const config = {
       title: 'Please Confirm',
@@ -88,10 +86,9 @@ export default class JhiInstance extends Vue {
           this.shutdownInstance(instance);
         }
       })
-      .catch(err => console.warn(err));
+      .catch(error => console.warn(error));
   }
 
-  /* shutdown an instance */
   public shutdownInstance(instance: Instance): void {
     this.instanceService()
       .shutdownInstance(instance)
@@ -103,8 +100,8 @@ export default class JhiInstance extends Vue {
           autoHideDelay: 5000,
         });
       })
-      .catch(err => {
-        return this.$bvToast.toast(`${err}`, {
+      .catch(error => {
+        return this.$bvToast.toast(`${error}`, {
           title: `Error`,
           variant: 'danger',
           solid: true,

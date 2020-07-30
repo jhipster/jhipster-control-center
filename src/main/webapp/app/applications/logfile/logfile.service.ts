@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import AbstractService from '@/applications/abstract.service';
 
 export default class LogfileService extends AbstractService {
-  /** return logfile of a route */
-  public find(route: Route): Observable<string> {
+  public findLogfile(route: Route): Observable<string> {
     return Observable.create(observer => {
       const url = this.generateUri(route, '/management/logfile/');
 
