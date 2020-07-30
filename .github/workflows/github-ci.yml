@@ -20,22 +20,34 @@ jobs:
                   java-version: '11.x'
             - name: Install node.js packages
               run: npm install
-            - name: Run backend test
-              run: |
-                  chmod +x mvnw
-                  ./mvnw -ntp clean verify -P-webpack
-            - name: Run frontend test
-              run: npm run test
-            - name: Sonar analysis
-              if: github.repository == 'jhipster/jhipster-control-center' && github.ref == 'refs/heads/master'
-              run: |
-                  ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
-                  -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.projectKey=jhipster_jhipster-control-center \
-                  -Dsonar.organization=jhipster \
-                  -Dsonar.login=$SONAR_TOKEN
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            #- name: Run backend test
+            #  run: |
+            #      chmod +x mvnw
+            #      ./mvnw -ntp clean verify -P-webpack
+            #- name: Run frontend test
+            #  run: npm run test
+            #- name: Sonar analysis
+            #  if: github.repository == 'jhipster/jhipster-control-center' && github.ref == 'refs/heads/master'
+            #  run: |
+            #      ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
+            #      -Dsonar.host.url=https://sonarcloud.io \
+            #      -Dsonar.projectKey=jhipster_jhipster-control-center \
+            #      -Dsonar.organization=jhipster \
+            #      -Dsonar.login=$SONAR_TOKEN
+            #  env:
+            #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
+            - name: Run application
+              run: 'java -jar ./target/jhipster-control-center-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod,swagger,static &'
+            - name: Waiting for  application
+              uses: jakejarvis/wait-action@master
+              with:
+                  time: '30s'
+            - name: Run e2e test
+              uses: cypress-io/github-action@v2
+              with:
+                  browser: chrome
+                  headless: true
+                  project: ./
