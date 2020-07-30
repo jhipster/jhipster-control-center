@@ -36,12 +36,11 @@ export default class JhiMetric extends AbstractComponent {
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(route => {
         this.activeRoute = route;
-        this.refresh();
+        this.refreshMetrics();
       });
   }
 
-  /** refresh all metrics */
-  public refresh(): void {
+  public refreshMetrics(): void {
     this.metricService()
       .findAll(this.activeRoute)
       .pipe(

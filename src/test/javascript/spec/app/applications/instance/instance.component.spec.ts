@@ -46,6 +46,9 @@ describe('Instance Component', () => {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
       },
+      mocks: {
+        show: jest.fn(),
+      },
     });
     instance = wrapper.vm;
   });
@@ -102,13 +105,13 @@ describe('Instance Component', () => {
   });
 
   it('should call showInstance', async () => {
-    const spy = jest.spyOn(instance, 'showInstance');
+    const spy = jest.spyOn(<any>instance.$refs.instanceModal, 'show');
     const uri = 'http://127.0.0.01:8080';
     instance.instancesRoute = instancesRoute;
     instance.showInstance(inst, uri);
     await instance.$nextTick();
-    expect(spy).toHaveBeenCalled();
     expect(instance.instanceModal).not.toBeNull();
+    expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
 
