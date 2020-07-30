@@ -1,4 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
@@ -25,13 +25,12 @@ export default class JhiLogfile extends AbstractComponent {
   @Inject('logfileService') private logfileService: () => LogfileService;
   @Inject('routesService') private routesService: () => RoutesService;
 
-  /* istanbul ignore next */
   public mounted(): void {
     this.routesService()
       .routeChanged$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(route => {
         this.activeRoute = route;
-        this.displayActiveRouteLog();
+        this.refreshActiveRouteLog();
       });
 
     this.routesService()
@@ -39,10 +38,10 @@ export default class JhiLogfile extends AbstractComponent {
       .subscribe(routes => (this.routes = routes));
   }
 
-  displayActiveRouteLog(): void {
+  refreshActiveRouteLog(): void {
     if (this.activeRoute) {
       this.logfileService()
-        .find(this.activeRoute)
+        .findLogfile(this.activeRoute)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           logFileContent => {
@@ -50,7 +49,6 @@ export default class JhiLogfile extends AbstractComponent {
             this.resetError();
           },
           error => {
-            /* istanbul ignore next */
             const errorStatus = error.response.status;
             if (errorStatus === 404) {
               this.logFileContent =
@@ -71,12 +69,10 @@ export default class JhiLogfile extends AbstractComponent {
     }
   }
 
-  /* istanbul ignore next */
   scrollToBottom(): void {
     this.$el.querySelector('#logfile').scrollTop = this.$el.querySelector('#logfile').scrollHeight;
   }
 
-  /* istanbul ignore next */
   scrollToTop(): void {
     this.$el.querySelector('#logfile').scrollTop = 0;
   }

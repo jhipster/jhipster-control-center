@@ -163,6 +163,19 @@ const jhcc_health_element = {
   },
 };
 
+const jhcc_logfile = 'some logs write in logfile of jhcc';
+
+const jhcc_logfile_error =
+  'No available logfile. Please note that it is not available by default, you need to set up the Spring Boot properties below! \n' +
+  'Please check:\n ' +
+  '- if the microservice is up\n ' +
+  '- if these properties are set: \n ' +
+  '    - logging.file.path\n ' +
+  '    - logging.file.name (to avoid using the same spring.log)\n\n' +
+  'See:\n ' +
+  '- https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html\n ' +
+  '- https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html';
+
 export {
   stubbedModal,
   inst,
@@ -181,4 +194,6 @@ export {
   property_source,
   jhcc_health,
   jhcc_health_element,
+  jhcc_logfile,
+  jhcc_logfile_error,
 };
