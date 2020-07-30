@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
+import { shallowMount, createLocalVue, Wrapper, mount } from '@vue/test-utils';
 import * as config from '@/shared/config/config';
 import axios from 'axios';
 import RoutesService from '@/shared/routes/routes.service';
@@ -29,6 +29,8 @@ jest.mock('axios', () => ({
   post: jest.fn(),
 }));
 
+const resetError = jest.fn();
+
 describe('Logfile Component', () => {
   let wrapper: Wrapper<LogfileClass>;
   let logfile: LogfileClass;
@@ -43,16 +45,21 @@ describe('Logfile Component', () => {
         refreshService: () => refreshService,
         routesService: () => routesService,
       },
-      methods: {
-        resetError: () => jest.fn(),
+      mocks: {
+        resetError,
       },
     });
     logfile = wrapper.vm;
   });
 
+  afterAll(() => {
+    logfile.beforeDestroy();
+  });
+
   it('when component is mounted', async () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    const refreshActiveRouteLog = jest.fn();
+    const subscribeRouteChanged = jest.spyOn(routesService.routeChanged$, 'subscribe');
+    const subscribeRoutesChanged = jest.spyOn(routesService.routesChanged$, 'subscribe');
     const wrapperToTestMounted = shallowMount<LogfileClass>(Logfile, {
       store,
       localVue,
@@ -61,16 +68,16 @@ describe('Logfile Component', () => {
         refreshService: () => refreshService,
         routesService: () => routesService,
       },
-      methods: {
-        refreshActiveRouteLog,
-      },
     });
     const logfileToTestMounted = wrapperToTestMounted.vm;
     await logfileToTestMounted.$nextTick();
 
-    expect(refreshActiveRouteLog).toHaveBeenCalled();
+    expect(subscribeRouteChanged).toHaveBeenCalled();
+    expect(subscribeRoutesChanged).toHaveBeenCalled();
     expect(logfileToTestMounted.activeRoute).toBe(jhcc_route);
     expect(logfileToTestMounted.routes).toBe(routes);
+    subscribeRouteChanged.mockRestore();
+    subscribeRoutesChanged.mockRestore();
   });
 
   it('should refresh logFileContent of selected route', async () => {

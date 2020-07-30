@@ -1,4 +1,4 @@
-import { createLocalVue, Wrapper, mount } from '@vue/test-utils';
+import { createLocalVue, Wrapper, mount, shallowMount } from '@vue/test-utils';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import * as config from '@/shared/config/config';
@@ -13,12 +13,11 @@ import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtu
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
-
-config.initVueApp(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('instance-modal', InstanceModal);
 localVue.directive('b-modal', {});
 localVue.use(BootstrapVue);
+config.initVueApp(localVue);
 
 const store = config.initVueXStore(localVue);
 const instanceService = new InstanceService();
@@ -56,10 +55,8 @@ describe('Instance Component', () => {
   });
 
   it('when component is mounted', async () => {
-    const refreshInstancesData = jest.fn();
-    const refreshInstancesRoute = jest.fn();
-
-    mount<InstanceClass>(InstanceVue, {
+    const subscribeRefreshReload = jest.spyOn(refreshService.refreshReload$, 'subscribe');
+    shallowMount<InstanceClass>(InstanceVue, {
       localVue,
       stubs: {
         bModal: stubbedModal,
@@ -68,14 +65,8 @@ describe('Instance Component', () => {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
       },
-      methods: {
-        refreshInstancesData,
-        refreshInstancesRoute,
-      },
     });
-
-    expect(refreshInstancesData).toHaveBeenCalledTimes(2);
-    expect(refreshInstancesRoute).toHaveBeenCalledTimes(2);
+    expect(subscribeRefreshReload).toHaveBeenCalled();
   });
 
   it('should refresh instances list', async () => {

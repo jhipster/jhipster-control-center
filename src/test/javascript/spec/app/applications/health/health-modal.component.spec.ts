@@ -72,10 +72,6 @@ describe('Health Modal Component for diskSpace', () => {
     healthModal = wrapper.vm;
   });
 
-  it('should be a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
   describe('readableValue should transform data', () => {
     it('to GB when needed', () => {
       const result = healthModal.readableValue(2147483648);

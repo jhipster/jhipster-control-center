@@ -32,6 +32,8 @@ jest.mock('axios', () => ({
   post: jest.fn(),
 }));
 
+const resetError = jest.fn();
+
 describe('Health Component', () => {
   let wrapper: Wrapper<HealthClass>;
   let health: HealthClass;
@@ -48,8 +50,8 @@ describe('Health Component', () => {
         instanceHealthService: () => instanceHealthService,
         routesService: () => routesService,
       },
-      methods: {
-        resetError: () => jest.fn(),
+      mocks: {
+        resetError,
       },
     });
     health = wrapper.vm;
@@ -61,7 +63,8 @@ describe('Health Component', () => {
 
   it('when component is mounted', async () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    const refreshActiveRouteHealth = jest.fn();
+    const subscribeRouteChanged = jest.spyOn(routesService.routeChanged$, 'subscribe');
+    const subscribeRoutesChanged = jest.spyOn(routesService.routesChanged$, 'subscribe');
     const wrapperToTestMounted = shallowMount<HealthClass>(Health, {
       store,
       localVue,
@@ -72,14 +75,12 @@ describe('Health Component', () => {
         instanceHealthService: () => instanceHealthService,
         routesService: () => routesService,
       },
-      methods: {
-        refreshActiveRouteHealth,
-      },
     });
     const healthToTestMounted = wrapperToTestMounted.vm;
     await healthToTestMounted.$nextTick();
 
-    expect(refreshActiveRouteHealth).toHaveBeenCalled();
+    expect(subscribeRouteChanged).toHaveBeenCalled();
+    expect(subscribeRoutesChanged).toHaveBeenCalled();
     expect(healthToTestMounted.activeRoute).toBe(jhcc_route);
     expect(healthToTestMounted.routes).toBe(routes);
   });

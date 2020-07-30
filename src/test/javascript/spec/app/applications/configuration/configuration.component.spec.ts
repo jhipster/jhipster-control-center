@@ -1,4 +1,5 @@
 import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import ConfigurationService, { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import ConfigurationClass from '@/applications/configuration/configuration.component';
 import Configuration from '@/applications/configuration/configuration.vue';
@@ -21,6 +22,7 @@ import {
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
+localVue.component('font-awesome-icon', FontAwesomeIcon);
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 
@@ -39,6 +41,8 @@ jest.mock('axios', () => ({
   post: jest.fn(),
 }));
 
+const resetError = jest.fn();
+
 describe('Configuration Component', () => {
   let wrapper: Wrapper<ConfigurationClass>;
   let configuration: ConfigurationClass;
@@ -53,8 +57,8 @@ describe('Configuration Component', () => {
         instanceConfigurationService: () => instanceConfigurationService,
         routesService: () => routesService,
       },
-      methods: {
-        resetError: () => jest.fn(),
+      mocks: {
+        resetError,
       },
     });
     configuration = wrapper.vm;
@@ -66,7 +70,8 @@ describe('Configuration Component', () => {
 
   it('when component is mounted', async () => {
     mockedAxios.get.mockReturnValue(Promise.resolve({ data: jhcc_route }));
-    const refreshActiveRouteBeans = jest.fn();
+    const subscribeRouteChanged = jest.spyOn(routesService.routeChanged$, 'subscribe');
+    const subscribeRoutesChanged = jest.spyOn(routesService.routesChanged$, 'subscribe');
     const wrapperToTestMounted = shallowMount<ConfigurationClass>(Configuration, {
       store,
       localVue,
@@ -75,17 +80,15 @@ describe('Configuration Component', () => {
         instanceConfigurationService: () => instanceConfigurationService,
         routesService: () => routesService,
       },
-      methods: {
-        refreshActiveRouteBeans,
-      },
     });
     const configurationToTestMounted = wrapperToTestMounted.vm;
     await configurationToTestMounted.$nextTick();
 
+    expect(subscribeRouteChanged).toHaveBeenCalled();
+    expect(subscribeRoutesChanged).toHaveBeenCalled();
     expect(configurationToTestMounted.beansFilter).toBe('');
     expect(configurationToTestMounted.orderProp).toBe('name');
     expect(configurationToTestMounted.beansAscending).toBe(true);
-    expect(refreshActiveRouteBeans).toHaveBeenCalledTimes(1);
   });
 
   it('should refresh beans and property sources of active route', async () => {
