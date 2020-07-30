@@ -10,14 +10,12 @@ describe('Refresh service', () => {
 
   it('should init service', () => {
     refreshService = new RefreshService(store);
-
     expect(store.getters.refreshTime).toBe(0);
   });
 
   it('should get selected refresh time from store', () => {
     refreshService = new RefreshService(store);
     const time = refreshService.getSelectedRefreshTime();
-
     expect(time).toBe(0);
   });
 
@@ -25,7 +23,6 @@ describe('Refresh service', () => {
     refreshService = new RefreshService(store);
     const time = 5;
     refreshService.storeSelectedRefreshTime(time);
-
     expect(store.getters.refreshTime).toBe(5);
   });
 });
