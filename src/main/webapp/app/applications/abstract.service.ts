@@ -1,8 +1,7 @@
 import { Route } from '@/shared/routes/routes.service';
 import { SERVER_API_URL } from '@/constants';
-import Vue from 'vue';
 
-export default abstract class AbstractService extends Vue {
+export default abstract class AbstractService {
   private GATEWAY_PATH = 'gateway/';
 
   protected generateUri(route: Route, basePath: string, ...paths: string[]): string {
