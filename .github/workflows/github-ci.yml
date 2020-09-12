@@ -1,53 +1,79 @@
 name: Application CI
 on: [push, pull_request]
 jobs:
-    pipeline:
-        name: jhipsterControlCenter pipeline
-        runs-on: ubuntu-latest
-        if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
-        timeout-minutes: 40
+  pipeline:
+    name: ${{ matrix.app-type }}
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        app-type:
+          - jhcc-consul-jwt
+          - jhcc-consul-oauth
+          - jhcc-eureka-jwt
+          - jhcc-eureka-oauth
+          - jhcc-static-jwt
+          - jhcc-static-oauth
+        include:
+          - app-type: jhcc-consul-jwt
+            profile: prod,consul,swagger
+          - app-type: jhcc-consul-oauth
+            profile: prod,oauth,consul,swagger
+          - app-type: jhcc-eureka-jwt
+            profile: prod,eureka,swagger
+          - app-type: jhcc-eureka-oauth
+            profile: prod,eureka,oauth,swagger
+          - app-type: jhcc-static-jwt
+            profile: prod,swagger,static
+          - app-type: jhcc-static-oauth
+            profile: prod,static,oauth,swagger
+    env:
+      NODE_VERSION: 12.16.1
+      SPRING_OUTPUT_ANSI_ENABLED: DETECT
+      JHI_DISABLE_WEBPACK_LOGS: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.16.1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
+      - name: 'Start docker-compose containers'
+        run: 'cd src/main/docker && docker-compose -f jhipster-registry.yml -f keycloak.yml -f consul.yml up -d'
+      - name: 'Install node.js packages'
+        run: npm install
+      - name: 'Run backend test'
+        run: |
+          chmod +x mvnw
+          ./mvnw -ntp clean verify -P-webpack
+      - name: 'Run frontend test'
+        run: npm run test
+      - name: 'Package application'
+        run: ./mvnw -ntp package -Pprod -DskipTests
+      - name: 'Run application'
+        run: java -jar ./target/jhipster-control-center-0.2.0-SNAPSHOT.jar --spring.profiles.active=${{ matrix.profile }} &
+      - name: 'Waiting for  application'
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+      - name: 'Run e2e test'
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          project: ./
+      - name: 'Sonar analysis'
+        if: github.repository == 'jhipster/jhipster-control-center' && github.ref == 'refs/heads/master'
+        run: |
+          ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.projectKey=jhipster_jhipster-control-center \
+          -Dsonar.organization=jhipster \
+          -Dsonar.login=$SONAR_TOKEN
         env:
-            NODE_VERSION: 12.16.1
-            SPRING_OUTPUT_ANSI_ENABLED: DETECT
-            JHI_DISABLE_WEBPACK_LOGS: true
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 12.16.1
-            - uses: actions/setup-java@v1
-              with:
-                  java-version: '11.x'
-            - name: Install node.js packages
-              run: npm install
-            - name: Run backend test
-              run: |
-                  chmod +x mvnw
-                  ./mvnw -ntp clean verify -P-webpack
-            - name: Run frontend test
-              run: npm run test
-            - name: Package application
-              run: ./mvnw -ntp package -Pprod -DskipTests
-            - name: Run application
-              run: 'java -jar ./target/jhipster-control-center-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod,swagger,static &'
-            - name: Waiting for  application
-              uses: jakejarvis/wait-action@master
-              with:
-                time: '30s'
-            - name: Run e2e test
-              uses: cypress-io/github-action@v2
-              with:
-                browser: chrome
-                headless: true
-                project: ./
-            - name: Sonar analysis
-              if: github.repository == 'jhipster/jhipster-control-center' && github.ref == 'refs/heads/master'
-              run: |
-                  ./mvnw -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar \
-                  -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.projectKey=jhipster_jhipster-control-center \
-                  -Dsonar.organization=jhipster \
-                  -Dsonar.login=$SONAR_TOKEN
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
