@@ -20,15 +20,15 @@ jobs:
           - app-type: jhcc-consul-jwt
             profile: prod,consul,swagger
           - app-type: jhcc-consul-oauth
-            profile: prod,oauth,consul,swagger
+            profile: prod,oauth2,consul,swagger
           - app-type: jhcc-eureka-jwt
             profile: prod,eureka,swagger
           - app-type: jhcc-eureka-oauth
-            profile: prod,eureka,oauth,swagger
+            profile: prod,eureka,oauth2,swagger
           - app-type: jhcc-static-jwt
             profile: prod,swagger,static
           - app-type: jhcc-static-oauth
-            profile: prod,static,oauth,swagger
+            profile: prod,static,oauth2,swagger
     env:
       NODE_VERSION: 12.16.1
       SPRING_OUTPUT_ANSI_ENABLED: DETECT
