@@ -11,7 +11,8 @@ In order to work properly, the Control Center has to be started with a spring pr
 - `eureka`: Connect to an Eureka server and fetch its registered instances, configured in `application-eureka.yml`
 - `consul`: Connect to a Consul server and fetch its registered instances, configured in `application-consul.yml`
 - `static`: Uses a static list of instances provided as properties, configured in `application-static.yml`
-- `kubernetes`: To be developed
+- `oauth2`: Uses the OAuth stateful security mechanism using the Keycloack OpenID Connect Server, configured in `application-oauth2.yml`
+- `kubernetes`: Experimental kubernetes integration, configured in `application-kubernetes.yml`. Refer to [this sample repo for detailed instructions](https://github.com/cedric-lamalle/jhipster-control-center-k8s-sample)
 
 ### Control Center API
 
@@ -22,16 +23,19 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 ## Running locally
 
-### Step 1 : Run server use by Spring Cloud discovery backend
+### Step 1 : Run server used by Spring Cloud discovery backend
 
-Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
+Eureka,Consul and Keycloak docker-compose files exist under `src/main/docker` to ease testing the project.
 
 - for Consul : run `docker-compose -f src/main/docker/consul.yml up -d`
 - for Eureka : run `docker-compose -f src/main/docker/jhipster-registry.yml up -d`
+- for OAuth security mechanism (using Keycloak) mode: run `docker-compose -f src/main/docker/keycloak.yml up -d`
 
+For Kubernetes: refer to [this sample repository](https://github.com/cedric-lamalle/jhipster-control-center-k8s-sample)
 ### Step 2 : Run the cloned project
 
-- For development run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
+- For development, using the JWT security mechanism (the default), run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
+- For development, using the OAuth security mechanism, run `./mvnw -Dspring.profiles.active=consul,dev,oauth2` or `./mvnw -Dspring.profiles.active=eureka,dev,oauth2`. Make sure the Keycloak server is up and running.
 - To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
 
 ## Running from Docker
