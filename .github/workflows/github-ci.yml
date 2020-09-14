@@ -29,7 +29,7 @@ jobs:
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
             - name: Run application
-              run: 'java -jar ./target/jhipster-control-center-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod,swagger,static &'
+              run: 'java -jar ./target/jhipster-control-center-*.jar --spring.profiles.active=prod,swagger,static &'
             - name: Waiting for  application
               uses: jakejarvis/wait-action@master
               with:
