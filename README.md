@@ -3,6 +3,7 @@
 This application was generated using JHipster 6.10.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.1](https://www.jhipster.tech/documentation-archive/v6.10.1).
 
 ## JHipster Control Center
+[![Release Drafter][github-release-drafter]][github-actions] [![Release Drafter][github-application-ci]][github-actions]
 
 ### Specific Spring profiles
 
@@ -193,6 +194,18 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
+## Builds
+
+| Pipeline Status                                                        |
+| :--------------------------------------------------------------------- |
+| [![Release Drafter][github-release-drafter]][github-actions]           |
+| [![Release Drafter][github-application-ci]][github-actions]            |
+
+
+## Analysis of JHipster Control Center project
+
+[![sonar-quality-gate][sonar-quality-gate]][sonar-url] [![sonar-coverage][sonar-coverage]][sonar-url] [![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
+
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
 [jhipster 6.10.1 archive]: https://www.jhipster.tech/documentation-archive/v6.10.1
 [using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.10.1/development/
@@ -211,3 +224,16 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://www.protractortest.org/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
+
+[github-actions]: https://github.com/jhipster/jhipster-control-center/actions
+[github-release-drafter]: https://github.com/jhipster/jhipster-control-center/workflows/Release%20Drafter/badge.svg
+[github-application-ci]: https://github.com/jhipster/jhipster-control-center/workflows/Application%20CI/badge.svg
+
+
+[sonar-url]: https://sonarcloud.io/dashboard?id=jhipster_jhipster-control-center
+[sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=alert_status
+[sonar-coverage]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=coverage
+[sonar-bugs]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=bugs
+[sonar-vulnerabilities]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=vulnerabilities
+
+
