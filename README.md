@@ -4,7 +4,7 @@ This application was generated using JHipster 6.10.1, you can find documentation
 
 ## JHipster Control Center
 
-[![Release Drafter][github-application-ci]][github-actions] [![Docker Pulls][docker-hub-pulls]]([docker-hub-url])
+[![Application CI][github-application-ci]][github-actions] [![Docker Pulls][docker-hub-pulls]]([docker-hub-url])
 
 [![sonar-quality-gate][sonar-quality-gate]][sonar-url] [![sonar-coverage][sonar-coverage]][sonar-url] [![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
 
