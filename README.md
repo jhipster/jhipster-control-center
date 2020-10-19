@@ -43,7 +43,7 @@ There is 2 types of authentication.
 ### Step 3 : Run the cloned project
 
 - For development with JWT, run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
-- For development with oauth2, run `./mvnw -Dspring.profiles.active=consul,dev,oauth2` or `./mvnw -Dspring.profiles.active=eureka,dev,oauth2`.
+- For development with OAuth2, run `./mvnw -Dspring.profiles.active=consul,dev,oauth2` or `./mvnw -Dspring.profiles.active=eureka,dev,oauth2`.
 - To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
 
 ## Running from Docker
