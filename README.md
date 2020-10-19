@@ -38,7 +38,7 @@ Eureka and Consul docker-compose files exist under `src/main/docker` to ease tes
 There is 2 types of authentication.
 
 - JWT : This is the default authentication, if you choose this one, you have to do nothing.
-- oauth2 : To use oauth2 authentication, you have to launch Keycloak. Run `docker-compose -f src/main/docker/keycloak.yml up -d`
+- OAuth2 : To use OAuth2 authentication, you have to launch Keycloak. Run `docker-compose -f src/main/docker/keycloak.yml up -d`
 
 ### Step 3 : Run the cloned project
 
