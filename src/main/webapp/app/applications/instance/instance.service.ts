@@ -1,7 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
-import Vue from 'vue';
-import Component from 'vue-class-component';
 import { Observable } from 'rxjs';
+import AbstractService from '@/applications/abstract.service';
 
 export interface Instance {
   serviceId: string;
@@ -17,8 +16,7 @@ export type Metadata = { [key in MetadataKey]?: any };
 
 export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' | 'git-branch';
 
-@Component
-export default class InstanceService extends Vue {
+export default class InstanceService extends AbstractService {
   public findAllInstance(): Observable<Array<Instance>> {
     return Observable.create(observer => {
       axios

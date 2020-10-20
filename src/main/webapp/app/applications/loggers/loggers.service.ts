@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Component from 'vue-class-component';
 import { Route } from '@/shared/routes/routes.service';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs/observable/forkJoin';
@@ -16,7 +15,6 @@ export class Log {
   constructor(public name: string, public level: Level) {}
 }
 
-@Component
 export default class LoggersService extends AbstractService {
   /** convert json array of loggers to loggersResponse */
   /* istanbul ignore next */
