@@ -26,16 +26,24 @@ In order to work properly, the Control Center has to be started with a spring pr
 
 ## Running locally
 
-### Step 1 : Run server use by Spring Cloud discovery backend
+### Step 1 : Run server used by Spring Cloud discovery backend
 
 Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
 
 - for Consul : run `docker-compose -f src/main/docker/consul.yml up -d`
 - for Eureka : run `docker-compose -f src/main/docker/jhipster-registry.yml up -d`
 
-### Step 2 : Run the cloned project
+### Step 2 : Choose your authentication profile
 
-- For development run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
+There is 2 types of authentication.
+
+- JWT : This is the default authentication, if you choose this one, you have to do nothing.
+- OAuth2 : To use OAuth2 authentication, you have to launch Keycloak. Run `docker-compose -f src/main/docker/keycloak.yml up -d`
+
+### Step 3 : Run the cloned project
+
+- For development with JWT, run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
+- For development with OAuth2, run `./mvnw -Dspring.profiles.active=consul,dev,oauth2` or `./mvnw -Dspring.profiles.active=eureka,dev,oauth2`.
 - To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
 
 ## Running from Docker
@@ -199,10 +207,9 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 
 ## Builds
 
-| Pipeline Status                                                        |
-| :--------------------------------------------------------------------- |
-| [![Application CI][github-application-ci]][github-actions]            |
-
+| Pipeline Status                                            |
+| :--------------------------------------------------------- |
+| [![Application CI][github-application-ci]][github-actions] |
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
 [jhipster 6.10.1 archive]: https://www.jhipster.tech/documentation-archive/v6.10.1
@@ -222,17 +229,12 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://www.protractortest.org/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
-
 [github-actions]: https://github.com/jhipster/jhipster-control-center/actions
 [github-application-ci]: https://github.com/jhipster/jhipster-control-center/workflows/Application%20CI/badge.svg
-
-
 [sonar-url]: https://sonarcloud.io/dashboard?id=jhipster_jhipster-control-center
 [sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=alert_status
 [sonar-coverage]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=coverage
 [sonar-bugs]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=bugs
 [sonar-vulnerabilities]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=vulnerabilities
-
-
 [docker-hub-url]: https://hub.docker.com/r/jhipster/jhipster-control-center/
 [docker-hub-pulls]: https://img.shields.io/docker/pulls/jhipster/jhipster-control-center.svg
