@@ -6,10 +6,40 @@ jobs:
         runs-on: ubuntu-latest
         if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
         timeout-minutes: 40
+        strategy:
+            fail-fast: false
+            matrix:
+                node_version: [12.18.3]
+                os: [ubuntu-20.04]
+                app-type:
+                    - jhcc-default
+                    - jhcc-static
+                    - jhcc-eureka
+                    - jhcc-consul
+                    - jhcc-static-oauth2
+                    - jhcc-eureka-oauth2
+                    - jhcc-consul-oauth2
+                include:
+                    - app-type: jhcc-default
+                      environment: prod, swagger, static
+                    - app-type: jhcc-static
+                      environment: dev, swagger, static
+                    - app-type: jhcc-eureka
+                      environment: dev, swagger, eureka
+                    - app-type: jhcc-consul
+                      environment: dev, swagger, consul
+                    - app-type: jhcc-static-oauth2
+                      environment: dev, swagger, static, oauth2
+                    - app-type: jhcc-eureka-oauth2
+                      environment: dev, swagger, eureka, oauth2
+                    - app-type: jhcc-consul-oauth2
+                      environment: dev, swagger, consul, oauth2
         env:
-            NODE_VERSION: 12.16.1
+            NODE_VERSION: ${{ matrix.node_version }}
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             JHI_DISABLE_WEBPACK_LOGS: true
+            JHI_APP: ${{ matrix.app-type }}
+            JHI_PROFILE: ${{ matrix.environment }}
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
@@ -29,6 +59,7 @@ jobs:
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
             - name: Run application
+              // TODO replace the next line by a script call which use matrix builds
               run: 'java -jar ./target/jhipster-control-center-*.jar --spring.profiles.active=prod,swagger,static &'
             - name: Waiting for  application
               uses: jakejarvis/wait-action@master
