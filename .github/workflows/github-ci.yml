@@ -39,7 +39,7 @@ jobs:
             JHI_DISABLE_WEBPACK_LOGS: true
             JHI_APP: ${{ matrix.app-type }}
             JHI_PROFILE: ${{ matrix.environment }}
-            JHI_SCRIPTS: ${{ github.workspace }}/jhipster-control-center/.github/scripts
+            JHI_SCRIPTS: ./jhipster-control-center/.github/scripts
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
