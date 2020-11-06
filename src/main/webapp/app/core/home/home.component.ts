@@ -8,18 +8,12 @@ export default class Home extends Vue {
   private loginService: () => LoginService;
 
   // jhcc-custom
-  /* istanbul ignore next */
   public openLogin(): void {
-    this.loginService()
-      .getProfileInfo()
-      .then(response => {
-        const profiles: string[] = response.data['activeProfiles'];
-        if (profiles.includes('oauth2')) {
-          this.loginService().login();
-        } else {
-          this.loginService().openLogin((<any>this).$root);
-        }
-      });
+    if (this.$store.getters.activeProfiles.includes('oauth2')) {
+      this.loginService().login();
+    } else {
+      this.loginService().openLogin((<any>this).$root);
+    }
   }
 
   public get authenticated(): boolean {

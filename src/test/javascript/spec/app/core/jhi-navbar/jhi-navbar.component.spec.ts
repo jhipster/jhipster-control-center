@@ -31,8 +31,7 @@ jest.mock('axios', () => ({
 describe('JhiNavbar', () => {
   let jhiNavbar: JhiNavbarClass;
   let wrapper: Wrapper<JhiNavbarClass>;
-  // login() and getProfileInfo() are jhcc-custom
-  const loginService = { openLogin: jest.fn(), login: jest.fn(), getProfileInfo: jest.fn() };
+  const loginService = { openLogin: jest.fn(), login: jest.fn() };
   const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
 
   beforeEach(() => {
@@ -73,14 +72,13 @@ describe('JhiNavbar', () => {
       'display-ribbon-on-profiles': 'dev',
       activeProfiles: ['dev', 'swagger', 'consul'],
     };
-    loginService.getProfileInfo.mockReturnValue(Promise.resolve(profileInfo));
+    mockedAxios.get.mockReturnValue(Promise.resolve({ data: profileInfo }));
     const spy = jest.spyOn(jhiNavbar, 'openLogin');
 
     jhiNavbar.openLogin();
     await jhiNavbar.$nextTick();
 
     expect(spy).toHaveBeenCalled();
-    expect(loginService.getProfileInfo).toHaveBeenCalled();
   });
 
   it('should use account service', () => {
@@ -95,7 +93,7 @@ describe('JhiNavbar', () => {
       'display-ribbon-on-profiles': 'dev',
       activeProfiles: ['dev', 'swagger', 'consul'],
     };
-    loginService.getProfileInfo.mockReturnValue(Promise.resolve(profileInfo));
+
     const spy = jest.spyOn(jhiNavbar, 'logout');
     store.commit('authenticated', { login: 'test' });
 
@@ -103,7 +101,6 @@ describe('JhiNavbar', () => {
     await jhiNavbar.$nextTick;
 
     expect(spy).toHaveBeenCalled();
-    expect(loginService.getProfileInfo).toHaveBeenCalled();
   });
 
   it('should determine active route', () => {

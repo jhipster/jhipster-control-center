@@ -25,49 +25,39 @@ export default class JhiNavbar extends Vue {
   }
 
   // jhcc-custom
-  /* istanbul ignore next */
   public logout(): void {
-    this.loginService()
-      .getProfileInfo()
-      .then(profileInfo => {
-        const profiles: string[] = profileInfo.data['activeProfiles'];
-        if (profiles.includes('oauth2')) {
-          this.loginService()
-            .logout()
-            .then(response => {
-              this.$store.commit('logout');
-              this.$router.push('/');
-              const data = response.data;
-              let logoutUrl = data.logoutUrl;
-              // if Keycloak, uri has protocol/openid-connect/token
-              if (logoutUrl.indexOf('/protocol') > -1) {
-                logoutUrl = logoutUrl + '?redirect_uri=' + window.location.origin;
-              } else {
-                // Okta
-                logoutUrl = logoutUrl + '?id_token_hint=' + data.idToken + '&post_logout_redirect_uri=' + window.location.origin;
-              }
-              window.location.href = logoutUrl;
-            });
-        } else {
-          localStorage.removeItem('jhi-authenticationToken');
-          sessionStorage.removeItem('jhi-authenticationToken');
+    if (this.$store.getters.activeProfiles.includes('oauth2')) {
+      this.loginService()
+        .logout()
+        .then(response => {
           this.$store.commit('logout');
           this.$router.push('/');
-        }
-      });
+          const data = response.data;
+          let logoutUrl = data.logoutUrl;
+          // if Keycloak, uri has protocol/openid-connect/token
+          if (logoutUrl.indexOf('/protocol') > -1) {
+            logoutUrl = logoutUrl + '?redirect_uri=' + window.location.origin;
+          } else {
+            // Okta
+            logoutUrl = logoutUrl + '?id_token_hint=' + data.idToken + '&post_logout_redirect_uri=' + window.location.origin;
+          }
+          window.location.href = logoutUrl;
+        });
+    } else {
+      localStorage.removeItem('jhi-authenticationToken');
+      sessionStorage.removeItem('jhi-authenticationToken');
+      this.$store.commit('logout');
+      this.$router.push('/');
+    }
   }
 
+  // jhcc-custom
   public openLogin(): void {
-    this.loginService()
-      .getProfileInfo()
-      .then(response => {
-        const profiles: string[] = response.data['activeProfiles'];
-        if (profiles.includes('oauth2')) {
-          this.loginService().login();
-        } else {
-          this.loginService().openLogin((<any>this).$root);
-        }
-      });
+    if (this.$store.getters.activeProfiles.includes('oauth2')) {
+      this.loginService().login();
+    } else {
+      this.loginService().openLogin((<any>this).$root);
+    }
   }
 
   public get authenticated(): boolean {
