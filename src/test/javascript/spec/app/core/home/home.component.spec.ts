@@ -18,8 +18,7 @@ jest.mock('axios', () => ({
 describe('Home', () => {
   let home: HomeClass;
   let wrapper: Wrapper<HomeClass>;
-  // login() and getProfileInfo() are jhcc-custom
-  const loginService = { openLogin: jest.fn(), login: jest.fn(), getProfileInfo: jest.fn() };
+  const loginService = { openLogin: jest.fn(), login: jest.fn() };
 
   beforeEach(() => {
     wrapper = shallowMount<HomeClass>(Home, {
@@ -50,13 +49,12 @@ describe('Home', () => {
       'display-ribbon-on-profiles': 'dev',
       activeProfiles: ['dev', 'swagger', 'consul'],
     };
-    loginService.getProfileInfo.mockReturnValue(Promise.resolve(profileInfo));
+    mockedAxios.get.mockReturnValue(Promise.resolve({ data: profileInfo }));
     const spy = jest.spyOn(home, 'openLogin');
 
     home.openLogin();
     await home.$nextTick();
 
     expect(spy).toHaveBeenCalled();
-    expect(loginService.getProfileInfo).toHaveBeenCalled();
   });
 });
