@@ -20,7 +20,6 @@ describe('Error component', () => {
       openLogin: jest.fn(),
       login: jest.fn(),
       logout: jest.fn(),
-      getProfileInfo: jest.fn(),
     };
     wrapper = shallowMount<ErrorClass>(Error, {
       store,

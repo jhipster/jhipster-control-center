@@ -7,6 +7,7 @@ export default class LoginService {
     instance.$emit('bv::show::modal', 'login-page');
   }
 
+  // jhcc-custom
   public login(loc = window.location) {
     let port = location.port ? ':' + location.port : '';
     if (port === ':9000') {
@@ -27,10 +28,5 @@ export default class LoginService {
 
   public logout(): AxiosPromise<any> {
     return axios.post('api/logout');
-  }
-
-  public getProfileInfo(): AxiosPromise<string[]> {
-    const infoUrl = SERVER_API_URL + 'management/info';
-    return axios.get(infoUrl);
   }
 }
