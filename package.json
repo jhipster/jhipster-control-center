@@ -15,7 +15,7 @@
     "bootstrap": "4.5.0",
     "bootstrap-vue": "2.14.0",
     "bootswatch": "4.5.0",
-    "cypress": "4.11.0",
+    "cypress": "5.5.0",
     "date-fns": "2.14.0",
     "swagger-ui-dist": "3.25.4",
     "vue": "2.6.11",
