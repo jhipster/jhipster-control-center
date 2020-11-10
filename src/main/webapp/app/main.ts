@@ -79,7 +79,7 @@ router.beforeEach((to, from, next) => {
 });
 
 /* tslint:disable */
-new Vue({
+const app = new Vue({
   el: '#app',
   components: { App },
   template: '<App/>',
@@ -107,5 +107,5 @@ new Vue({
 
 // jhcc-custom
 if (window.Cypress) {
-  window.store = store;
+  window.app = app;
 }

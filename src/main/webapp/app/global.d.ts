@@ -1,4 +1,5 @@
 // jhcc-custom
 declare interface Window {
-  store: Store<any>;
+  app: Vue;
+  Cypress: Cypress;
 }

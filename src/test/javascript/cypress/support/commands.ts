@@ -59,7 +59,7 @@ Cypress.Commands.add('login', (username: string, password: string) => {
 });
 
 Cypress.Commands.add('getProfiles', () => {
-  cy.window().its('store.getters.activeProfiles');
+  cy.window().its('app.$store.getters.activeProfiles');
 });
 
 Cypress.Commands.add('skipSpec', () => {
