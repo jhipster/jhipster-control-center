@@ -9,8 +9,32 @@ import {
 
 describe('/sidebar', () => {
   before(() => {
+    cy.window().then(win => {
+      win.sessionStorage.clear();
+    });
+    cy.clearCookies();
     cy.visit('');
-    cy.login('admin', 'admin');
+    cy.getProfiles().then((activeProfiles: Array<string>) => {
+      if (activeProfiles.includes('oauth2')) {
+        Cypress.env('oauth2', true);
+      } else {
+        Cypress.env('oauth2', false);
+        cy.login('admin', 'admin');
+      }
+    });
+  });
+
+  beforeEach(() => {
+    if (Cypress.env('oauth2')) {
+      cy.getOauth2Data();
+      cy.get('@oauth2Data').then(oauth2Data => {
+        cy.keycloackLogout(oauth2Data);
+      });
+      cy.clearCache();
+      cy.get('@oauth2Data').then(oauth2Data => {
+        cy.keycloackLogin(oauth2Data, 'user');
+      });
+    }
   });
 
   after(() => {

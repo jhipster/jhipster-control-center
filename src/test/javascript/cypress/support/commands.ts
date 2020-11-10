@@ -49,6 +49,8 @@ export const swaggerPageHeadingSelector = '[data-cy="swagger-page-heading"]';
 // End Specific Selector Attributes for Cypress
 // ***********************************************
 
+// jhcc-custom begin
+
 Cypress.Commands.add('login', (username: string, password: string) => {
   cy.clickOnLoginItem();
   cy.get(usernameLoginSelector).type(username);
@@ -56,13 +58,27 @@ Cypress.Commands.add('login', (username: string, password: string) => {
   cy.get(submitLoginSelector).click();
 });
 
+Cypress.Commands.add('getProfiles', () => {
+  cy.window().its('store.getters.activeProfiles');
+});
+
+Cypress.Commands.add('skipSpec', () => {
+  const getMochaContext = () => (cy as any).state('runnable').ctx;
+  const context = getMochaContext();
+  context.skip();
+});
+
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
       login(username: string, password: string): Cypress.Chainable;
+      getProfiles(): Cypress.Chainable;
+      skipSpec(): Cypress.Chainable;
     }
   }
 }
 
 // Convert this to a module instead of script (allows import/export)
 export {};
+
+// jhcc-custom end

@@ -104,3 +104,8 @@ new Vue({
   },
   store,
 });
+
+// jhcc-custom
+if (window.Cypress) {
+  window.store = store;
+}
