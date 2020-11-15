@@ -3,8 +3,6 @@ package tech.jhipster.controlcenter.web.rest;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class ServiceDiscoveryResource {
-    private final Logger log = LoggerFactory.getLogger(ServiceDiscoveryResource.class);
-
     private final DiscoveryClient discoveryClient;
 
     public ServiceDiscoveryResource(DiscoveryClient discoveryClient) {
