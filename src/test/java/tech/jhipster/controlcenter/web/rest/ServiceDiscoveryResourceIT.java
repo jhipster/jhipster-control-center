@@ -49,7 +49,6 @@ public class ServiceDiscoveryResourceIT {
             .expectHeader()
             .contentType(MediaType.APPLICATION_JSON)
             .expectBody()
-            .consumeWith(System.out::println)
             .jsonPath("$[0].serviceId")
             .isEqualTo("service-test")
             .jsonPath("$[0].instanceId")
