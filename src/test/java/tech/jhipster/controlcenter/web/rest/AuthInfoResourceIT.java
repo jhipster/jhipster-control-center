@@ -32,7 +32,7 @@ public class AuthInfoResourceIT {
 
     @Test
     @WithMockUser(authorities = AuthoritiesConstants.USER)
-    public void testGetAuthInfoEmpty() {
+    public void testGetAuthInfo() {
         webTestClient
             .get()
             .uri("/api/auth-info")
