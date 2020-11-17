@@ -4,7 +4,7 @@ This application was generated using JHipster 6.10.1, you can find documentation
 
 ## JHipster Control Center
 
-[![Application CI][github-application-ci]][github-actions] [![Docker Pulls][docker-hub-pulls]]([docker-hub-url])
+[![Application CI][github-application-ci]][github-actions] [![Docker Pulls][docker-hub-pulls]][docker-hub-url]
 
 [![sonar-quality-gate][sonar-quality-gate]][sonar-url] [![sonar-coverage][sonar-coverage]][sonar-url] [![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
 
@@ -236,5 +236,5 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [sonar-coverage]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=coverage
 [sonar-bugs]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=bugs
 [sonar-vulnerabilities]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=vulnerabilities
-[docker-hub-url]: https://hub.docker.com/r/jhipster/jhipster-control-center/
+[docker-hub-url]: https://hub.docker.com/r/jhipster/jhipster-control-center
 [docker-hub-pulls]: https://img.shields.io/docker/pulls/jhipster/jhipster-control-center.svg
