@@ -19,6 +19,7 @@ const HealthComponent = () => import('../applications/health/health.vue');
 const LogfileComponent = () => import('../applications/logfile/logfile.vue');
 const ConfigurationComponent = () => import('../applications/configuration/configuration.vue');
 const DocsComponent = () => import('../applications/docs/docs.vue');
+const CachesComponent = () => import('../applications/caches/caches.vue');
 // jhcc-custom end
 
 /* tslint:disable */
@@ -89,6 +90,12 @@ export default new Router({
       path: '/applications/docs',
       name: 'DocsComponent',
       component: DocsComponent,
+      meta:  {authorities : [Authority.ADMIN]}
+    },
+    {
+      path: '/applications/caches',
+      name: 'CachesComponent',
+      component: CachesComponent,
       meta:  {authorities : [Authority.ADMIN]}
     },
     // jhcc-custom end
