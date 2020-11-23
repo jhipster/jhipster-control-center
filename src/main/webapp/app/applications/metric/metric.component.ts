@@ -3,7 +3,6 @@ import numeral from 'numeral';
 import JhiMetricModal from './metric-modal.vue';
 import MetricService, { Metrics, ThreadDump } from './metric.service';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
-import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil, map, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
@@ -29,7 +28,6 @@ export default class JhiMetric extends AbstractComponent {
 
   @Inject('metricService') private metricService: () => MetricService;
   @Inject('routesService') private routesService: () => RoutesService;
-  @Inject('refreshService') private refreshService: () => RefreshService;
 
   public mounted(): void {
     this.routesService()

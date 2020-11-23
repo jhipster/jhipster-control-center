@@ -2,7 +2,6 @@ import { Route } from '@/shared/routes/routes.service';
 import AbstractService from '../abstract.service';
 import { Observable } from 'rxjs';
 import axios, { AxiosPromise } from 'axios';
-import { and } from 'vuelidate/lib/validators';
 
 export class Cache {
   constructor(public target: string, public name: string, public cacheManager: string) {}
@@ -64,5 +63,23 @@ export default class CachesService extends AbstractService {
   public evictSelectedCache(route: Route, cacheName: String, cacheManager: String): AxiosPromise<any> {
     const url = this.generateUri(route, `/management/caches/${cacheName}?cacheManager=${cacheManager}`);
     return axios.delete(url);
+  }
+
+  /** return all caches metrics of a route */
+  findAllMetrics(route: Route): Observable<any> {
+    return Observable.create(observer => {
+      const url = this.generateUri(route, '/management/jhimetrics/');
+
+      axios
+        .get(url)
+        .then(res => {
+          const metrics: any = res.data['cache'];
+          observer.next(metrics);
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error);
+        });
+    });
   }
 }

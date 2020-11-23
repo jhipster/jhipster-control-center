@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Vue2Filters from 'vue2-filters';
@@ -6,14 +7,17 @@ import { Component, Inject } from 'vue-property-decorator';
 import AbstractComponent from '@/applications/abstract.component';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
+import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 
 @Component({
   components: {
+    'refresh-selector': RefreshSelectorVue,
     'routes-selector': RoutesSelectorVue,
   },
   mixins: [Vue2Filters.mixin],
 })
 export default class JhiCaches extends AbstractComponent {
+  public cachesMetrics: any = {};
   public caches: Cache[] = [];
   public filtered = '';
   public orderProp = 'name';
@@ -30,6 +34,7 @@ export default class JhiCaches extends AbstractComponent {
       .subscribe(route => {
         this.activeRoute = route;
         this.refreshActiveRouteCaches();
+        this.refreshActiveRouteCachesMetrics();
       });
 
     this.routesService()
@@ -44,6 +49,19 @@ export default class JhiCaches extends AbstractComponent {
       .subscribe(
         res => {
           this.caches = res;
+          this.resetError();
+        },
+        error => (this.error = error)
+      );
+  }
+
+  public refreshActiveRouteCachesMetrics(): void {
+    this.cachesService()
+      .findAllMetrics(this.activeRoute)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        res => {
+          this.cachesMetrics = res;
           this.resetError();
         },
         error => (this.error = error)
@@ -98,6 +116,17 @@ export default class JhiCaches extends AbstractComponent {
           autoHideDelay: 5000,
         });
       });
+  }
+
+  filterNaN(input: any): any {
+    if (isNaN(input)) {
+      return 0;
+    }
+    return input;
+  }
+
+  formatNumber2(value: any): any {
+    return numeral(value).format('0,00');
   }
 
   /* istanbul ignore next */

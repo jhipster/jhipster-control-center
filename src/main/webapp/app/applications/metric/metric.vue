@@ -255,43 +255,6 @@
         </table>
       </div>
 
-      <h3>Cache statistics</h3>
-      <div class="table-responsive" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'cache')">
-        <table class="table table-striped">
-            <caption>Cache metrics</caption>
-            <thead>
-            <tr>
-              <th scope="col">Cache name</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.hits">Cache Hits</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.misses">Cache Misses</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.gets">Cache Gets</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.puts">Cache Puts</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.removals">Cache Removals</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.evictions">Cache Evictions</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.hitPercent">Cache Hit %</th>
-              <th scope="col" class="text-right" data-translate="metrics.cache.missPercent">Cache Miss %</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(entry, key) of metrics.cache" :key="key">
-              <td>{{ key }}</td>
-              <td class="text-right">{{ entry['cache.gets.hit'] }}</td>
-              <td class="text-right">{{ entry['cache.gets.miss'] }}</td>
-              <td class="text-right">{{ entry['cache.gets.hit'] + entry['cache.gets.miss'] }}</td>
-              <td class="text-right">{{ entry['cache.puts'] }}</td>
-              <td class="text-right">{{ entry['cache.removals'] }}</td>
-              <td class="text-right">{{ entry['cache.evictions'] }}</td>
-              <td class="text-right">
-                {{ formatNumber2(filterNaN((100 * entry['cache.gets.hit']) / (entry['cache.gets.hit'] + entry['cache.gets.miss']))) }}
-              </td>
-              <td class="text-right">
-                {{ formatNumber2(filterNaN((100 * entry['cache.gets.miss']) / (entry['cache.gets.hit'] + entry['cache.gets.miss']))) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
       <h3>DataSource statistics (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isObjectExistingAndNotEmpty(metrics, 'databases')">
         <table class="table table-striped">
