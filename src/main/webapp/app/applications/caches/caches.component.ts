@@ -73,7 +73,7 @@ export default class JhiCaches extends AbstractComponent {
     this.reverse = !this.reverse;
   }
 
-  public confirmEviction(cacheName: String, cacheManager: String): void {
+  public confirmEviction(cacheName: string, cacheManager: string): void {
     const config = {
       title: 'Please Confirm',
       size: 'md',
@@ -97,7 +97,7 @@ export default class JhiCaches extends AbstractComponent {
       .catch(error => console.warn(error));
   }
 
-  public evict(cacheName: String, cacheManager: String): void {
+  public evict(cacheName: string, cacheManager: string): void {
     this.cachesService()
       .evictSelectedCache(this.activeRoute, cacheName, cacheManager)
       .then(() => {

@@ -9,12 +9,11 @@ export class Cache {
 
 export default class CachesService extends AbstractService {
   /** convert json object to array of cache */
-  /* istanbul ignore next */
-  private static parseJsonToArrayOfCache(data: any): Cache[] {
+  public static parseJsonToArrayOfCache(data: any): Cache[] {
     const caches: Cache[] = [];
-    Object.keys(data.cacheManagers).map(cacheManagerName => {
+    Object.keys(data.cacheManagers).forEach(cacheManagerName => {
       const cacheManager = data.cacheManagers[cacheManagerName];
-      Object.keys(cacheManager.caches).map(cacheName => {
+      Object.keys(cacheManager.caches).forEach(cacheName => {
         const cache = cacheManager.caches[cacheName];
         caches.push(new Cache(cache.target, cacheName, cacheManagerName));
       });
@@ -40,27 +39,8 @@ export default class CachesService extends AbstractService {
     });
   }
 
-  /** return a cache by its name from a route */
-  findCacheByName(route: Route, cacheName: String, cacheManager: String): Observable<Cache> {
-    return Observable.create(observer => {
-      const url = this.generateUri(route, `/management/caches/${cacheName}?cacheManager=${cacheManager}`);
-
-      axios.get(url).then(res => {
-        const cache: Cache = new Cache(res.data.target, res.data.name, res.data.cacheManagerName);
-        observer.next(cache);
-        observer.complete();
-      });
-    });
-  }
-
-  /** evict all caches of a route */
-  public evictAllCaches(route: Route): AxiosPromise<any> {
-    const url = this.generateUri(route, '/management/caches/');
-    return axios.delete(url);
-  }
-
   /** evict a cache by its name from a route */
-  public evictSelectedCache(route: Route, cacheName: String, cacheManager: String): AxiosPromise<any> {
+  public evictSelectedCache(route: Route, cacheName: string, cacheManager: string): AxiosPromise<any> {
     const url = this.generateUri(route, `/management/caches/${cacheName}?cacheManager=${cacheManager}`);
     return axios.delete(url);
   }
