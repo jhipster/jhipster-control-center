@@ -2,13 +2,27 @@ import { Route } from '@/shared/routes/routes.service';
 import AbstractService from '../abstract.service';
 import { Observable } from 'rxjs';
 import axios, { AxiosPromise } from 'axios';
+import numeral from 'numeral';
 
 export class Cache {
   constructor(public target: string, public name: string, public cacheManager: string) {}
 }
 
+export class CacheMetrics {
+  constructor(
+    public name: string,
+    public miss: number,
+    public puts: number,
+    public hit: number,
+    public removals: number,
+    public evictions: number,
+    public gets: number,
+    public hitPercent: number,
+    public missPercent: number
+  ) {}
+}
+
 export default class CachesService extends AbstractService {
-  /** convert json object to array of cache */
   public static parseJsonToArrayOfCache(data: any): Cache[] {
     const caches: Cache[] = [];
     Object.keys(data.cacheManagers).forEach(cacheManagerName => {
@@ -19,6 +33,38 @@ export default class CachesService extends AbstractService {
       });
     });
     return caches;
+  }
+
+  public static parseJsonToArrayOfCacheMetrics(data: any): CacheMetrics[] {
+    const cachesMetrics: CacheMetrics[] = [];
+    Object.keys(data).forEach(cacheName => {
+      const metrics = data[cacheName];
+      cachesMetrics.push(
+        new CacheMetrics(
+          cacheName,
+          metrics['cache.gets.miss'],
+          metrics['cache.puts'],
+          metrics['cache.gets.hit'],
+          metrics['cache.removals'],
+          metrics['cache.evictions'],
+          metrics['cache.gets.hit'] + metrics['cache.gets.miss'],
+          this.formatNumber2(this.filterNaN((100 * metrics['cache.gets.hit']) / (metrics['cache.gets.hit'] + metrics['cache.gets.miss']))),
+          this.formatNumber2(this.filterNaN((100 * metrics['cache.gets.miss']) / (metrics['cache.gets.hit'] + metrics['cache.gets.miss'])))
+        )
+      );
+    });
+    return cachesMetrics;
+  }
+
+  public static filterNaN(input: any): number {
+    if (isNaN(input)) {
+      return 0;
+    }
+    return input;
+  }
+
+  public static formatNumber2(value: any): number {
+    return Number(parseFloat(value).toFixed(2));
   }
 
   /** return all caches of a route */
@@ -53,7 +99,7 @@ export default class CachesService extends AbstractService {
       axios
         .get(url)
         .then(res => {
-          const metrics: any = res.data['cache'];
+          const metrics: CacheMetrics[] = CachesService.parseJsonToArrayOfCacheMetrics(res.data['cache']);
           observer.next(metrics);
           observer.complete();
         })

@@ -1,8 +1,7 @@
-import numeral from 'numeral';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Vue2Filters from 'vue2-filters';
-import CachesService, { Cache } from './caches.service';
+import CachesService, { Cache, CacheMetrics } from './caches.service';
 import { Component, Inject } from 'vue-property-decorator';
 import AbstractComponent from '@/applications/abstract.component';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
@@ -17,13 +16,31 @@ import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
   mixins: [Vue2Filters.mixin],
 })
 export default class JhiCaches extends AbstractComponent {
-  public cachesMetrics: any = {};
+  public activeRoute: Route;
+  public routes: Route[];
+
+  /** statistics attributes */
+  public cachesMetrics: CacheMetrics[] = [];
+  public cachesMetricsFiltered: CacheMetrics[] = [];
+  public cachesMetricsPaginate: CacheMetrics[] = [];
+  public filteredMetrics = '';
+  public orderPropMetrics = 'name';
+  public reverseMetrics = false;
+  public itemsPerPageMetrics = 5;
+  public pageMetrics = 1;
+  public previousPageMetrics = 1;
+
+  /** caches list attributes */
   public caches: Cache[] = [];
+  public cachesFiltered: Cache[] = [];
+  public cachesPaginate: Cache[] = [];
   public filtered = '';
   public orderProp = 'name';
   public reverse = false;
-  public activeRoute: Route;
-  public routes: Route[];
+  public itemsPerPage = 5;
+  public page = 1;
+  public previousPage = 1;
+
   private unsubscribe$ = new Subject();
   @Inject('cachesService') private cachesService: () => CachesService;
   @Inject('routesService') private routesService: () => RoutesService;
@@ -49,6 +66,7 @@ export default class JhiCaches extends AbstractComponent {
       .subscribe(
         res => {
           this.caches = res;
+          this.paginate(this.page);
           this.resetError();
         },
         error => (this.error = error)
@@ -62,15 +80,11 @@ export default class JhiCaches extends AbstractComponent {
       .subscribe(
         res => {
           this.cachesMetrics = res;
+          this.paginateMetrics(this.pageMetrics);
           this.resetError();
         },
         error => (this.error = error)
       );
-  }
-
-  public changeOrder(orderProp): void {
-    this.orderProp = orderProp;
-    this.reverse = !this.reverse;
   }
 
   public confirmEviction(cacheName: string, cacheManager: string): void {
@@ -118,15 +132,61 @@ export default class JhiCaches extends AbstractComponent {
       });
   }
 
-  filterNaN(input: any): any {
-    if (isNaN(input)) {
-      return 0;
-    }
-    return input;
+  public changeOrder(orderProp): void {
+    this.orderProp = orderProp;
+    this.reverse = !this.reverse;
   }
 
-  formatNumber2(value: any): any {
-    return numeral(value).format('0,00');
+  public changeOrderMetrics(orderProp): void {
+    this.orderPropMetrics = orderProp;
+    this.reverseMetrics = !this.reverseMetrics;
+  }
+
+  public loadPage(page: number): void {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.paginate(page);
+    }
+  }
+
+  public loadPageMetrics(pageMetrics: number): void {
+    if (pageMetrics !== this.previousPageMetrics) {
+      this.previousPageMetrics = pageMetrics;
+      this.paginateMetrics(pageMetrics);
+    }
+  }
+
+  public paginate(page: number): void {
+    const cachesFilterBy = Vue2Filters.mixin.methods.filterBy(this.caches, this.filtered);
+    const cachesOrderBy = Vue2Filters.mixin.methods.orderBy(cachesFilterBy, this.orderProp, this.reverse === true ? 1 : -1);
+    this.cachesFiltered = cachesOrderBy;
+    this.cachesPaginate = this.cachesFiltered.slice((page - 1) * this.itemsPerPage, page * this.itemsPerPage);
+  }
+
+  public paginateMetrics(page: number): void {
+    const cachesMetricsFilterBy = Vue2Filters.mixin.methods.filterBy(this.cachesMetrics, this.filteredMetrics);
+    const cachesMetricsOrderBy = Vue2Filters.mixin.methods.orderBy(
+      cachesMetricsFilterBy,
+      this.orderPropMetrics,
+      this.reverseMetrics === true ? 1 : -1
+    );
+    this.cachesMetricsFiltered = cachesMetricsOrderBy;
+    this.cachesMetricsPaginate = this.cachesMetricsFiltered.slice(
+      (this.pageMetrics - 1) * this.itemsPerPageMetrics,
+      this.pageMetrics * this.itemsPerPageMetrics
+    );
+  }
+
+  public clearPagination(): void {
+    this.page = 1;
+    this.previousPage = 1;
+    this.paginate(this.page);
+  }
+
+  public clearPaginationMetrics(): void {
+    this.pageMetrics = 1;
+    this.previousPageMetrics = 1;
+    this.paginateMetrics(this.pageMetrics);
   }
 
   /* istanbul ignore next */

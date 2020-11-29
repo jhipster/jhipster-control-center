@@ -9,7 +9,7 @@ import CachesService from '@/applications/caches/caches.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import CachesComponent from '@/applications/caches/caches.component';
 import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
-import { jhcc_caches, jhcc_caches_json, jhcc_metrics, jhcc_route, routes } from '../../../fixtures/jhcc.fixtures';
+import { jhcc_caches, jhcc_caches_json, jhcc_metrics, jhcc_metrics_caches, jhcc_route, routes } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 localVue.component('font-awesome-icon', FontAwesomeIcon);
@@ -72,12 +72,13 @@ describe('Caches Component', () => {
     expect(cachesToTestMounted.activeRoute).toBe(jhcc_route);
     expect(mockedAxios.get).toHaveBeenCalledWith('/management/caches/');
     expect(mockedAxios.get).toHaveBeenCalledWith('/management/jhimetrics/');
-    expect(cachesToTestMounted.cachesMetrics).toEqual(jhcc_metrics['cache']);
+    expect(cachesToTestMounted.cachesMetrics).toEqual(jhcc_metrics_caches);
     expect(cachesToTestMounted.caches).toEqual(jhcc_caches);
   });
 
   describe('should evict the selected cache', () => {
     it('should call confirmShutdown', async () => {
+      mockedAxios.delete.mockReturnValue(Promise.resolve({}));
       const cacheName = 'usersByLogin';
       const cacheManager = 'org.redisson.jcache.JCache';
       const spy = jest.spyOn(cachesComponent, 'confirmEviction');
@@ -114,9 +115,59 @@ describe('Caches Component', () => {
     expect(cachesComponent.reverse).toBe(true);
   });
 
+  it('should change order statistics and invert reverse', () => {
+    cachesComponent.changeOrderMetrics('test-order');
+    expect(cachesComponent.orderPropMetrics).toEqual('test-order');
+    expect(cachesComponent.reverseMetrics).toBe(true);
+  });
+
+  it('should load page if we change page from pagination caches list', () => {
+    cachesComponent.page = 1;
+    cachesComponent.previousPage = 1;
+    const paginate = jest.spyOn(cachesComponent, 'paginate');
+
+    cachesComponent.loadPage(2);
+
+    expect(cachesComponent.previousPage).toEqual(2);
+    expect(paginate).toHaveBeenCalledWith(2);
+  });
+
+  it('should load page if we change page from pagination statistics', () => {
+    cachesComponent.pageMetrics = 1;
+    cachesComponent.previousPageMetrics = 1;
+    const paginateMetrics = jest.spyOn(cachesComponent, 'paginateMetrics');
+
+    cachesComponent.loadPageMetrics(2);
+
+    expect(cachesComponent.previousPageMetrics).toEqual(2);
+    expect(paginateMetrics).toHaveBeenCalledWith(2);
+  });
+
+  it('should clear pagination and go to first page of pagination caches list', () => {
+    cachesComponent.page = 3;
+    const paginate = jest.spyOn(cachesComponent, 'paginate');
+
+    cachesComponent.clearPagination();
+
+    expect(cachesComponent.page).toEqual(1);
+    expect(cachesComponent.previousPage).toEqual(1);
+    expect(paginate).toHaveBeenCalledWith(1);
+  });
+
+  it('should clear pagination and go to first page of pagination statistics', () => {
+    cachesComponent.pageMetrics = 3;
+    const paginateMetrics = jest.spyOn(cachesComponent, 'paginateMetrics');
+
+    cachesComponent.clearPaginationMetrics();
+
+    expect(cachesComponent.pageMetrics).toEqual(1);
+    expect(cachesComponent.previousPageMetrics).toEqual(1);
+    expect(paginateMetrics).toHaveBeenCalledWith(1);
+  });
+
   it('should return 0 if a variable is NaN', () => {
     cachesComponent.activeRoute = jhcc_route;
-    expect(cachesComponent.filterNaN(1)).toBe(1);
-    expect(cachesComponent.filterNaN('test')).toBe(0);
+    expect(CachesService.filterNaN(1)).toBe(1);
+    expect(CachesService.filterNaN('test')).toBe(0);
   });
 });

@@ -388,6 +388,8 @@ const jhcc_metrics = {
   ],
 };
 
+const jhcc_metrics_caches = CachesService.parseJsonToArrayOfCacheMetrics(jhcc_metrics['cache']);
+
 const jhcc_caches_json = {
   cacheManagers: {
     cacheManager: {
@@ -426,6 +428,7 @@ export {
   jhcc_logfile_error,
   jhcc_logs,
   jhcc_metrics,
+  jhcc_metrics_caches,
   jhcc_caches_json,
   jhcc_caches,
 };
