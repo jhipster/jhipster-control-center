@@ -2,7 +2,6 @@ import { Route } from '@/shared/routes/routes.service';
 import AbstractService from '../abstract.service';
 import { Observable } from 'rxjs';
 import axios, { AxiosPromise } from 'axios';
-import numeral from 'numeral';
 
 export class Cache {
   constructor(public target: string, public name: string, public cacheManager: string) {}
