@@ -45,6 +45,8 @@ import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons/faAngleDoub
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
 import { faIndent } from '@fortawesome/free-solid-svg-icons/faIndent';
+import { faLayerGroup } from '@fortawesome/free-solid-svg-icons/faLayerGroup';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt';
 // jhcc-custom end
 
 import VueCookie from 'vue-cookie';
@@ -112,7 +114,9 @@ export function initFortAwesome(vue) {
     faCube,
     faEllipsisV,
     faPowerOff,
-    faIndent
+    faIndent,
+    faLayerGroup,
+    faTrashAlt
     // jhcc-custom end
   );
 }

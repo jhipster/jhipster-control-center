@@ -22,6 +22,10 @@
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
+          <b-nav-item to="/applications/caches" data-cy="caches-menu">
+            <font-awesome-icon icon="layer-group" />
+            <span>Caches</span>
+          </b-nav-item>
           <b-nav-item to="/applications/health" data-cy="health-menu">
             <font-awesome-icon icon="heart" />
             <span>Health</span>

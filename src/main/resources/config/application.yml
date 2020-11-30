@@ -20,7 +20,7 @@ management:
       base-path: /management
       exposure:
         # jhcc-custom
-        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'gateway', 'service-registry']
+        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'gateway', 'service-registry', 'caches']
   endpoint:
     health:
       show-details: when_authorized

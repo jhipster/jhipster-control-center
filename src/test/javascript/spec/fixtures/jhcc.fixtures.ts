@@ -2,6 +2,7 @@ import { Route } from '@/shared/routes/routes.service';
 import { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import { Instance } from '@/applications/instance/instance.service';
 import { Log } from '@/applications/loggers/loggers.service';
+import CachesService, { Cache } from '@/applications/caches/caches.service';
 
 const stubbedModal = {
   template: '<div></div>',
@@ -387,6 +388,24 @@ const jhcc_metrics = {
   ],
 };
 
+const jhcc_metrics_caches = CachesService.parseJsonToArrayOfCacheMetrics(jhcc_metrics['cache']);
+
+const jhcc_caches_json = {
+  cacheManagers: {
+    cacheManager: {
+      caches: {
+        usersByEmail: { target: 'org.redisson.jcache.JCache' },
+        'com.mycompany.myapp.domain.User': { target: 'org.redisson.jcache.JCache' },
+        usersByLogin: { target: 'org.redisson.jcache.JCache' },
+        'com.mycompany.myapp.domain.Authority': { target: 'org.redisson.jcache.JCache' },
+        'com.mycompany.myapp.domain.User.authorities': { target: 'org.redisson.jcache.JCache' },
+      },
+    },
+  },
+};
+
+const jhcc_caches = CachesService.parseJsonToArrayOfCache(jhcc_caches_json);
+
 export {
   stubbedModal,
   inst,
@@ -409,4 +428,7 @@ export {
   jhcc_logfile_error,
   jhcc_logs,
   jhcc_metrics,
+  jhcc_metrics_caches,
+  jhcc_caches_json,
+  jhcc_caches,
 };

@@ -27,6 +27,7 @@ import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
 import InstanceHealthService from '@/applications/health/health.service';
 import LogfileService from '@/applications/logfile/logfile.service';
 import InstanceConfigurationService from '@/applications/configuration/configuration.service';
+import CachesService from '@/applications/caches/caches.service';
 // jhcc-custom end
 
 /* tslint:disable */
@@ -100,6 +101,7 @@ const app = new Vue({
     instanceHealthService: () => new InstanceHealthService(),
     logfileService: () => new LogfileService(),
     instanceConfigurationService: () => new InstanceConfigurationService(),
+    cachesService: () => new CachesService(),
     // jhcc-custom end
   },
   store,
