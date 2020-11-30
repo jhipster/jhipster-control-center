@@ -1,6 +1,6 @@
 {
   "baseUrl": "http://localhost:7419/",
-  "testFiles": "**/*_spec.ts",
+  "testFiles": "**/*.spec.ts",
   "supportFile": "src/test/javascript/cypress/support/index.ts",
   "video": false,
   "integrationFolder": "src/test/javascript/cypress/integration",
@@ -10,5 +10,8 @@
   "chromeWebSecurity": false,
   "viewportWidth": 1200,
   "viewportHeight": 720,
-  "retries": 2
+  "retries": 2,
+  "env": {
+    "oauth2": false
+  }
 }

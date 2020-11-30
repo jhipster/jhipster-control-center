@@ -1,5 +1,5 @@
 // ***********************************************************
-// This support/index.js is processed and
+// This support/index.ts is processed and
 // loaded automatically before your test files.
 //
 // This is a great place to put global configuration and
@@ -13,7 +13,7 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.ts using ES2015 syntax:
 import './commands';
 import './navbar';
 import './sidebar';
+import './keycloak-oauth2';

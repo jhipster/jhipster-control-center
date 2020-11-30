@@ -16,10 +16,9 @@ jobs:
                     - jhcc-static
                     - jhcc-eureka
                     - jhcc-consul
-                    # uncomment this part when cypress tests for oauth2 is available in jhcc
-                    # - jhcc-static-oauth2
-                    # - jhcc-eureka-oauth2
-                    # - jhcc-consul-oauth2
+                    - jhcc-static-oauth2
+                    - jhcc-eureka-oauth2
+                    - jhcc-consul-oauth2
                 include:
                     - app-type: jhcc-default
                       environment: prod, swagger, static
@@ -29,12 +28,12 @@ jobs:
                       environment: dev, swagger, eureka
                     - app-type: jhcc-consul
                       environment: dev, swagger, consul
-                    # - app-type: jhcc-static-oauth2
-                    #   environment: dev, swagger, static, oauth2
-                    # - app-type: jhcc-eureka-oauth2
-                    #   environment: dev, swagger, eureka, oauth2
-                    # - app-type: jhcc-consul-oauth2
-                    #   environment: dev, swagger, consul, oauth2
+                    - app-type: jhcc-static-oauth2
+                      environment: dev, swagger, static, oauth2
+                    - app-type: jhcc-eureka-oauth2
+                      environment: dev, swagger, eureka, oauth2
+                    - app-type: jhcc-consul-oauth2
+                      environment: dev, swagger, consul, oauth2
         env:
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             JHI_DISABLE_WEBPACK_LOGS: true
