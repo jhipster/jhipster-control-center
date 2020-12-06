@@ -58,18 +58,26 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
                 routes -> {
                     routes.forEach(
                         route -> {
+                            String routePredicate = route.getPredicate().toString();
+                            // Ignore the Consul server from the list as it doesn't expose a /swagger-resources endpoint
+                            if (routePredicate.contains("consul/consul")) {
+                                return;
+                            }
+
+                            // Retrieve the list of available OpenAPI resources for each service from their /swagger-resources endpoint
                             WebClient serviceClient = WebClient.builder().baseUrl(route.getUri().toString()).build();
-                            Flux<SwaggerResource> swaggerResourceFlux = serviceClient
+                            List<SwaggerResource> swaggerResources = serviceClient
                                 .get()
                                 .uri("/swagger-resources")
                                 .retrieve()
-                                .bodyToFlux(SwaggerResource.class);
+                                .bodyToFlux(SwaggerResource.class)
+                                .collectList()
+                                .block();
 
-                            for (SwaggerResource swaggerResource : swaggerResourceFlux.collectList().block()) {
+                            for (SwaggerResource swaggerResource : swaggerResources) {
                                 // Patch the swagger path to prepend the gateway proxy path
-                                String predicate = route.getPredicate().toString();
-                                String patchedSwaggerPath = predicate
-                                    .substring(predicate.indexOf("[") + 1, predicate.indexOf("]"))
+                                String patchedSwaggerPath = routePredicate
+                                    .substring(routePredicate.indexOf("[") + 1, routePredicate.indexOf("]"))
                                     .replace("/**", swaggerResource.getUrl());
 
                                 swaggerResource.setName(route.getId() + " (" + swaggerResource.getName() + ")");
