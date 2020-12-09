@@ -7,8 +7,9 @@ Component.registerHooks([
 ]);
 import Router from 'vue-router';
 import { Authority } from '@/shared/security/authority';
-const Home = () => import('../core/home/home.vue');
-const Error = () => import('../core/error/error.vue');
+const Home = () => import('@/core/home/home.vue');
+const Error = () => import('@/core/error/error.vue');
+import entities from '@/router/entities.ts';
 import pages from '@/router/pages.ts';
 
 // jhcc-custom begin
@@ -21,9 +22,6 @@ const ConfigurationComponent = () => import('../applications/configuration/confi
 const DocsComponent = () => import('../applications/docs/docs.vue');
 const CachesComponent = () => import('../applications/caches/caches.vue');
 // jhcc-custom end
-
-/* tslint:disable */
-// jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 Vue.use(Router);
 
@@ -48,6 +46,7 @@ export default new Router({
       component: Error,
       meta: { error404: true }
     },
+    ...entities,
     ...pages,
     // jhcc-custom begin
     {
@@ -98,7 +97,5 @@ export default new Router({
       component: CachesComponent,
       meta:  {authorities : [Authority.ADMIN]}
     },
-    // jhcc-custom end
-    // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
   ]
 });

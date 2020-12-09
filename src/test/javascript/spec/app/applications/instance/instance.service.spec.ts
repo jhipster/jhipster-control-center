@@ -1,5 +1,5 @@
-import InstanceService, { Instance } from '@/applications/instance/instance.service';
-import { Observable } from 'rxjs';
+import InstanceService from '@/applications/instance/instance.service';
+import { scheduled, asyncScheduler } from 'rxjs';
 import axios from 'axios';
 
 const mockedAxios: any = axios;
@@ -38,7 +38,7 @@ describe('Instance Service', () => {
   });
 
   it('should get list of instances', async () => {
-    const spy = jest.spyOn(instanceService, 'findAllInstance').mockReturnValue(Observable.of(data));
+    const spy = jest.spyOn(instanceService, 'findAllInstance').mockReturnValue(scheduled(data, asyncScheduler));
 
     expect(
       instanceService.findAllInstance().subscribe(res => {

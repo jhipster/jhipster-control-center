@@ -11,12 +11,18 @@ export default class AccountService {
     this.retrieveProfiles();
   }
 
-  public retrieveProfiles(): void {
-    axios.get('management/info').then(res => {
-      if (res.data && res.data.activeProfiles) {
-        this.store.commit('setRibbonOnProfiles', res.data['display-ribbon-on-profiles']);
-        this.store.commit('setActiveProfiles', res.data['activeProfiles']);
-      }
+  public retrieveProfiles(): Promise<boolean> {
+    return new Promise(resolve => {
+      axios
+        .get('management/info')
+        .then(res => {
+          if (res.data && res.data.activeProfiles) {
+            this.store.commit('setRibbonOnProfiles', res.data['display-ribbon-on-profiles']);
+            this.store.commit('setActiveProfiles', res.data['activeProfiles']);
+          }
+          resolve(true);
+        })
+        .catch(() => resolve(false));
     });
   }
 
@@ -35,13 +41,12 @@ export default class AccountService {
             }
           } else {
             this.store.commit('logout');
-            this.router.push('/');
+            this.router.push('/', () => {});
             sessionStorage.removeItem('requested-url');
           }
           resolve(true);
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
           this.store.commit('logout');
           resolve(false);
         });

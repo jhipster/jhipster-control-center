@@ -1,7 +1,5 @@
 package tech.jhipster.controlcenter.web.rest.errors;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.web.util.HeaderUtil;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +27,8 @@ import org.zalando.problem.spring.webflux.advice.ProblemHandling;
 import org.zalando.problem.spring.webflux.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 import reactor.core.publisher.Mono;
+import tech.jhipster.config.JHipsterConstants;
+import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
  */
 @ControllerAdvice
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
     private static final String PATH_KEY = "path";
@@ -89,7 +90,14 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         List<FieldErrorVM> fieldErrors = result
             .getFieldErrors()
             .stream()
-            .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
+            .map(
+                f ->
+                    new FieldErrorVM(
+                        f.getObjectName().replaceFirst("DTO$", ""),
+                        f.getField(),
+                        StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
+                    )
+            )
             .collect(Collectors.toList());
 
         Problem problem = Problem
@@ -128,7 +136,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                         Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
                     );
             }
-
             if (containsPackageName(throwable.getMessage())) {
                 return Problem
                     .builder()

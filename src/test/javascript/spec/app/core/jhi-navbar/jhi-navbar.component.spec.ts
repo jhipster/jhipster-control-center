@@ -49,7 +49,7 @@ describe('JhiNavbar', () => {
 
   it('should not have user data set', () => {
     expect(jhiNavbar.authenticated).toBeFalsy();
-    expect(jhiNavbar.swaggerEnabled).toBeFalsy();
+    expect(jhiNavbar.openAPIEnabled).toBeFalsy();
     expect(jhiNavbar.inProduction).toBeFalsy();
   });
 
@@ -60,9 +60,9 @@ describe('JhiNavbar', () => {
   });
 
   it('should have profile info set after info retrieved', () => {
-    store.commit('setActiveProfiles', ['prod', 'swagger']);
+    store.commit('setActiveProfiles', ['prod', 'api-docs']);
 
-    expect(jhiNavbar.swaggerEnabled).toBeTruthy();
+    expect(jhiNavbar.openAPIEnabled).toBeTruthy();
     expect(jhiNavbar.inProduction).toBeTruthy();
   });
 
@@ -70,7 +70,7 @@ describe('JhiNavbar', () => {
   it('should use login service', async () => {
     const profileInfo = {
       'display-ribbon-on-profiles': 'dev',
-      activeProfiles: ['dev', 'swagger', 'consul'],
+      activeProfiles: ['dev', 'api-docs', 'consul'],
     };
     mockedAxios.get.mockReturnValue(Promise.resolve({ data: profileInfo }));
     const spy = jest.spyOn(jhiNavbar, 'openLogin');
@@ -91,9 +91,8 @@ describe('JhiNavbar', () => {
   it('logout should clear credentials', async () => {
     const profileInfo = {
       'display-ribbon-on-profiles': 'dev',
-      activeProfiles: ['dev', 'swagger', 'consul'],
+      activeProfiles: ['dev', 'api-docs', 'consul'],
     };
-
     const spy = jest.spyOn(jhiNavbar, 'logout');
     store.commit('authenticated', { login: 'test' });
 
@@ -101,6 +100,7 @@ describe('JhiNavbar', () => {
     await jhiNavbar.$nextTick;
 
     expect(spy).toHaveBeenCalled();
+    expect(jhiNavbar.authenticated).toBeFalsy();
   });
 
   it('should determine active route', () => {

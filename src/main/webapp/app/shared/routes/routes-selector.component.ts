@@ -89,21 +89,21 @@ export default class RoutesSelectorComponent extends Vue {
   }
 
   getActiveRoute(): string {
-    return this.activeRoute!.instanceId.toUpperCase();
+    return this.activeRoute?.instanceId.toUpperCase();
   }
 
   searchByAppName(): void {
     if (this.searchedInstance === '') {
       this.routes = this.savedRoutes;
     } else {
-      this.routes = this.savedRoutes!.filter(route => {
+      this.routes = this.savedRoutes?.filter(route => {
         return route.serviceId.toLowerCase().includes(this.searchedInstance.toLowerCase());
       });
     }
   }
 
   state(route: Route): string {
-    if (route && route.serviceId === this.activeRoute!.serviceId) {
+    if (route && route.serviceId === this.activeRoute?.serviceId) {
       return 'active';
     }
     return '';

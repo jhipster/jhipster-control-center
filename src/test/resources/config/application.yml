@@ -71,6 +71,9 @@ spring:
             service-test:
               - uri: http://localhost:8080
                 instance-id: instance-test
+eureka:
+  client:
+    enabled: false
 
 server:
   port: 10344
@@ -100,11 +103,6 @@ jhipster:
         base64-secret: MDc2YTJkMGVmMTc3ZjQ3MjgwNjVkMDRhYmE1MThmZmNlZGMyMjgzNjgxMTMyZGY3MzlhOTA1Mjk1NzUwODgyOTZhODM1ZTYyZmI5YmJjZWVkNjVhZWM5NDgzMzU2OWZkYzUzNjVkYTNiMTIxZTlhMWRkYjJhMTg2ZWJmMzgxMjQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: false
-      report-frequency: 60 # in seconds
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

@@ -1,6 +1,14 @@
 <template>
   <div class="sidebar" v-if="hasAnyAuthority('ROLE_ADMIN')">
-    <b-sidebar bg-variant="dark" text-variant="light" id="sidebar-footer" data-cy="sidebar" no-close-on-route-change no-close-on-esc visible>
+    <b-sidebar
+      bg-variant="dark"
+      text-variant="light"
+      id="sidebar-footer"
+      data-cy="sidebar"
+      no-close-on-route-change
+      no-close-on-esc
+      visible
+    >
       <template v-slot:footer="{ hide }">
         <div class="d-flex text-light align-items-center">
           <b-button block variant="primary" @click="hide">
@@ -18,7 +26,7 @@
             <font-awesome-icon icon="chart-line" />
             <span>DashBoard</span>
           </b-nav-item>
-          <b-nav-item to="/applications/metric" data-cy="metrics-menu">
+          <b-nav-item to="/applications/metric" data-cy="metricsMenu">
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
@@ -26,23 +34,23 @@
             <font-awesome-icon icon="layer-group" />
             <span>Caches</span>
           </b-nav-item>
-          <b-nav-item to="/applications/health" data-cy="health-menu">
+          <b-nav-item to="/applications/health" data-cy="healthMenu">
             <font-awesome-icon icon="heart" />
             <span>Health</span>
           </b-nav-item>
-          <b-nav-item to="/applications/configuration" data-cy="configuration-menu">
+          <b-nav-item to="/applications/configuration" data-cy="configurationMenu">
             <font-awesome-icon icon="list" />
             <span>Configuration</span>
           </b-nav-item>
-          <b-nav-item to="/applications/loggers" data-cy="logs-menu">
+          <b-nav-item to="/applications/loggers" data-cy="logsMenu">
             <font-awesome-icon icon="tasks" />
             <span>Logs</span>
           </b-nav-item>
-          <b-nav-item to="/applications/logfile" data-cy="logsfile-menu">
+          <b-nav-item to="/applications/logfile" data-cy="logsfileMenu">
             <font-awesome-icon icon="indent" />
             <span>Logfile</span>
           </b-nav-item>
-          <b-nav-item v-if="swaggerEnabled" to="/applications/docs" data-cy="swagger-menu">
+          <b-nav-item v-if="openAPIEnabled" to="/applications/docs" data-cy="openAPIMenu">
             <font-awesome-icon icon="book" />
             <span>API</span>
           </b-nav-item>
@@ -66,7 +74,7 @@
   }
 }
 
-@media screen and (min-height: 500px) and (max-height: 600px){
+@media screen and (min-height: 500px) and (max-height: 600px) {
   .hipster {
     max-height: 100px !important;
   }
@@ -81,5 +89,4 @@
 .btn-block {
   border-radius: 0;
 }
-
 </style>

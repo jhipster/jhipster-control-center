@@ -55,7 +55,7 @@ export default class JhiLoggers extends AbstractComponent {
   }
 
   searchByAppName(): Route[] {
-    return this.routes!.filter(route => route.serviceId === this.activeRoute!.serviceId);
+    return this.routes?.filter(route => route.serviceId === this.activeRoute?.serviceId);
   }
 
   refreshActiveRouteLogs(): void {

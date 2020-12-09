@@ -3,7 +3,7 @@ import {
   healthPageHeadingSelector,
   logsPageHeadingSelector,
   configurationPageHeadingSelector,
-  swaggerPageHeadingSelector,
+  openAPIPageHeadingSelector,
   logsFilePageHeadingSelector,
 } from '../../support/commands';
 
@@ -78,8 +78,8 @@ describe('/sidebar', () => {
 
   describe('/swagger', () => {
     it('should load the page', () => {
-      cy.clickOnSwaggerItem();
-      cy.get(swaggerPageHeadingSelector).should('be.visible');
+      cy.clickOnOpenApiItem();
+      cy.get(openAPIPageHeadingSelector).should('be.visible');
     });
   });
 });

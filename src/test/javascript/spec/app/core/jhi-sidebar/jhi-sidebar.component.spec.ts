@@ -30,13 +30,13 @@ describe('JhiSidebar', () => {
   });
 
   it('should not have user data set', () => {
-    expect(jhiSidebar.swaggerEnabled).toBeFalsy();
+    expect(jhiSidebar.openAPIEnabled).toBeFalsy();
   });
 
   it('should have profile info set after info retrieved', () => {
-    store.commit('setActiveProfiles', ['prod', 'swagger']);
+    store.commit('setActiveProfiles', ['prod', 'api-docs']);
 
-    expect(jhiSidebar.swaggerEnabled).toBeTruthy();
+    expect(jhiSidebar.openAPIEnabled).toBeTruthy();
   });
 
   it('should use account service', () => {

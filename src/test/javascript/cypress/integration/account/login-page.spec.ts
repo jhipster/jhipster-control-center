@@ -1,4 +1,10 @@
-import { errorLoginSelector, usernameLoginSelector, passwordLoginSelector, submitLoginSelector } from '../../support/commands';
+import {
+  titleLoginSelector,
+  errorLoginSelector,
+  usernameLoginSelector,
+  passwordLoginSelector,
+  submitLoginSelector,
+} from '../../support/commands';
 
 // jhcc-custom begin
 
@@ -12,6 +18,7 @@ describe('login modal', () => {
         cy.window().then(win => {
           win.sessionStorage.clear();
         });
+
         cy.clearCookies();
         cy.visit('');
         cy.clickOnLoginItem();
@@ -19,9 +26,15 @@ describe('login modal', () => {
     });
   });
 
+  // jhcc-custom end
+
   beforeEach(() => {
     cy.server();
     cy.route('POST', '/api/authenticate').as('authenticate');
+  });
+
+  it('greets with signin', () => {
+    cy.get(titleLoginSelector).should('be.visible');
   });
 
   it('requires username', () => {
@@ -29,6 +42,7 @@ describe('login modal', () => {
     cy.get(submitLoginSelector).click();
     cy.wait('@authenticate').its('status').should('equal', 400);
     // login page should stay open when login fails
+    cy.get(titleLoginSelector).should('be.visible');
     cy.get(passwordLoginSelector).clear();
   });
 
@@ -58,5 +72,3 @@ describe('login modal', () => {
     cy.hash().should('eq', '');
   });
 });
-
-// jhcc-custom end

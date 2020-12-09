@@ -14,10 +14,10 @@ import reactor.util.context.Context;
 /**
  * Test class for the {@link SecurityUtils} utility class.
  */
-public class SecurityUtilsUnitTest {
+class SecurityUtilsUnitTest {
 
     @Test
-    public void testgetCurrentUserLogin() {
+    void testgetCurrentUserLogin() {
         String login = SecurityUtils
             .getCurrentUserLogin()
             .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
@@ -26,7 +26,7 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testgetCurrentUserJWT() {
+    void testgetCurrentUserJWT() {
         String jwt = SecurityUtils
             .getCurrentUserJWT()
             .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "token")))
@@ -35,7 +35,7 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testIsAuthenticated() {
+    void testIsAuthenticated() {
         Boolean isAuthenticated = SecurityUtils
             .isAuthenticated()
             .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
@@ -44,7 +44,7 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testAnonymousIsNotAuthenticated() {
+    void testAnonymousIsNotAuthenticated() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
         Boolean isAuthenticated = SecurityUtils
@@ -57,7 +57,7 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testIsCurrentUserInRole() {
+    void testIsCurrentUserInRole() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
         Context context = ReactiveSecurityContextHolder.withAuthentication(

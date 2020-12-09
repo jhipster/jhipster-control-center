@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tech.jhipster.controlcenter</groupId>
@@ -11,15 +13,11 @@
 
     <repositories>
         <repository>
-            <id>springfox-snapshots</id>
-            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestone</id>
-            <url>https://repo.spring.io/milestone</url>
+            <id>ossrh-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <!-- jhipster-needle-maven-repository -->
     </repositories>
@@ -33,9 +31,10 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>1.8</java.version>
-        <node.version>v12.16.1</node.version>
-        <npm.version>6.14.5</npm.version>
+        <java.version>11</java.version>
+        <node.version>v14.15.0</node.version>
+        <npm.version>6.14.9</npm.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -46,19 +45,17 @@
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <run.addResources>false</run.addResources>
         <!-- These remain empty unless the corresponding profile is active -->
-        <profile.swagger />
+        <profile.api-docs />
         <profile.tls />
 
         <!-- Dependency versions -->
-        <jhipster-dependencies.version>3.9.0</jhipster-dependencies.version>
+        <jhipster-dependencies.version>0.1.0</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
-        https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-        <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
-        <blockhound-junit-platform.version>1.0.3.RELEASE</blockhound-junit-platform.version>
-        <netty-common.version>4.1.50.Final</netty-common.version>
+        https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
+        <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
+        <blockhound-junit-platform.version>1.0.4.RELEASE</blockhound-junit-platform.version>
         <archunit-junit5.version>0.14.1</archunit-junit5.version>
-        <mapstruct.version>1.3.1.Final</mapstruct.version>
-        <springfox.version>3.0.0-SNAPSHOT</springfox.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
         <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -66,18 +63,18 @@
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
-        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
         <maven-checkstyle.version>3.1.1</maven-checkstyle.version>
-        <checkstyle.version>8.32</checkstyle.version>
-        <spring-nohttp-checkstyle.version>0.0.4.RELEASE</spring-nohttp-checkstyle.version>
-        <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
-        <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>2.4.0</jib-maven-plugin.version>
+        <checkstyle.version>8.37</checkstyle.version>
+        <spring-nohttp-checkstyle.version>0.0.5.RELEASE</spring-nohttp-checkstyle.version>
+        <frontend-maven-plugin.version>1.10.3</frontend-maven-plugin.version>
+        <git-commit-id-plugin.version>4.0.3</git-commit-id-plugin.version>
+        <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+        <jib-maven-plugin.version>2.6.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
@@ -93,7 +90,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.github.jhipster</groupId>
+                <groupId>tech.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
@@ -105,7 +102,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.jhipster</groupId>
+            <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
             <exclusions>
                 <exclusion>
@@ -128,22 +125,19 @@
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
+            <artifactId>springfox-oas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox.version}</version>
+            <artifactId>springfox-bean-validators</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-webflux</artifactId>
-            <version>${springfox.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -166,10 +160,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -220,19 +210,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- # Temporarily disabled see https://github.com/jhipster/generator-jhipster/issues/11599
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound-junit-platform</artifactId>
             <version>${blockhound-junit-platform.version}</version>
             <scope>test</scope>
-        </dependency>
-        -->
-        <!-- See https://github.com/netty/netty/pull/10020 . Remove when Spring Boot has caught up -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-            <version>${netty-common.version}</version>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
@@ -268,8 +250,8 @@
         </dependency>
         <!-- Spring Cloud -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cloud-connectors</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-spring-service-connector</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -292,13 +274,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-loadbalancer</artifactId>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            To be replaced by spring cloud load balancer
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -600,9 +575,10 @@
                                 <JHIPSTER_SLEEP>0</JHIPSTER_SLEEP>
                             </environment>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                            <user>1000</user>
                         </container>
                         <extraDirectories>
-                            <paths>src/main/jib</paths>
+                            <paths>src/main/docker/jib</paths>
                             <permissions>
                                 <permission>
                                     <file>/entrypoint.sh</file>
@@ -656,8 +632,8 @@
                                 <version>[${maven.version},)</version>
                             </requireMavenVersion>
                             <requireJavaVersion>
-                                <message>You are running an incompatible version of Java. JHipster supports JDK 8 to 14.</message>
-                                <version>[1.8,15)</version>
+                                <message>You are running an incompatible version of Java. JHipster supports JDK 8 to 15.</message>
+                                <version>[1.8,16)</version>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
@@ -784,18 +760,9 @@
     </build>
     <profiles>
         <profile>
-            <id>oauth2</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-security</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>swagger</id>
+            <id>api-docs</id>
             <properties>
-                <profile.swagger>,swagger</profile.swagger>
+                <profile.api-docs>,api-docs</profile.api-docs>
             </properties>
         </profile>
         <profile>
@@ -956,7 +923,7 @@
             </build>
             <properties>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.swagger}${profile.tls}</spring.profiles.active>
+                <spring.profiles.active>prod${profile.api-docs}${profile.tls}</spring.profiles.active>
             </properties>
         </profile>
         <profile>
@@ -1048,6 +1015,28 @@
                                     </pluginExecutions>
                                 </lifecycleMappingMetadata>
                             </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>e2e</id>
+            <build>
+                <finalName>e2e</finalName>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>repackage</id>
+                                    <goals>
+                                        <goal>repackage</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
                         </plugin>
                     </plugins>
                 </pluginManagement>

@@ -18,12 +18,13 @@ public class SpaWebFilter implements WebFilter {
         if (
             !path.startsWith("/api") &&
             !path.startsWith("/management") &&
-            // jhcc-custom
-            !path.startsWith("/login") &&
-            !path.startsWith("/gateway") &&
             !path.startsWith("/services") &&
             !path.startsWith("/swagger") &&
             !path.startsWith("/v2/api-docs") &&
+            !path.startsWith("/v3/api-docs") &&
+            // jhcc-custom
+            !path.startsWith("/login") &&
+            !path.startsWith("/gateway") &&
             path.matches("[^\\\\.]*")
         ) {
             return chain.filter(exchange.mutate().request(exchange.getRequest().mutate().path("/index.html").build()).build());

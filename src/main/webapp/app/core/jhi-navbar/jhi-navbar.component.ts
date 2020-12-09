@@ -2,7 +2,6 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 import { VERSION } from '@/constants';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
-import { profile } from 'console';
 
 @Component
 export default class JhiNavbar extends Vue {
@@ -47,7 +46,7 @@ export default class JhiNavbar extends Vue {
       localStorage.removeItem('jhi-authenticationToken');
       sessionStorage.removeItem('jhi-authenticationToken');
       this.$store.commit('logout');
-      this.$router.push('/');
+      this.$router.push('/', () => {});
     }
   }
 
@@ -73,8 +72,8 @@ export default class JhiNavbar extends Vue {
     return this.hasAnyAuthorityValue;
   }
 
-  public get swaggerEnabled(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('swagger') > -1;
+  public get openAPIEnabled(): boolean {
+    return this.$store.getters.activeProfiles.indexOf('api-docs') > -1;
   }
 
   public get inProduction(): boolean {

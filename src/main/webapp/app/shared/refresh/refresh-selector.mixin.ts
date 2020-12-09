@@ -1,8 +1,7 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import { RefreshService } from '@/shared/refresh/refresh.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { interval } from 'rxjs/observable/interval';
 
 @Component
 export default class RefreshSelectorMixin extends Vue {

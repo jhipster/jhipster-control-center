@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Route } from '@/shared/routes/routes.service';
-import { Observable } from 'rxjs';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
 import AbstractService from '@/applications/abstract.service';
 
 export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
@@ -27,15 +26,17 @@ export default class LoggersService extends AbstractService {
     return logs;
   }
 
-  public changeLoggersLevel(routes: Route[], name: string, configuredLevel: Level): Observable<{}> {
-    const changeLoggersLevelResponses: Observable<{}>[] = [];
+  public changeLoggersLevel(routes: Route[], name: string, configuredLevel: Level): Observable<any> {
+    const changeLoggersLevelResponses: Observable<any>[] = [];
     for (let i = 0; i < routes.length; i++) {
-      const loggersLevelResponses = Observable.create(observer => {
+      const loggersLevelResponses = new Observable(observer => {
         const url = this.generateUri(routes[i], '/management/loggers/', name);
 
         axios
           .post(url, { configuredLevel })
-          .then(observer.complete())
+          .then(() => {
+            observer.complete();
+          })
           .catch(error => {
             observer.error(error);
           });
@@ -47,7 +48,7 @@ export default class LoggersService extends AbstractService {
 
   /** return all log of a route */
   public findAllLoggers(route: Route): Observable<Log[]> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/loggers/');
 
       axios

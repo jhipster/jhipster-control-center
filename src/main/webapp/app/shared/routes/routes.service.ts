@@ -13,7 +13,7 @@ export interface Route {
 }
 
 export default class RoutesService {
-  private store: Store<{}>;
+  private store: Store<any>;
 
   // Observable sources
   private routeChangedSource = new Subject<Route>();
@@ -47,7 +47,7 @@ export default class RoutesService {
     return route;
   }
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store<any>) {
     this.store = store;
     this.routeChanged$ = this.routeChangedSource.asObservable();
     this.routesChanged$ = this.routesChangedSource.asObservable();

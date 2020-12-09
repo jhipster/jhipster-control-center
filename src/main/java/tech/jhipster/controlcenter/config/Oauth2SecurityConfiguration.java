@@ -2,8 +2,6 @@ package tech.jhipster.controlcenter.config;
 
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.filter.reactive.CookieCsrfFilter;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +46,7 @@ import org.springframework.security.web.server.util.matcher.OrServerWebExchangeM
 import org.springframework.util.StringUtils;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
 import reactor.core.publisher.Mono;
+import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.SecurityUtils;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
@@ -55,12 +54,14 @@ import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 import tech.jhipster.controlcenter.security.oauth2.AudienceValidator;
 import tech.jhipster.controlcenter.security.oauth2.JwtGrantedAuthorityConverter;
 import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
+import tech.jhipster.web.filter.reactive.CookieCsrfFilter;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
 @Profile(Constants.PROFILE_OAUTH2)
 public class Oauth2SecurityConfiguration {
+
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 

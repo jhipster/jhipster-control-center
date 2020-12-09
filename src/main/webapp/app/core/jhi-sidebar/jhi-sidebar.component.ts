@@ -19,7 +19,7 @@ export default class VueSidebarMenu extends Vue {
     return this.hasAnyAuthorityValue;
   }
 
-  public get swaggerEnabled(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('swagger') > -1;
+  public get openAPIEnabled(): boolean {
+    return this.$store.getters.activeProfiles.indexOf('api-docs') > -1;
   }
 }

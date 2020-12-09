@@ -1,4 +1,3 @@
-// jhcc-custom begin
 @import 'bootstrap-variables';
 
 /* ==============================================================
@@ -29,9 +28,14 @@ a {
 
 a:hover {
   color: #533f03;
-  font-weight: bold;
   /* make sure browsers use the pointer cursor for anchors, even with no href */
   cursor: pointer;
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: white;
+  text-decoration: none;
+  background-color: #373a3c;
 }
 
 /* ==========================================================================
@@ -50,9 +54,9 @@ Main page styles
 
 .hipster.img-fluid {
   display: inline-block;
-  width: 250px;
+  width: 347px;
   height: 497px;
-  background: url('../images/jhipster_family_member_3.svg') no-repeat center center;
+  background: url('../images/jhipster_family_member_3.svg') no-repeat center top;
   background-size: contain;
 }
 
@@ -85,26 +89,24 @@ Generic styles
 
 /* other generic styles */
 
-.app {
-  height: 100%;
-  position: relative;
-  padding-bottom: 0px;
-}
-
+// jhcc-custom
 .jh-card {
   padding: 1.5%;
+  margin-top: 20px;
   border: none;
   background: inherit;
   margin-left: 200px;
   width: 100%;
 }
 
+// jhcc-custom
 @media screen and (max-width: 767px) {
   .jh-card {
     margin-left: 20px;
   }
 }
 
+// jhcc-custom
 @media screen and (min-width: 768px) and (max-width: 1150px) {
   .jh-card {
     margin-left: 90px;
@@ -147,6 +149,7 @@ Generic styles
 App footer
 ========================================================================== */
 
+// jhcc-custom
 .footer {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   bottom: 0;
@@ -282,6 +285,8 @@ ui bootstrap tweaks
   white-space: nowrap;
 }
 
+// jhcc-custom begin
+
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Pacifico&display=swap');
 
 /* ==========================================================================
@@ -333,6 +338,6 @@ Sidebar
   margin-bottom: 20px;
 }
 
-/* jhipster-needle-scss-add-main JHipster will add new css style */
-
 // jhcc-custom end
+
+/* jhipster-needle-scss-add-main JHipster will add new css style */

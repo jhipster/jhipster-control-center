@@ -2,7 +2,6 @@ package tech.jhipster.controlcenter.web.rest;
 
 import static tech.jhipster.controlcenter.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -19,7 +18,8 @@ import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 @AutoConfigureWebTestClient
 @WithMockUser(value = TEST_USER_LOGIN)
 @SpringBootTest(classes = JhipsterControlCenterApp.class)
-public class AccountResourceIT {
+class AccountResourceIT {
+
     static final String TEST_USER_LOGIN = "test";
 
     @Autowired
@@ -27,7 +27,7 @@ public class AccountResourceIT {
 
     @Test
     @WithMockUser(username = TEST_USER_LOGIN, authorities = AuthoritiesConstants.ADMIN)
-    public void testGetExistingAccount() {
+    void testGetExistingAccount() {
         accountWebTestClient
             .get()
             .uri("/api/account")

@@ -9,7 +9,7 @@ import {
   logsMenuSelector,
   logsFileMenuSelector,
   configurationMenuSelector,
-  swaggerMenuSelector,
+  openAPIMenuSelector,
 } from './commands';
 
 Cypress.Commands.add('clickOnMetricItem', () => {
@@ -32,8 +32,8 @@ Cypress.Commands.add('clickOnConfigurationItem', () => {
   return cy.get(sidebarSelector).find(configurationMenuSelector).click();
 });
 
-Cypress.Commands.add('clickOnSwaggerItem', () => {
-  return cy.get(sidebarSelector).find(swaggerMenuSelector).click();
+Cypress.Commands.add('clickOnOpenApiItem', () => {
+  return cy.get(sidebarSelector).find(openAPIMenuSelector).click();
 });
 
 declare global {
@@ -44,7 +44,7 @@ declare global {
       clickOnLogsItem(): Cypress.Chainable;
       clickOnLogsfileItem(): Cypress.Chainable;
       clickOnConfigurationItem(): Cypress.Chainable;
-      clickOnSwaggerItem(): Cypress.Chainable;
+      clickOnOpenApiItem(): Cypress.Chainable;
     }
   }
 }

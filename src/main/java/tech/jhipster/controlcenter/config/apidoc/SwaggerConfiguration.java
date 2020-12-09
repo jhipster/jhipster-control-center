@@ -1,6 +1,5 @@
 package tech.jhipster.controlcenter.config.apidoc;
 
-import io.github.jhipster.config.JHipsterConstants;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -15,7 +14,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
+import tech.jhipster.config.JHipsterConstants;
 
 /**
  * jhcc-custom
@@ -23,10 +22,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
  */
 @Component
 @Primary
-@Profile(JHipsterConstants.SPRING_PROFILE_SWAGGER)
+@Profile(JHipsterConstants.SPRING_PROFILE_API_DOCS)
 @Configuration
-@EnableSwagger2WebFlux
 public class SwaggerConfiguration implements SwaggerResourcesProvider {
+
     private final RouteLocator routeLocator;
 
     public SwaggerConfiguration(RouteLocator routeLocator) {
@@ -35,7 +34,12 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build();
+        return new Docket(DocumentationType.SWAGGER_2)
+            .groupName("swagger2")
+            .select()
+            .apis(RequestHandlerSelectors.any())
+            .paths(PathSelectors.any())
+            .build();
     }
 
     @Override
