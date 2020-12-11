@@ -73,6 +73,10 @@
                                 oauth2 = true;
                             }
                         });
+                        // Remove the sample Swagger UI request body if present
+                        if (req.method === 'GET' && req.body === '{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"}') {
+                            req.body = undefined;
+                        }
                         if (oauth2) {
                             // OAuth2
                             req.headers['X-XSRF-TOKEN'] = getCSRF();
