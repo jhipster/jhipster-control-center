@@ -15,10 +15,10 @@ spring:
       - org.springframework.cloud.kubernetes.discovery.reactive.KubernetesReactiveDiscoveryClientAutoConfiguration
       - org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration
   ## Uncomment following lines to add a service to discover
-  cloud:
-    discovery:
-      client:
-        simple:
-          instances:
-            service1:
-              - uri: http://localhost:8088
+#  cloud:
+#    discovery:
+#      client:
+#        simple:
+#          instances:
+#            service1:
+#              - uri: http://localhost:8088

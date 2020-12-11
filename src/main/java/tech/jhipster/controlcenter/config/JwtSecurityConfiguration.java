@@ -33,6 +33,7 @@ import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 @Import(SecurityProblemSupport.class)
 @Profile("!" + Constants.PROFILE_OAUTH2)
 public class JwtSecurityConfiguration {
+
     private final TokenProvider tokenProvider;
 
     private final SecurityProblemSupport problemSupport;
@@ -92,13 +93,13 @@ public class JwtSecurityConfiguration {
             .pathMatchers("/api/**").authenticated()
             // jhcc-custom : begin
             .pathMatchers("/services/**", "/gateway/**").authenticated()
-            .pathMatchers("/v2/api-docs", "/swagger-ui/index.html").permitAll()
+            .pathMatchers("/v3/api-docs", "/swagger-ui/index.html").permitAll()
             .pathMatchers("/swagger-resources/**").permitAll()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
             .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
-            // jhcc-custom : end
+        // jhcc-custom : end
         // @formatter:on
         return http.build();
     }

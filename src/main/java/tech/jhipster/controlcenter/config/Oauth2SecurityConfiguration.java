@@ -151,7 +151,7 @@ public class Oauth2SecurityConfiguration {
             .pathMatchers("/api/**").authenticated()
             // jhcc-custom : begin
             .pathMatchers("/services/**", "/gateway/**").authenticated()
-            .pathMatchers("/v2/api-docs", "/swagger-ui/index.html").permitAll()
+            .pathMatchers("/v3/api-docs", "/swagger-ui/index.html").permitAll()
             .pathMatchers("/swagger-resources/**").permitAll()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/info").permitAll()
