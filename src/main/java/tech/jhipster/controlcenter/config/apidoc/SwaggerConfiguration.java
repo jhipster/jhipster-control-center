@@ -52,6 +52,13 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
 
         List<Tuple2<Route, List<SwaggerResource>>> servicesRouteSwaggerResources = routeLocator
             .getRoutes()
+            .filterWhen(
+                route -> {
+                    String routePredicate = route.getPredicate().toString();
+                    // Ignore the Consul server from the list as it doesn't expose a /swagger-resources endpoint
+                    return Mono.just(!routePredicate.contains("consul/consul"));
+                }
+            )
             .flatMap(
                 route -> {
                     // Retrieve the list of available OpenAPI resources for each service from their /swagger-resources endpoint
