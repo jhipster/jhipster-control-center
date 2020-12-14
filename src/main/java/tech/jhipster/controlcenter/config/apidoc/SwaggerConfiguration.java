@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.route.Route;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.swagger.web.SwaggerResource;
@@ -64,8 +66,11 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
                 }
             )
             .collectList()
-            .blockOptional()
-            .orElse(Collections.emptyList());
+            .defaultIfEmpty(Collections.emptyList())
+            .subscribeOn(Schedulers.boundedElastic())
+            .toFuture()
+            .orTimeout(10, TimeUnit.SECONDS)
+            .join();
 
         //Add the registered microservices swagger docs as additional swagger resources
         List<SwaggerResource> servicesSwaggerResources = servicesRouteSwaggerResources
