@@ -11,14 +11,14 @@
         </div>
         <div v-else>
             <div v-if="cachesMetrics && caches">
-                <h4>Statistics</h4>
+                <h4 id="statistics">Statistics</h4>
                 <div class="input-group input-group-md mb-1">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Filter</span>
                     </div>
                     <input type="text" v-model="filteredMetrics" v-on:input="clearPaginationMetrics()" class="form-control">
                 </div>
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" aria-describedby="statistics">
                     <thead class="thead-light">
                         <tr>
                         <th scope="col" v-on:click="[changeOrderMetrics('name'), clearPaginationMetrics()]">Cache name</th>
@@ -49,14 +49,14 @@
                         <b-pagination size="md" :total-rows="cachesMetricsFiltered.length" v-model="pageMetrics" :per-page="itemsPerPageMetrics" :change="loadPageMetrics(pageMetrics)"></b-pagination>
                     </div>
                 </div>
-                <h4>Caches list</h4>
+                <h4 id="cachesList">Caches list</h4>
                 <div class="input-group input-group-md mb-1">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Filter</span>
                     </div>
                     <input type="text" v-model="filtered" v-on:input="clearPagination()" class="form-control">
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" aria-describedby="cachesList">
                     <thead class="thead-light">
                     <tr title="click to order">
                         <th scope="col" v-on:click="[changeOrder('cacheManager'), clearPagination()]"><span>Cache Manager</span></th>
