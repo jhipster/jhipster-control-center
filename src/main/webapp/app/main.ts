@@ -4,6 +4,7 @@ import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './app.vue';
 import Vue2Filters from 'vue2-filters';
+import { ToastPlugin } from 'bootstrap-vue';
 import router from './router';
 import * as config from './shared/config/config';
 import * as bootstrapVueConfig from './shared/config/config-bootstrap-vue';
@@ -15,7 +16,6 @@ import LoginService from './account/login.service';
 import AccountService from './account/account.service';
 
 import '../content/scss/vendor.scss';
-import AlertService from '@/shared/alert/alert.service';
 
 // jhcc-custom begin
 import { RefreshService } from '@/shared/refresh/refresh.service';
@@ -23,7 +23,7 @@ import InstanceService from '@/applications/instance/instance.service';
 import RoutesService from '@/shared/routes/routes.service';
 import LoggersService from '@/applications/loggers/loggers.service';
 import MetricService from '@/applications/metric/metric.service';
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue';
+import { ModalPlugin } from 'bootstrap-vue';
 import InstanceHealthService from '@/applications/health/health.service';
 import LogfileService from '@/applications/logfile/logfile.service';
 import InstanceConfigurationService from '@/applications/configuration/configuration.service';
@@ -48,10 +48,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
-
 const store = config.initVueXStore(Vue);
 
-const alertService = new AlertService(store);
 const loginService = new LoginService();
 const accountService = new AccountService(store, (<any>Vue).cookie, router);
 
@@ -87,8 +85,6 @@ const app = new Vue({
   router,
   provide: {
     loginService: () => loginService,
-
-    alertService: () => alertService,
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
 

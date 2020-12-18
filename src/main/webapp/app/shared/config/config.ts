@@ -10,9 +10,9 @@ import { faBell } from '@fortawesome/free-solid-svg-icons/faBell';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
 import { faCloud } from '@fortawesome/free-solid-svg-icons/faCloud';
 import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
+import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faFlag } from '@fortawesome/free-solid-svg-icons/faFlag';
-import { faHdd } from '@fortawesome/free-solid-svg-icons/faHdd';
 import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faList } from '@fortawesome/free-solid-svg-icons/faList';
@@ -34,8 +34,8 @@ import { faThList } from '@fortawesome/free-solid-svg-icons/faThList';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 // jhcc-custom begin
 import { faSitemap } from '@fortawesome/free-solid-svg-icons/faSitemap';
@@ -55,7 +55,6 @@ import Vue2Filters from 'vue2-filters';
 
 import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
-import { alertStore } from '@/shared/config/store/alert-store';
 // jhcc-custom begin
 import { refreshStore } from '@/shared/config/store/refresh-store';
 import { routesStore } from '@/shared/config/store/routes-store';
@@ -79,9 +78,9 @@ export function initFortAwesome(vue) {
     faBook,
     faCloud,
     faCogs,
+    faDatabase,
     faEye,
     faFlag,
-    faHdd,
     faHeart,
     faHome,
     faList,
@@ -126,7 +125,6 @@ export function initVueXStore(vue) {
   return new Vuex.Store({
     modules: {
       accountStore,
-      alertStore,
       // jhcc-custom begin
       refreshStore,
       routesStore,

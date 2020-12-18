@@ -18,7 +18,10 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api")
 public class AccountResource {
 
-    private static class AccountResourceException extends RuntimeException {}
+    private static class AccountResourceException extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+    }
 
     /**
      * {@code GET  /account} : get the current user.
@@ -59,6 +62,7 @@ public class AccountResource {
     }
 
     private static class UserVM {
+
         private String login;
         private Set<String> authorities;
 

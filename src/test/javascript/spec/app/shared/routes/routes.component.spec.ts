@@ -5,7 +5,7 @@ import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesSelectorClass from '@/shared/routes/routes-selector.component';
 import RoutesService from '@/shared/routes/routes.service';
 import { RefreshService } from '@/shared/refresh/refresh.service.ts';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { jhcc_route, routes, service_test_route } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
@@ -81,7 +81,7 @@ describe('Routes Component', () => {
 
   it('should reset activeRoute when we call updateRoute with 404 error', () => {
     const setActiveRoute = jest.spyOn(routesSelector, 'setActiveRoute');
-    const findAllRoutes = jest.spyOn(routesService, 'findAllRoutes').mockReturnValue(Observable.throw({ status: 404 }));
+    const findAllRoutes = jest.spyOn(routesService, 'findAllRoutes').mockReturnValue(throwError({ status: 404 }));
     routesSelector.updateRoute();
     expect(findAllRoutes).toHaveBeenCalled();
     expect(setActiveRoute).toHaveBeenCalledWith(null);

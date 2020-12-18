@@ -3,7 +3,7 @@
     <refresh-selector class="float-right"></refresh-selector>
     <routes-selector class="float-right mr-2"></routes-selector>
     <h2>
-      <span id="metrics-page-heading" data-cy="metrics-page-heading">Application Metrics</span>
+      <span id="metrics-page-heading" data-cy="metricsPageHeading">Application Metrics</span>
     </h2>
     <div v-if="isError">
       <span v-html="renderErrorMessage()"></span>
@@ -172,7 +172,9 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
-            <caption>garbage collector metrics</caption>
+            <caption>
+              garbage collector metrics
+            </caption>
             <thead>
               <tr>
                 <th scope="col"></th>
@@ -205,8 +207,10 @@
 
       <h3>HTTP requests (time in millisecond)</h3>
       <table class="table table-striped" v-if="!updatingMetrics && isMetricKeyExists(metrics, 'http.server.requests')">
-          <caption>HTTP server requests metrics</caption>
-          <thead>
+        <caption>
+          HTTP server requests metrics
+        </caption>
+        <thead>
           <tr>
             <th scope="col">Code</th>
             <th scope="col">Count</th>
@@ -233,8 +237,10 @@
       <h3>Endpoints requests (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics">
         <table class="table table-striped">
-            <caption>Endpoints server requests metrics</caption>
-            <thead>
+          <caption>
+            Endpoints server requests metrics
+          </caption>
+          <thead>
             <tr>
               <th scope="col">Method</th>
               <th scope="col">Endpoint url</th>
@@ -258,8 +264,10 @@
       <h3>DataSource statistics (time in millisecond)</h3>
       <div class="table-responsive" v-if="!updatingMetrics && isObjectExistingAndNotEmpty(metrics, 'databases')">
         <table class="table table-striped">
-            <caption>Datasource statistic metrics</caption>
-            <thead>
+          <caption>
+            Datasource statistic metrics
+          </caption>
+          <thead>
             <tr>
               <th scope="col">
                 <span>Connection Pool Usage</span> (active: {{ metrics.databases.active.value }}, min: {{ metrics.databases.min.value }},

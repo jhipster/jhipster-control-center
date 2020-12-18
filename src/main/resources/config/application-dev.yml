@@ -16,14 +16,14 @@
 logging:
   level:
     ROOT: DEBUG
-    io.github.jhipster: DEBUG
+    tech.jhipster: DEBUG
     tech.jhipster.controlcenter: DEBUG
 
 spring:
   profiles:
     active: dev
     include:
-      - swagger
+      - api-docs
       # Uncomment to activate TLS for the dev profile
       #- tls
   devtools:
@@ -74,10 +74,6 @@ jhipster:
         secret: my-secret-key-which-should-be-changed-in-production-and-be-base64-encoded
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:7419
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: false
-      report-frequency: 60 # in seconds
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
@@ -95,4 +91,3 @@ jhipster:
 # ===================================================================
 
 # application:
-

@@ -19,37 +19,41 @@
 
 // Navbar
 export const navbarSelector = '[data-cy="navbar"]';
-export const accountMenuSelector = '[data-cy="account-menu"]';
+export const accountMenuSelector = '[data-cy="accountMenu"]';
 export const loginItemSelector = '[data-cy="login"]';
 export const logoutItemSelector = '[data-cy="logout"]';
 
+// jhcc-custom begin
+
 // Login
-export const errorLoginSelector = '[data-cy="login-error"]';
+export const titleLoginSelector = '[data-cy="loginTitle"]';
+export const errorLoginSelector = '[data-cy="loginError"]';
 export const usernameLoginSelector = '[data-cy="username"]';
 export const passwordLoginSelector = '[data-cy="password"]';
 export const submitLoginSelector = '[data-cy="submit"]';
 
 // Sidebar
 export const sidebarSelector = '[data-cy="sidebar"]';
-export const metricsMenuSelector = '[data-cy="metrics-menu"]';
-export const healthMenuSelector = '[data-cy="health-menu"]';
-export const logsMenuSelector = '[data-cy="logs-menu"]';
-export const logsFileMenuSelector = '[data-cy="logsfile-menu"]';
-export const configurationMenuSelector = '[data-cy="configuration-menu"]';
-export const swaggerMenuSelector = '[data-cy="swagger-menu"]';
+export const metricsMenuSelector = '[data-cy="metricsMenu"]';
+export const healthMenuSelector = '[data-cy="healthMenu"]';
+export const logsMenuSelector = '[data-cy="logsMenu"]';
+export const logsFileMenuSelector = '[data-cy="logsfileMenu"]';
+export const configurationMenuSelector = '[data-cy="configurationMenu"]';
+export const openAPIMenuSelector = '[data-cy="openAPIMenu"]';
 
-export const metricsPageHeadingSelector = '[data-cy="metrics-page-heading"]';
-export const healthPageHeadingSelector = '[data-cy="health-page-heading"]';
-export const logsPageHeadingSelector = '[data-cy="logs-page-heading"]';
-export const logsFilePageHeadingSelector = '[data-cy="logsfile-page-heading"]';
-export const configurationPageHeadingSelector = '[data-cy="configuration-page-heading"]';
-export const swaggerPageHeadingSelector = '[data-cy="swagger-page-heading"]';
+export const metricsPageHeadingSelector = '[data-cy="metricsPageHeading"]';
+export const healthPageHeadingSelector = '[data-cy="healthPageHeading"]';
+export const logsPageHeadingSelector = '[data-cy="logsPageHeading"]';
+export const logsFilePageHeadingSelector = '[data-cy="logsfilePageHeading"]';
+export const configurationPageHeadingSelector = '[data-cy="configurationPageHeading"]';
+export const openAPIPageHeadingSelector = '[data-cy="openAPIPageHeading"]';
 
 // ***********************************************
 // End Specific Selector Attributes for Cypress
 // ***********************************************
 
-// jhcc-custom begin
+export const classInvalid = 'invalid';
+export const classValid = 'valid';
 
 Cypress.Commands.add('login', (username: string, password: string) => {
   cy.clickOnLoginItem();

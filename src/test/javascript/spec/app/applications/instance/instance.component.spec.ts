@@ -1,5 +1,7 @@
 import { createLocalVue, Wrapper, mount, shallowMount } from '@vue/test-utils';
 import axios from 'axios';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEye, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import * as config from '@/shared/config/config';
 import InstanceVue from '@/applications/instance/instance.vue';
@@ -13,6 +15,8 @@ import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtu
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
+library.add(faEye);
+library.add(faPowerOff);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('instance-modal', InstanceModal);
 localVue.directive('b-modal', {});

@@ -13,13 +13,13 @@
         </div>
         <b-navbar-brand class="logo" b-link to="/">
           <span class="logo-img"></span>
-          <span class="navbar-title"><span class="jhipster-title">JHipster</span> Control Center</span>
-          <span class="navbar-version">{{ version }}</span>
+          <span class="navbar-title">jhipsterControlCenter</span> <span class="navbar-version">{{ version }}</span>
         </b-navbar-brand>
         <b-navbar-toggle
-          class="header-tabs"
           right
+          class="jh-navbar-toggler d-lg-none"
           href="javascript:void(0);"
+          data-toggle="collapse"
           target="header-tabs"
           aria-expanded="false"
           aria-label="Toggle navigation"
@@ -43,19 +43,17 @@
           :class="{ 'router-link-active': subIsActive('/account') }"
           active-class="active"
           class="pointer"
-          data-cy="account-menu"
+          data-cy="accountMenu"
         >
           <span slot="button-content" class="navbar-dropdown-menu">
             <font-awesome-icon icon="user" />
-            <span>
-              Account
-            </span>
+            <span class="no-bold"> Account </span>
           </span>
-          <b-dropdown-item v-if="authenticated" v-on:click="logout()" id="logout" data-cy="logout">
+          <b-dropdown-item data-cy="logout" v-if="authenticated" v-on:click="logout()" id="logout" active-class="active">
             <font-awesome-icon icon="sign-out-alt" />
             <span>Sign out</span>
           </b-dropdown-item>
-          <b-dropdown-item v-if="!authenticated" v-on:click="openLogin()" id="login" data-cy="login">
+          <b-dropdown-item data-cy="login" v-if="!authenticated" v-on:click="openLogin()" id="login" active-class="active">
             <font-awesome-icon icon="sign-in-alt" />
             <span>Sign in</span>
           </b-dropdown-item>
@@ -85,10 +83,6 @@ Navbar
   justify-content: start;
 }
 
-.navbar-dropdown-menu {
-  right: 0;
-}
-
 /* ==========================================================================
     Title
     ========================================================================== */
@@ -109,9 +103,6 @@ Navbar
   vertical-align: sub;
 }
 
-/* ==========================================================================
-    @media screen
-    ========================================================================== */
 @media screen and (min-width: 768px) and (max-width: 1150px) {
   span span {
     display: none;
@@ -122,10 +113,6 @@ Navbar
     width: 100%;
   }
 }
-
-/* ==========================================================================
-    button & icon
-    ========================================================================== */
 
 .navbar-dark button {
   color: white;

@@ -14,12 +14,13 @@ import tech.jhipster.controlcenter.web.rest.vm.LoginVM;
  */
 @AutoConfigureWebTestClient
 @SpringBootTest(classes = JhipsterControlCenterApp.class)
-public class UserJWTControllerIT {
+class UserJWTControllerIT {
+
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    public void testAuthorize() throws Exception {
+    void testAuthorize() throws Exception {
         LoginVM login = new LoginVM();
         login.setUsername("test");
         login.setPassword("test");
@@ -39,7 +40,7 @@ public class UserJWTControllerIT {
     }
 
     @Test
-    public void testAuthorizeWithRememberMe() throws Exception {
+    void testAuthorizeWithRememberMe() throws Exception {
         LoginVM login = new LoginVM();
         login.setUsername("test");
         login.setPassword("test");
@@ -60,7 +61,7 @@ public class UserJWTControllerIT {
     }
 
     @Test
-    public void testAuthorizeFails() throws Exception {
+    void testAuthorizeFails() throws Exception {
         LoginVM login = new LoginVM();
         login.setUsername("wrong-user");
         login.setPassword("wrong password");

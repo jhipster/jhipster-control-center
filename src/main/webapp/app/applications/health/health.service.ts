@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 import { Observable } from 'rxjs';
-import { SERVER_API_URL } from '@/constants';
 import AbstractService from '@/applications/abstract.service';
 
 interface Route {
@@ -72,7 +71,7 @@ export default class InstanceHealthService extends AbstractService {
     let hasDetails = false;
 
     for (const key in healthObject) {
-      if (healthObject.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(healthObject, key)) {
         const value = healthObject[key];
         if (key === 'status' || key === 'error') {
           healthData[key] = value;
@@ -99,7 +98,7 @@ export default class InstanceHealthService extends AbstractService {
 
   public flattenHealthData(result: any, path: any, data: any): any {
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
         const value = data[key];
         if (this.isHealthObject(value)) {
           if (this.hasSubSystem(value)) {
@@ -132,7 +131,7 @@ export default class InstanceHealthService extends AbstractService {
     let result = false;
 
     for (const key in healthObject) {
-      if (healthObject.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(healthObject, key)) {
         const value = healthObject[key];
         if (value && value.status) {
           result = true;
@@ -146,7 +145,7 @@ export default class InstanceHealthService extends AbstractService {
     let result = false;
 
     for (const key in healthObject) {
-      if (healthObject.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(healthObject, key)) {
         if (key === 'status') {
           result = true;
         }

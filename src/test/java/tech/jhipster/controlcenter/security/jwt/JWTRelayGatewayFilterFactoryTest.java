@@ -5,11 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Collections;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,27 +21,22 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
-import tech.jhipster.controlcenter.security.jwt.JWTFilter;
-import tech.jhipster.controlcenter.security.jwt.JWTRelayGatewayFilterFactory;
-import tech.jhipster.controlcenter.security.jwt.TokenProvider;
 
 public class JWTRelayGatewayFilterFactoryTest {
+
     private final TokenProvider tokenProvider;
     private final GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
     private final ArgumentCaptor<ServerWebExchange> captor = ArgumentCaptor.forClass(ServerWebExchange.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     JWTRelayGatewayFilterFactoryTest() {
+        String base64Secret = "fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8";
         JHipsterProperties jHipsterProperties = new JHipsterProperties();
+        jHipsterProperties.getSecurity().getAuthentication().getJwt().setBase64Secret(base64Secret);
         tokenProvider = new TokenProvider(jHipsterProperties);
-        ReflectionTestUtils.setField(
-            tokenProvider,
-            "key",
-            Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
-            )
-        );
+        ReflectionTestUtils.setField(tokenProvider, "key", Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret)));
 
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", 60000);
     }

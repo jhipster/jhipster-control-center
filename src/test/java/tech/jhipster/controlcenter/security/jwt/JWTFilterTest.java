@@ -2,7 +2,6 @@ package tech.jhipster.controlcenter.security.jwt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Collections;
@@ -16,9 +15,11 @@ import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
+import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 
-public class JWTFilterTest {
+class JWTFilterTest {
+
     private TokenProvider tokenProvider;
 
     private JWTFilter jwtFilter;
@@ -26,21 +27,17 @@ public class JWTFilterTest {
     @BeforeEach
     public void setup() {
         JHipsterProperties jHipsterProperties = new JHipsterProperties();
+        String base64Secret = "fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8";
+        jHipsterProperties.getSecurity().getAuthentication().getJwt().setBase64Secret(base64Secret);
         tokenProvider = new TokenProvider(jHipsterProperties);
-        ReflectionTestUtils.setField(
-            tokenProvider,
-            "key",
-            Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
-            )
-        );
+        ReflectionTestUtils.setField(tokenProvider, "key", Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret)));
 
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", 60000);
         jwtFilter = new JWTFilter(tokenProvider);
     }
 
     @Test
-    public void testJWTFilter() {
+    void testJWTFilter() {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             "test-user",
             "test-password",
@@ -60,14 +57,14 @@ public class JWTFilterTest {
                         .flatMap(c -> ReactiveSecurityContextHolder.getContext())
                         .map(SecurityContext::getAuthentication)
                         .doOnSuccess(auth -> assertThat(auth.getName()).isEqualTo("test-user"))
-                        .doOnSuccess(auth -> assertThat(auth.getCredentials().toString()).isEqualTo(jwt))
+                        .doOnSuccess(auth -> assertThat(auth.getCredentials().toString()).hasToString(jwt))
                         .then()
             )
             .block();
     }
 
     @Test
-    public void testJWTFilterInvalidToken() {
+    void testJWTFilterInvalidToken() {
         String jwt = "wrong_jwt";
         MockServerHttpRequest.BaseBuilder request = MockServerHttpRequest
             .get("/api/test")
@@ -88,7 +85,7 @@ public class JWTFilterTest {
     }
 
     @Test
-    public void testJWTFilterMissingAuthorization() {
+    void testJWTFilterMissingAuthorization() {
         MockServerHttpRequest.BaseBuilder request = MockServerHttpRequest.get("/api/test");
         MockServerWebExchange exchange = MockServerWebExchange.from(request);
         jwtFilter
@@ -106,7 +103,7 @@ public class JWTFilterTest {
     }
 
     @Test
-    public void testJWTFilterMissingToken() {
+    void testJWTFilterMissingToken() {
         MockServerHttpRequest.BaseBuilder request = MockServerHttpRequest
             .get("/api/test")
             .header(JWTFilter.AUTHORIZATION_HEADER, "Bearer ");
@@ -126,7 +123,7 @@ public class JWTFilterTest {
     }
 
     @Test
-    public void testJWTFilterWrongScheme() {
+    void testJWTFilterWrongScheme() {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             "test-user",
             "test-password",

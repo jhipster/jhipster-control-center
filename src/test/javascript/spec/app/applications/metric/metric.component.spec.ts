@@ -6,11 +6,11 @@ import Metric from '@/applications/metric/metric.vue';
 import MetricModal from '@/applications/metric/metric-modal.vue';
 import MetricClass from '@/applications/metric/metric.component';
 import MetricService from '@/applications/metric/metric.service';
-import RoutesService, { Route } from '@/shared/routes/routes.service';
+import RoutesService from '@/shared/routes/routes.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { BootstrapVue } from 'bootstrap-vue';
 import { Observable } from 'rxjs';
-import { jhcc_metrics, jhcc_route, service_test_route } from '../../../fixtures/jhcc.fixtures';
+import { jhcc_metrics, jhcc_route } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 localVue.component('font-awesome-icon', FontAwesomeIcon);

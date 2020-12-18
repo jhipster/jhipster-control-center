@@ -21,19 +21,19 @@ jobs:
                     - jhcc-consul-oauth2
                 include:
                     - app-type: jhcc-default
-                      environment: prod, swagger, static
+                      environment: prod, api-docs, static
                     - app-type: jhcc-static
-                      environment: dev, swagger, static
+                      environment: dev, api-docs, static
                     - app-type: jhcc-eureka
-                      environment: dev, swagger, eureka
+                      environment: dev, api-docs, eureka
                     - app-type: jhcc-consul
-                      environment: dev, swagger, consul
+                      environment: dev, api-docs, consul
                     - app-type: jhcc-static-oauth2
-                      environment: dev, swagger, static, oauth2
+                      environment: dev, api-docs, static, oauth2
                     - app-type: jhcc-eureka-oauth2
-                      environment: dev, swagger, eureka, oauth2
+                      environment: dev, api-docs, eureka, oauth2
                     - app-type: jhcc-consul-oauth2
-                      environment: dev, swagger, consul, oauth2
+                      environment: dev, api-docs, consul, oauth2
         env:
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             JHI_DISABLE_WEBPACK_LOGS: true

@@ -46,6 +46,7 @@ public class LocaleConfiguration {
     }
 
     static class AngularCookieLocaleContextResolver implements LocaleContextResolver {
+
         private static final String LOCALE_REQUEST_ATTRIBUTE_NAME = AngularCookieLocaleContextResolver.class.getName() + ".LOCALE";
 
         private static final String TIME_ZONE_REQUEST_ATTRIBUTE_NAME = AngularCookieLocaleContextResolver.class.getName() + ".TIME_ZONE";
@@ -63,7 +64,6 @@ public class LocaleConfiguration {
         public LocaleContext resolveLocaleContext(@Nonnull ServerWebExchange exchange) {
             parseLocaleCookieIfNecessary(exchange);
             return new TimeZoneAwareLocaleContext() {
-
                 @Override
                 public Locale getLocale() {
                     return (Locale) exchange.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);

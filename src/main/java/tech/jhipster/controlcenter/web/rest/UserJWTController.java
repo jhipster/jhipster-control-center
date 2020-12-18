@@ -23,6 +23,7 @@ import tech.jhipster.controlcenter.web.rest.vm.LoginVM;
 @RequestMapping("/api")
 @Profile("!" + Constants.PROFILE_OAUTH2)
 public class UserJWTController {
+
     private final TokenProvider tokenProvider;
 
     private final ReactiveAuthenticationManager authenticationManager;
@@ -39,9 +40,7 @@ public class UserJWTController {
                 login ->
                     authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
-                        .flatMap(
-                            auth -> Mono.fromCallable(() -> tokenProvider.createToken(auth, Boolean.TRUE.equals(login.isRememberMe())))
-                        )
+                        .flatMap(auth -> Mono.fromCallable(() -> tokenProvider.createToken(auth, login.isRememberMe())))
             )
             .map(
                 jwt -> {
@@ -56,6 +55,7 @@ public class UserJWTController {
      * Object to return as body in JWT Authentication.
      */
     static class JWTToken {
+
         private String idToken;
 
         JWTToken(String idToken) {

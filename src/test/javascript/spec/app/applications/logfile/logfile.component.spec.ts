@@ -7,7 +7,7 @@ import LogfileService from '@/applications/logfile/logfile.service';
 import LogfileClass from '@/applications/logfile/logfile.component';
 import Logfile from '@/applications/logfile/logfile.vue';
 import { jhcc_logfile, jhcc_logfile_error, jhcc_route, routes } from '../../../fixtures/jhcc.fixtures';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 const localVue = createLocalVue();
 const mockedAxios: any = axios;
@@ -96,9 +96,7 @@ describe('Logfile Component', () => {
 
   it('should refresh logFileContent with a custom error 404 of selected route', async () => {
     logfile.activeRoute = jhcc_route;
-    const spy = jest
-      .spyOn(logfileService, 'findLogfile')
-      .mockReturnValue(Observable.throw({ response: { status: 404 }, message: 'Not Found' }));
+    const spy = jest.spyOn(logfileService, 'findLogfile').mockReturnValue(throwError({ response: { status: 404 }, message: 'Not Found' }));
     logfile.refreshActiveRouteLog();
     await logfile.$nextTick();
     expect(spy).toHaveBeenCalled();
@@ -110,7 +108,7 @@ describe('Logfile Component', () => {
     logfile.activeRoute = jhcc_route;
     const spy = jest
       .spyOn(logfileService, 'findLogfile')
-      .mockReturnValue(Observable.throw({ response: { status: 400 }, message: 'Bad Request' }));
+      .mockReturnValue(throwError({ response: { status: 400 }, message: 'Bad Request' }));
     logfile.refreshActiveRouteLog();
     await logfile.$nextTick();
     expect(spy).toHaveBeenCalled();

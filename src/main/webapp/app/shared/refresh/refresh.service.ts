@@ -2,7 +2,7 @@ import { Store } from 'vuex';
 import { Subject, Observable } from 'rxjs';
 
 export class RefreshService {
-  private store: Store<{}>;
+  private store: Store<any>;
 
   // Observable sources
   private refreshChangedSource = new Subject<any>();
@@ -10,7 +10,7 @@ export class RefreshService {
   refreshChanged$: Observable<any>;
   refreshReload$: Observable<any>;
 
-  constructor(store: Store<{}>) {
+  constructor(store: Store<any>) {
     this.store = store;
     this.refreshChanged$ = this.refreshChangedSource.asObservable();
     this.refreshReload$ = this.refreshReloadSource.asObservable();

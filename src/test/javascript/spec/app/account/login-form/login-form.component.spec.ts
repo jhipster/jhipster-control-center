@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
 import axios from 'axios';
+import sinon from 'sinon';
 import AccountService from '@/account/account.service';
 import router from '@/router';
 
@@ -15,7 +16,6 @@ localVue.component('b-form-input', {});
 localVue.component('b-form-group', {});
 localVue.component('b-form-checkbox', {});
 localVue.component('b-link', {});
-const mockedAxios: any = axios;
 const mockedCookie = {
   get: jest.fn(() => {
     return 'token';
@@ -25,19 +25,18 @@ const mockedCookie = {
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 
-jest.mock('axios', () => ({
-  get: jest.fn(),
-  post: jest.fn(),
-}));
+const axiosStub = {
+  get: sinon.stub(axios, 'get'),
+  post: sinon.stub(axios, 'post'),
+};
 
 describe('LoginForm Component', () => {
   let wrapper: Wrapper<LoginFormClass>;
   let loginForm: LoginFormClass;
 
   beforeEach(() => {
-    mockedAxios.get.mockReset();
-    mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    mockedAxios.post.mockReset();
+    axiosStub.get.resolves({});
+    axiosStub.post.reset();
 
     wrapper = shallowMount<LoginFormClass>(LoginForm, {
       store,
@@ -54,18 +53,20 @@ describe('LoginForm Component', () => {
     loginForm.login = 'login';
     loginForm.password = 'pwd';
     loginForm.rememberMe = true;
-    mockedAxios.post.mockReturnValue(Promise.reject());
+    axiosStub.post.rejects();
 
     // WHEN
     loginForm.doLogin();
     await loginForm.$nextTick();
 
     // THEN
-    expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
-      username: 'login',
-      password: 'pwd',
-      rememberMe: true,
-    });
+    expect(
+      axiosStub.post.calledWith('api/authenticate', {
+        username: 'login',
+        password: 'pwd',
+        rememberMe: true,
+      })
+    ).toBeTruthy();
     await loginForm.$nextTick();
     expect(loginForm.authenticationError).toBeTruthy();
   });
@@ -76,18 +77,20 @@ describe('LoginForm Component', () => {
     loginForm.password = 'pwd';
     loginForm.rememberMe = true;
     const jwtSecret = 'jwt-secret';
-    mockedAxios.post.mockReturnValue(Promise.resolve({ headers: { authorization: 'Bearer ' + jwtSecret } }));
+    axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
 
     // WHEN
     loginForm.doLogin();
     await loginForm.$nextTick();
 
     // THEN
-    expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
-      username: 'login',
-      password: 'pwd',
-      rememberMe: true,
-    });
+    expect(
+      axiosStub.post.calledWith('api/authenticate', {
+        username: 'login',
+        password: 'pwd',
+        rememberMe: true,
+      })
+    ).toBeTruthy();
 
     expect(loginForm.authenticationError).toBeFalsy();
     expect(localStorage.getItem('jhi-authenticationToken')).toEqual(jwtSecret);
@@ -99,18 +102,20 @@ describe('LoginForm Component', () => {
     loginForm.password = 'pwd';
     loginForm.rememberMe = false;
     const jwtSecret = 'jwt-secret';
-    mockedAxios.post.mockReturnValue(Promise.resolve({ headers: { authorization: 'Bearer ' + jwtSecret } }));
+    axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
 
     // WHEN
     loginForm.doLogin();
     await loginForm.$nextTick();
 
     // THEN
-    expect(mockedAxios.post).toHaveBeenCalledWith('api/authenticate', {
-      username: 'login',
-      password: 'pwd',
-      rememberMe: false,
-    });
+    expect(
+      axiosStub.post.calledWith('api/authenticate', {
+        username: 'login',
+        password: 'pwd',
+        rememberMe: false,
+      })
+    ).toBeTruthy();
 
     expect(loginForm.authenticationError).toBeFalsy();
     expect(sessionStorage.getItem('jhi-authenticationToken')).toEqual(jwtSecret);

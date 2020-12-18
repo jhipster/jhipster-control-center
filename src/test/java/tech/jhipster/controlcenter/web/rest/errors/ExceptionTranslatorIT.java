@@ -16,12 +16,13 @@ import tech.jhipster.controlcenter.JhipsterControlCenterApp;
 @WithMockUser
 @AutoConfigureWebTestClient
 @SpringBootTest(classes = JhipsterControlCenterApp.class)
-public class ExceptionTranslatorIT {
+class ExceptionTranslatorIT {
+
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    public void testMethodArgumentNotValid() {
+    void testMethodArgumentNotValid() {
         webTestClient
             .post()
             .uri("/api/exception-translator-test/method-argument")
@@ -38,11 +39,11 @@ public class ExceptionTranslatorIT {
             .jsonPath("$.fieldErrors.[0].field")
             .isEqualTo("test")
             .jsonPath("$.fieldErrors.[0].message")
-            .isEqualTo("NotNull");
+            .isEqualTo("must not be null");
     }
 
     @Test
-    public void testMissingRequestPart() {
+    void testMissingRequestPart() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/missing-servlet-request-part")
@@ -57,7 +58,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testMissingRequestParameter() {
+    void testMissingRequestParameter() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/missing-servlet-request-parameter")
@@ -72,7 +73,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testAccessDenied() {
+    void testAccessDenied() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/access-denied")
@@ -89,7 +90,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testUnauthorized() {
+    void testUnauthorized() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/unauthorized")
@@ -108,7 +109,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testMethodNotSupported() {
+    void testMethodNotSupported() {
         webTestClient
             .post()
             .uri("/api/exception-translator-test/access-denied")
@@ -125,7 +126,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testExceptionWithResponseStatus() {
+    void testExceptionWithResponseStatus() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/response-status")
@@ -142,7 +143,7 @@ public class ExceptionTranslatorIT {
     }
 
     @Test
-    public void testInternalServerError() {
+    void testInternalServerError() {
         webTestClient
             .get()
             .uri("/api/exception-translator-test/internal-server-error")

@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
  * found.
  */
 public class JWTFilter implements WebFilter {
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final TokenProvider tokenProvider;

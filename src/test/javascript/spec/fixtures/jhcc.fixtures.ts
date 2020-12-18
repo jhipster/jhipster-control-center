@@ -25,7 +25,7 @@ const instanceList: Array<Instance> = [inst];
 
 const jhcc_profiles = {
   'display-ribbon-on-profiles': 'dev',
-  activeProfiles: ['dev', 'swagger'],
+  activeProfiles: ['dev', 'api-docs'],
 };
 
 const instancesRoute = [
@@ -298,21 +298,21 @@ const jhcc_metrics = {
       'cache.removals': 0.0,
       'cache.evictions': 0.0,
     },
-    'io.github.jhipster.domain.Authority': {
+    'tech.jhipster.domain.Authority': {
       'cache.gets.miss': 0.0,
       'cache.puts': 2.0,
       'cache.gets.hit': 0.0,
       'cache.removals': 0.0,
       'cache.evictions': 0.0,
     },
-    'io.github.jhipster.domain.User.authorities': {
+    'tech.jhipster.domain.User.authorities': {
       'cache.gets.miss': 0.0,
       'cache.puts': 1.0,
       'cache.gets.hit': 0.0,
       'cache.removals': 0.0,
       'cache.evictions': 0.0,
     },
-    'io.github.jhipster.domain.User': {
+    'tech.jhipster.domain.User': {
       'cache.gets.miss': 0.0,
       'cache.puts': 1.0,
       'cache.gets.hit': 0.0,

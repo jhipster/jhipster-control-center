@@ -47,7 +47,7 @@ describe('Home', () => {
   it('should use login service', async () => {
     const profileInfo = {
       'display-ribbon-on-profiles': 'dev',
-      activeProfiles: ['dev', 'swagger', 'consul'],
+      activeProfiles: ['dev', 'api-docs', 'consul'],
     };
     mockedAxios.get.mockReturnValue(Promise.resolve({ data: profileInfo }));
     const spy = jest.spyOn(home, 'openLogin');

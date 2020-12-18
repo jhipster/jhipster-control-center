@@ -4,11 +4,11 @@
 import { navbarSelector, accountMenuSelector, loginItemSelector, logoutItemSelector } from './commands';
 
 Cypress.Commands.add('clickOnLoginItem', () => {
-  return cy.get(navbarSelector).find(accountMenuSelector).click().get(loginItemSelector).click();
+  return cy.get(navbarSelector).get(accountMenuSelector).click({ force: true }).get(loginItemSelector).click({ force: true });
 });
 
 Cypress.Commands.add('clickOnLogoutItem', () => {
-  return cy.get(navbarSelector).find(accountMenuSelector).click().get(logoutItemSelector).click();
+  return cy.get(navbarSelector).get(accountMenuSelector).click({ force: true }).get(logoutItemSelector).click({ force: true });
 });
 
 declare global {
