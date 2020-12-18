@@ -7,21 +7,8 @@
             Application Instance details
           </caption>
           <thead>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
             <th scope="col" v-if="activeProfiles"></th>
-            <th
-              scope="col"
-              v-if="
-                selectedInstance.metadata &&
-                selectedInstance.hasOwnProperty('git-version') &&
-                selectedInstance.hasOwnProperty('git-commit') &&
-                selectedInstance.hasOwnProperty('git-branch')
-              "
-            ></th>
-            <th scope="col" v-if="selectedInstance.metadata && selectedInstance.metadata.version"></th>
+            <th scope="col" v-if="selectedInstance.metadata"></th>
           </thead>
           <tbody>
             <tr>
