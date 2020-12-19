@@ -39,7 +39,7 @@ class ExceptionTranslatorIT {
             .jsonPath("$.fieldErrors.[0].field")
             .isEqualTo("test")
             .jsonPath("$.fieldErrors.[0].message")
-            .isEqualTo("must not be null");
+            .isNotEmpty();
     }
 
     @Test
