@@ -22,10 +22,6 @@
             <font-awesome-icon icon="cube" />
             <span>Instances</span>
           </b-nav-item>
-          <b-nav-item none disabled>
-            <font-awesome-icon icon="chart-line" />
-            <span>DashBoard</span>
-          </b-nav-item>
           <b-nav-item to="/applications/metric" data-cy="metricsMenu">
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
