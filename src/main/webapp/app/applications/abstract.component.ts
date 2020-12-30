@@ -6,9 +6,18 @@ export default class AbstractComponent extends Vue {
 
   renderErrorMessage(): string {
     return (
-      `<div><p>Unable to reach the instance at ${this.internalError.path}</p>` +
-      '<p>Please, be sure the application is available.<p>' +
-      `<p>Error message: ${this.internalError.message}</p></div>`
+      '<div class="alert alert-info col-md-8">' +
+      `<p><strong>Unable to reach this point for instance at the path: ${this.internalError.path}</strong></p>` +
+      '<p>Please, be sure:</p>' +
+      '<ul>' +
+      '<li>the application is available</li>' +
+      '<li>if the path is a spring boot actuator endpoint, verify if the endpoint is available in application.yml' +
+      '<br><i>see property <code>management.endpoints.web.exposure.include</code></i></li>' +
+      '</ul>' +
+      '</div>' +
+      `<div class="alert alert-danger col-md-8">
+         <i>Error message: ${this.internalError.message}</i>
+       </div>`
     );
   }
 
