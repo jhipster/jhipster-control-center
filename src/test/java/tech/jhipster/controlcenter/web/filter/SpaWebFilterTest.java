@@ -15,12 +15,12 @@ import reactor.util.annotation.NonNull;
 /**
  * Tests for the {@link SpaWebFilter}.
  */
-public class SpaWebFilterTest {
+class SpaWebFilterTest {
     private final SpaWebFilter spaWebFilter = new SpaWebFilter();
     private final TestWebFilterChain filterChain = new TestWebFilterChain();
 
     @Test
-    public void testFilterPass() {
+    void testFilterPass() {
         String[] authorizedPath = { "/api", "/management", "/login", "/gateway", "/services", "/swagger", "/v2/api-docs" };
 
         for (String path : authorizedPath) {
@@ -32,7 +32,7 @@ public class SpaWebFilterTest {
     }
 
     @Test
-    public void testFilterGoToIndex() {
+    void testFilterGoToIndex() {
         String[] someWrongPath = { "/test", "//test", "/test/test" };
 
         for (String wrongPath : someWrongPath) {
