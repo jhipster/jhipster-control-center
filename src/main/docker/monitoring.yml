@@ -15,7 +15,7 @@ services:
     # grafana/provisioning/datasources/datasource.yml
     network_mode: 'host' # to test locally running service
   jhipstercontrolcenter-grafana:
-    image: grafana/grafana:7.3.4
+    image: grafana/grafana:7.3.5
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     environment:
