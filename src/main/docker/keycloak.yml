@@ -1,7 +1,8 @@
-version: '2'
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+version: '3.8'
 services:
   keycloak:
-    image: jboss/keycloak:10.0.0
+    image: jboss/keycloak:11.0.1
     command:
       [
         '-b',
