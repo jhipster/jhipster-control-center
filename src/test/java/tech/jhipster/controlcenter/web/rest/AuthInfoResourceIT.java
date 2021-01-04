@@ -22,7 +22,7 @@ import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 @SpringBootTest(classes = { JhipsterControlCenterApp.class })
 @ActiveProfiles(profiles = "oauth2-test")
 @Import(Oauth2SecurityConfigurationTest.class)
-public class AuthInfoResourceIT {
+class AuthInfoResourceIT {
     @Autowired
     private WebTestClient webTestClient;
 
@@ -32,7 +32,7 @@ public class AuthInfoResourceIT {
 
     @Test
     @WithMockUser(authorities = AuthoritiesConstants.USER)
-    public void testGetAuthInfo() {
+    void testGetAuthInfo() {
         webTestClient
             .get()
             .uri("/api/auth-info")
@@ -48,7 +48,7 @@ public class AuthInfoResourceIT {
     }
 
     @Test
-    public void testAuthInfoVM() {
+    void testAuthInfoVM() {
         AuthInfoResource.AuthInfoVM authInfo = new AuthInfoResource.AuthInfoVM("", "");
         authInfo.setIssuer(issuer);
         authInfo.setClientId(clientId);

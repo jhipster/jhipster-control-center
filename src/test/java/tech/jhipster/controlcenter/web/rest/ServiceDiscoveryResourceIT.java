@@ -16,13 +16,13 @@ import tech.jhipster.controlcenter.security.AuthoritiesConstants;
  */
 @AutoConfigureWebTestClient
 @SpringBootTest(classes = { JhipsterControlCenterApp.class })
-public class ServiceDiscoveryResourceIT {
+class ServiceDiscoveryResourceIT {
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
     @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
-    public void testGetAllServiceInstances() {
+    void testGetAllServiceInstances() {
         webTestClient
             .get()
             .uri("/api/services/instances")
@@ -39,7 +39,7 @@ public class ServiceDiscoveryResourceIT {
 
     @Test
     @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
-    public void testGetServiceInstance() {
+    void testGetServiceInstance() {
         webTestClient
             .get()
             .uri("/api/services/{serviceId}", "service-test")
