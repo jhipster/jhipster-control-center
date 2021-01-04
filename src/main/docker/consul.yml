@@ -1,7 +1,8 @@
-version: '2'
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+version: '3.8'
 services:
   consul:
-    image: consul:1.7.1
+    image: consul:1.9.1
     ports:
       - 8300:8300
       - 8500:8500
@@ -9,7 +10,7 @@ services:
     command: consul agent -dev -ui -client 0.0.0.0
 
   consul-config-loader:
-    image: jhipster/consul-config-loader:v0.3.0
+    image: jhipster/consul-config-loader:v0.4.1
     volumes:
       - ./central-server-config:/config
     environment:
