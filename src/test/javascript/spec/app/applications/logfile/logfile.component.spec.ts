@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue, Wrapper, mount } from '@vue/test-utils';
+import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
 import * as config from '@/shared/config/config';
 import axios from 'axios';
 import RoutesService from '@/shared/routes/routes.service';
@@ -108,11 +108,11 @@ describe('Logfile Component', () => {
     logfile.activeRoute = jhcc_route;
     const spy = jest
       .spyOn(logfileService, 'findLogfile')
-      .mockReturnValue(throwError({ response: { status: 400 }, message: 'Bad Request' }));
+      .mockReturnValue(throwError({ response: { data: { message: '400 Bad Request', detail: 'description' } } }));
     logfile.refreshActiveRouteLog();
     await logfile.$nextTick();
     expect(spy).toHaveBeenCalled();
-    expect(logfile.error).toStrictEqual({ response: { status: 400 }, message: 'Bad Request' });
+    expect(logfile.getError().message).toStrictEqual('400 Bad Request - description');
     spy.mockRestore();
   });
 

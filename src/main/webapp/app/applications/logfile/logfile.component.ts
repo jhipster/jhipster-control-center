@@ -62,7 +62,7 @@ export default class JhiLogfile extends AbstractComponent {
                 '- https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html\n ' +
                 '- https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html';
             } else {
-              this.error = error;
+              this.setError(error);
             }
           }
         );

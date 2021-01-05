@@ -69,7 +69,7 @@ export default class JhiCaches extends AbstractComponent {
           this.paginate(this.page);
           this.resetError();
         },
-        error => (this.error = error)
+        error => this.setError(error)
       );
   }
 
@@ -83,7 +83,7 @@ export default class JhiCaches extends AbstractComponent {
           this.paginateMetrics(this.pageMetrics);
           this.resetError();
         },
-        error => (this.error = error)
+        error => this.setError(error)
       );
   }
 

@@ -55,7 +55,7 @@ export default class JhiConfiguration extends AbstractComponent {
             this.resetError();
           },
           error => {
-            this.error = error;
+            this.setError(error);
           }
         );
 
@@ -67,7 +67,7 @@ export default class JhiConfiguration extends AbstractComponent {
             this.propertySources = propertySources;
             this.resetError();
           },
-          error => (this.error = error)
+          error => this.setError(error)
         );
     } else {
       this.routesService().routeDown(this.activeRoute);

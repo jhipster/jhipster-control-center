@@ -10,7 +10,7 @@ import RoutesService from '@/shared/routes/routes.service';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import { BootstrapVue } from 'bootstrap-vue';
 import { Observable } from 'rxjs';
-import { jhcc_metrics, jhcc_route } from '../../../fixtures/jhcc.fixtures';
+import { jhcc_metrics, jhcc_route, jhcc_threadDump } from '../../../fixtures/jhcc.fixtures';
 
 const localVue = createLocalVue();
 localVue.component('font-awesome-icon', FontAwesomeIcon);
@@ -38,8 +38,9 @@ describe('Metrics Component', () => {
   let wrapper: Wrapper<MetricClass>;
   let metricComponent: MetricClass;
 
-  beforeEach(() => {
-    mockedAxios.get.mockReturnValue(Promise.resolve({ data: { timers: [], gauges: [] } }));
+  beforeEach(async () => {
+    mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: jhcc_metrics }));
+    mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: jhcc_threadDump }));
     wrapper = shallowMount<MetricClass>(Metric, {
       store,
       localVue,
@@ -58,10 +59,12 @@ describe('Metrics Component', () => {
       },
     });
     metricComponent = wrapper.vm;
+    await metricComponent.$nextTick();
   });
 
   it('when component is mounted', async () => {
-    mockedAxios.get.mockReturnValue(Promise.resolve({ data: jhcc_metrics }));
+    mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: jhcc_metrics }));
+    mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: jhcc_threadDump }));
     const subscribeRouteChanged = jest.spyOn(routesService.routeChanged$, 'subscribe');
     const wrapperToTestMounted = shallowMount<MetricClass>(Metric, {
       store,
@@ -104,8 +107,8 @@ describe('Metrics Component', () => {
 
   describe('show threads data', () => {
     it('should show modal which contains threads data', () => {
-      const spy = jest.spyOn(<any>metricComponent.$refs.metricsModal, 'show');
       metricComponent.activeRoute = jhcc_route;
+      const spy = jest.spyOn(<any>metricComponent.$refs.metricsModal, 'show');
       metricComponent.openModal();
       expect(spy).toHaveBeenCalled();
     });

@@ -1,6 +1,9 @@
-import { Vue } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import { RequestError } from '@/shared/model/request.error.model';
 
+@Component({
+  template: '<div></div>',
+})
 export default class AbstractComponent extends Vue {
   private internalError: RequestError = null;
 
@@ -28,7 +31,7 @@ export default class AbstractComponent extends Vue {
     );
   }
 
-  set error(error: any) {
+  public setError(error: any) {
     const data = error.response?.data;
     this.internalError = {
       message: data?.message + ' - ' + data?.detail,
@@ -36,11 +39,15 @@ export default class AbstractComponent extends Vue {
     } as RequestError;
   }
 
-  get isError(): boolean {
-    return !!this.internalError;
-  }
-
   public resetError() {
     this.internalError = null;
+  }
+
+  public getError() {
+    return this.internalError;
+  }
+
+  get isError(): boolean {
+    return !!this.internalError;
   }
 }

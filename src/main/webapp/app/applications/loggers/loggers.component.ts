@@ -67,7 +67,7 @@ export default class JhiLoggers extends AbstractComponent {
           this.loggers = res;
           this.resetError();
         },
-        error => (this.error = error)
+        error => this.setError(error)
       );
   }
 
