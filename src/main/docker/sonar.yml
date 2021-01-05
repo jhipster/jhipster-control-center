@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   jhipstercontrolcenter-sonar:
-    image: sonarqube:8.5.1-community
+    image: sonarqube:8.6.0-community
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
