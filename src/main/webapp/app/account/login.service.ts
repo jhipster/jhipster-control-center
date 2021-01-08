@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import axios, { AxiosPromise } from 'axios';
-import { SERVER_API_URL } from '@/constants';
 
 export default class LoginService {
   public openLogin(instance: Vue): void {

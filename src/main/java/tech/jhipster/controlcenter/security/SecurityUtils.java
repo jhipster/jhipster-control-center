@@ -20,6 +20,8 @@ import reactor.core.publisher.Mono;
  */
 public final class SecurityUtils {
 
+    private static final String PREFERRED_USERNAME = "preferred_username";
+
     private SecurityUtils() {}
 
     /**
@@ -41,11 +43,11 @@ public final class SecurityUtils {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
             return springSecurityUser.getUsername();
         } else if (authentication instanceof JwtAuthenticationToken) {
-            return (String) ((JwtAuthenticationToken) authentication).getToken().getClaims().get("preferred_username");
+            return (String) ((JwtAuthenticationToken) authentication).getToken().getClaims().get(PREFERRED_USERNAME);
         } else if (authentication.getPrincipal() instanceof DefaultOidcUser) {
             Map<String, Object> attributes = ((DefaultOidcUser) authentication.getPrincipal()).getAttributes();
-            if (attributes.containsKey("preferred_username")) {
-                return (String) attributes.get("preferred_username");
+            if (attributes.containsKey(PREFERRED_USERNAME)) {
+                return (String) attributes.get(PREFERRED_USERNAME);
             }
         } else if (authentication.getPrincipal() instanceof String) {
             return (String) authentication.getPrincipal();
