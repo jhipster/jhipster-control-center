@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 
-public class JWTRelayGatewayFilterFactoryTest {
+class JWTRelayGatewayFilterFactoryTest {
 
     private final TokenProvider tokenProvider;
     private final GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
