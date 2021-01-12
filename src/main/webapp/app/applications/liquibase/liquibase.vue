@@ -59,8 +59,8 @@
           </tr>
         </table>
         <!-- Detail Modal Begin -->
-        <b-modal ref="detailModal" v-if="selectedChangeSet" ok-only ok-title="Close" size="xl" scrollable>
-          <b-container>
+        <b-modal ref="detailModal" ok-only ok-title="Close" size="xl" scrollable>
+          <b-container v-if="selectedChangeSet">
             <b-row class="mb-2">
               <b-col>
                 <b-card>
