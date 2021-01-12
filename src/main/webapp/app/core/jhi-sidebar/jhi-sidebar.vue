@@ -34,6 +34,10 @@
             <font-awesome-icon icon="heart" />
             <span>Health</span>
           </b-nav-item>
+          <b-nav-item to="/applications/liquibase" data-cy="liquibaseMenu">
+            <font-awesome-icon icon="database" />
+            <span>Liquibase</span>
+          </b-nav-item>
           <b-nav-item to="/applications/configuration" data-cy="configurationMenu">
             <font-awesome-icon icon="list" />
             <span>Configuration</span>

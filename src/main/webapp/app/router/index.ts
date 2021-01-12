@@ -21,6 +21,7 @@ const LogfileComponent = () => import('../applications/logfile/logfile.vue');
 const ConfigurationComponent = () => import('../applications/configuration/configuration.vue');
 const DocsComponent = () => import('../applications/docs/docs.vue');
 const CachesComponent = () => import('../applications/caches/caches.vue');
+const LiquibaseComponent = () => import('../applications/liquibase/liquibase.vue');
 // jhcc-custom end
 
 Vue.use(Router);
@@ -95,6 +96,12 @@ export default new Router({
       path: '/applications/caches',
       name: 'CachesComponent',
       component: CachesComponent,
+      meta:  {authorities : [Authority.ADMIN]}
+    },
+    {
+      path: '/applications/liquibase',
+      name: 'LiquibaseComponent',
+      component: LiquibaseComponent,
       meta:  {authorities : [Authority.ADMIN]}
     },
   ]
