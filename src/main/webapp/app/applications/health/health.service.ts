@@ -23,7 +23,7 @@ export default class InstanceHealthService extends AbstractService {
   }
 
   public checkHealth(route: Route): Observable<any> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/health/');
 
       axios

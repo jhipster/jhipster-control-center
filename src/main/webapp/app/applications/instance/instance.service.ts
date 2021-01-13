@@ -18,7 +18,7 @@ export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' |
 
 export default class InstanceService extends AbstractService {
   public findAllInstance(): Observable<Array<Instance>> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       axios
         .get('api/services/instances')
         .then(res => {
