@@ -1,4 +1,4 @@
-import { Component, Vue, Inject } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import numeral from 'numeral';
 import JhiMetricModal from './metric-modal.vue';
 import MetricService, { Metrics, ThreadDump } from './metric.service';
@@ -61,7 +61,10 @@ export default class JhiMetric extends AbstractComponent {
         () => {
           this.resetError();
         },
-        error => (this.error = error)
+        error => {
+          console.log('MYERROR ' + error);
+          this.setError(error);
+        }
       );
   }
 

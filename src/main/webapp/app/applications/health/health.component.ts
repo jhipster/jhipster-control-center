@@ -1,9 +1,8 @@
 import JhiHealthModal from './health-modal.vue';
-import { Component, Inject, Vue } from 'vue-property-decorator';
+import { Component, Inject } from 'vue-property-decorator';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesService, { Route } from '@/shared/routes/routes.service';
 import { Subject } from 'rxjs';
-import { RefreshService } from '@/shared/refresh/refresh.service';
 import { takeUntil } from 'rxjs/operators';
 import InstanceHealthService from './health.service';
 import AbstractComponent from '@/applications/abstract.component';
@@ -47,7 +46,7 @@ export default class JhiInstanceHealth extends AbstractComponent {
           this.healthData = this.instanceHealthService().transformHealthData(health);
           this.resetError();
         },
-        error => (this.error = error)
+        error => this.setError(error)
       );
   }
 

@@ -2,7 +2,18 @@ import { Route } from '@/shared/routes/routes.service';
 import { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import { Instance } from '@/applications/instance/instance.service';
 import { Log } from '@/applications/loggers/loggers.service';
-import CachesService, { Cache } from '@/applications/caches/caches.service';
+import CachesService from '@/applications/caches/caches.service';
+import { ThreadDump } from '@/applications/metric/metric.service';
+
+const error_abstract_component = {
+  response: {
+    data: {
+      message: 'generic message',
+      detail: 'generic detail',
+      path: 'generic/path',
+    },
+  },
+};
 
 const stubbedModal = {
   template: '<div></div>',
@@ -388,6 +399,15 @@ const jhcc_metrics = {
   ],
 };
 
+const jhcc_threadDump: ThreadDump = {
+  threads: [
+    { name: 'test1', threadState: 'RUNNABLE' },
+    { name: 'test2', threadState: 'WAITING' },
+    { name: 'test3', threadState: 'TIMED_WAITING' },
+    { name: 'test4', threadState: 'BLOCKED' },
+  ],
+};
+
 const jhcc_metrics_caches = CachesService.parseJsonToArrayOfCacheMetrics(jhcc_metrics['cache']);
 
 const jhcc_caches_json = {
@@ -407,6 +427,7 @@ const jhcc_caches_json = {
 const jhcc_caches = CachesService.parseJsonToArrayOfCache(jhcc_caches_json);
 
 export {
+  error_abstract_component,
   stubbedModal,
   inst,
   instanceList,
@@ -428,6 +449,7 @@ export {
   jhcc_logfile_error,
   jhcc_logs,
   jhcc_metrics,
+  jhcc_threadDump,
   jhcc_metrics_caches,
   jhcc_caches_json,
   jhcc_caches,
