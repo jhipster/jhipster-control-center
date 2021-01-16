@@ -28,6 +28,7 @@ import InstanceHealthService from '@/applications/health/health.service';
 import LogfileService from '@/applications/logfile/logfile.service';
 import InstanceConfigurationService from '@/applications/configuration/configuration.service';
 import CachesService from '@/applications/caches/caches.service';
+import LiquibaseService from '@/applications/liquibase/liquibase.service';
 // jhcc-custom end
 
 /* tslint:disable */
@@ -98,6 +99,7 @@ const app = new Vue({
     logfileService: () => new LogfileService(),
     instanceConfigurationService: () => new InstanceConfigurationService(),
     cachesService: () => new CachesService(),
+    liquibaseService: () => new LiquibaseService(),
     // jhcc-custom end
   },
   store,

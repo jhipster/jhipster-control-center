@@ -2,6 +2,7 @@ import { Route } from '@/shared/routes/routes.service';
 import { Bean, PropertySource } from '@/applications/configuration/configuration.service';
 import { Instance } from '@/applications/instance/instance.service';
 import { Log } from '@/applications/loggers/loggers.service';
+import LiquibaseService from '@/applications/liquibase/liquibase.service';
 import CachesService from '@/applications/caches/caches.service';
 import { ThreadDump } from '@/applications/metric/metric.service';
 
@@ -426,6 +427,37 @@ const jhcc_caches_json = {
 
 const jhcc_caches = CachesService.parseJsonToArrayOfCache(jhcc_caches_json);
 
+const jhcc_liquibase_changesets_json = {
+  contexts: {
+    jhipster: {
+      liquibaseBeans: {
+        liquibase: {
+          changeSets: [
+            {
+              author: 'jhipster',
+              changeLog: 'config/liquibase/changelog/00000000000000_initial_schema.xml',
+              comments: 'this is a comment',
+              contexts: [],
+              dateExecuted: '2021-01-12T14:12:38.641Z',
+              deploymentId: '0460758550',
+              description: 'createSequence sequenceName=sequence_generator',
+              execType: 'EXECUTED',
+              id: '00000000000000',
+              labels: [],
+              checksum: '8:b8c27d9dc8db18b5de87cdb8c38a416b',
+              orderExecuted: 1,
+              tag: null,
+            },
+          ],
+        },
+      },
+      parentId: null,
+    },
+  },
+};
+
+const jhcc_liquibase_changesets = LiquibaseService.parseJsonToArrayOfChangeSet(jhcc_liquibase_changesets_json);
+
 export {
   error_abstract_component,
   stubbedModal,
@@ -453,4 +485,6 @@ export {
   jhcc_metrics_caches,
   jhcc_caches_json,
   jhcc_caches,
+  jhcc_liquibase_changesets_json,
+  jhcc_liquibase_changesets,
 };
