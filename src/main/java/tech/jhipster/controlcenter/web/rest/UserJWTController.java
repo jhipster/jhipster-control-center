@@ -10,7 +10,6 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import tech.jhipster.controlcenter.config.Constants;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;

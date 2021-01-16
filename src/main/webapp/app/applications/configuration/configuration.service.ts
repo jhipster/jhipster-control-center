@@ -48,7 +48,7 @@ export interface Property {
 export default class ConfigurationService extends AbstractService {
   /** return beans of a route */
   public findBeans(route: Route): Observable<Bean[]> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/configprops/');
 
       axios
@@ -73,7 +73,7 @@ export default class ConfigurationService extends AbstractService {
 
   /** return property sources of a route */
   public findPropertySources(route: Route): Observable<PropertySource[]> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/env/');
 
       axios

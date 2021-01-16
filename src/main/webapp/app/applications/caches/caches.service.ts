@@ -68,7 +68,7 @@ export default class CachesService extends AbstractService {
 
   /** return all caches of a route */
   findAll(route: Route): Observable<Cache[]> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/caches/');
 
       axios
@@ -92,7 +92,7 @@ export default class CachesService extends AbstractService {
 
   /** return all caches metrics of a route */
   findAllMetrics(route: Route): Observable<any> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/jhimetrics/');
 
       axios

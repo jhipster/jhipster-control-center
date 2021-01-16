@@ -11,7 +11,7 @@ export type ThreadDump = { threads: Thread[] };
 export default class MetricService extends AbstractService {
   /** return all metrics of a route */
   findAll(route: Route): Observable<Metrics> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/jhimetrics/');
 
       axios
@@ -29,7 +29,7 @@ export default class MetricService extends AbstractService {
 
   /** return all threadDump of a route */
   findAllThreadDump(route: Route | undefined): Observable<ThreadDump> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/threaddump/');
 
       axios.get(url).then(res => {
