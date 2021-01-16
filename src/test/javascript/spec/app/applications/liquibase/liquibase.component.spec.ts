@@ -44,7 +44,7 @@ describe('liquibase component', () => {
   let liquibaseComponent: LiquibaseComponent;
 
   beforeEach(() => {
-    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: jhcc_liquibase_changesets_json }));
     wrapper = shallowMount<LiquibaseComponent>(LiquibaseVue, {
       store,
       localVue,
