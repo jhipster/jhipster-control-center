@@ -57,7 +57,7 @@ export default class RoutesService {
 
   /** Return Spring Cloud Gateway routes */
   public findAllRoutes(): Observable<Route[]> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       axios
         .get('management/gateway/routes')
         .then(res => {

@@ -5,7 +5,7 @@ import AbstractService from '@/applications/abstract.service';
 
 export default class LogfileService extends AbstractService {
   public findLogfile(route: Route): Observable<string> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const url = this.generateUri(route, '/management/logfile/');
 
       axios
