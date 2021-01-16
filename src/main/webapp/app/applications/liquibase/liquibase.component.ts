@@ -58,7 +58,7 @@ export default class JhiLiquibase extends AbstractComponent {
           this.paginate(this.page);
           this.resetError();
         },
-        error => (this.error = error)
+        error => this.setError(error)
       );
   }
 
