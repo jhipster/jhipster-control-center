@@ -93,7 +93,7 @@
             </b-row>
             <b-row>
               <b-col>
-                <table class="table">
+                <table class="table" aria-describedby="changeType">
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col">Change Type</th>
@@ -105,7 +105,7 @@
                 </table>
               </b-col>
               <b-col>
-                <table class="table">
+                <table class="table" aria-describedby="contexts">
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col">Contexts</th>
@@ -120,7 +120,7 @@
                 </table>
               </b-col>
               <b-col>
-                <table class="table">
+                <table class="table" aria-describedby="labels">
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col">Labels</th>
