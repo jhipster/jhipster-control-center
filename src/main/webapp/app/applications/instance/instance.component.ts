@@ -93,21 +93,40 @@ export default class JhiInstance extends Vue {
     this.instanceService()
       .shutdownInstance(instance)
       .then(() => {
-        return this.$bvToast.toast('Instance shutdown successful', {
-          title: 'Success',
-          variant: 'success',
-          solid: true,
-          autoHideDelay: 5000,
-        });
+        this.successToast('Instance shutdown successful');
       })
       .catch(error => {
-        return this.$bvToast.toast(`${error}`, {
-          title: `Error`,
-          variant: 'danger',
-          solid: true,
-          autoHideDelay: 5000,
-        });
+        this.errorToast(error);
       });
+  }
+
+  public async addStaticInstance(serviceId: string, url: string) {
+    const addStaticInstanceResponse = await this.instanceService().addStaticInstance(serviceId, url);
+    if (addStaticInstanceResponse.status !== 201) {
+      const errorMessage = `${addStaticInstanceResponse.status} - ${addStaticInstanceResponse.data}`;
+      this.errorToast(errorMessage);
+    } else {
+      const successMessage = `${serviceId} instance created`;
+      this.successToast(successMessage);
+    }
+  }
+
+  private successToast(message: string) {
+    return this.$bvToast.toast(message, {
+      title: 'Success',
+      variant: 'success',
+      solid: true,
+      autoHideDelay: 5000,
+    });
+  }
+
+  private errorToast(message: string) {
+    return this.$bvToast.toast(message, {
+      title: `Error`,
+      variant: 'danger',
+      solid: true,
+      autoHideDelay: 5000,
+    });
   }
 
   /* istanbul ignore next */
