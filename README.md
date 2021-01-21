@@ -32,6 +32,7 @@ Eureka and Consul docker-compose files exist under `src/main/docker` to ease tes
 
 - for Consul : run `docker-compose -f src/main/docker/consul.yml up -d`
 - for Eureka : run `docker-compose -f src/main/docker/jhipster-registry.yml up -d`
+- Otherwise, to use a static list of instances, you can directly go to the next step.
 
 ### Step 2 : Choose your authentication profile
 
@@ -42,9 +43,14 @@ There is 2 types of authentication.
 
 ### Step 3 : Run the cloned project
 
-- For development with JWT, run `./mvnw -Dspring.profiles.active=consul,dev` or `./mvnw -Dspring.profiles.active=eureka,dev`.
-- For development with OAuth2, run `./mvnw -Dspring.profiles.active=consul,dev,oauth2` or `./mvnw -Dspring.profiles.active=eureka,dev,oauth2`.
-- To just start in development run `./mvnw` and `npm install && npm start` in another terminal pane for hot reload of client side code.
+Run the Control Center according to the specific spring profiles you want, here are some examples:
+
+- For development with JWT and Consul, run ./mvnw -Dspring.profiles.active=consul,dev
+- For development with JWT and Eureka, run./mvnw -Dspring.profiles.active=eureka,dev
+- For development with JWT and a static list of instances, run ./mvnw -Dspring.profiles.active=static,dev
+- For development with OAuth2 and Consul, run ./mvnw -Dspring.profiles.active=consul,dev,oauth2
+- For development with OAuth2 and Eureka, run ./mvnw -Dspring.profiles.active=eureka,dev,oauth2
+- To just start in development run ./mvnw and in another terminal run npm start for hot reload of client side code
 
 ## Running from Docker
 
