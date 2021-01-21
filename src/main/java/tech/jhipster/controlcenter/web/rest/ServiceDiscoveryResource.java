@@ -19,6 +19,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,5 +103,23 @@ public class ServiceDiscoveryResource {
     @GetMapping("/services/{serviceId}")
     public ResponseEntity<List<ServiceInstance>> getAllServiceInstancesForServiceId(@PathVariable String serviceId) {
         return new ResponseEntity<>(discoveryClient.getInstances(serviceId), HttpStatus.OK);
+    }
+
+    /**
+     * DELETE /service/{serviceId} : remove a static service instance for a given service ID.
+     */
+    @DeleteMapping("/services/{serviceId}")
+    public ResponseEntity<Void> removeStaticServiceInstance(@PathVariable String serviceId) {
+        if (Arrays.stream(this.env.getActiveProfiles()).anyMatch("static"::equals)) {
+            // remove static instance in our discovery client
+            simpleDiscoveryProperties.getInstances().remove(serviceId);
+
+            // send a spring application event to refresh beans
+            publisher.publishEvent(new RefreshScopeRefreshedEvent());
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 }

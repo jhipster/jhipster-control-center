@@ -55,7 +55,6 @@ class ServiceDiscoveryResourceIT {
             .expectStatus()
             .isCreated()
             .expectBody()
-            .consumeWith(System.out::println)
             .jsonPath("$.serviceId")
             .isEqualTo("serviceTest")
             .jsonPath("$.host")
@@ -82,5 +81,24 @@ class ServiceDiscoveryResourceIT {
             .isEqualTo("service-test")
             .jsonPath("$[0].instanceId")
             .isEqualTo("instance-test");
+    }
+
+    @Test
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    void shouldRemoveStaticServiceInstance() throws Exception {
+        ServiceInstanceVM instanceTest = new ServiceInstanceVM();
+        instanceTest.setServiceId("serviceToRemove");
+        instanceTest.setUrl("http://localhost:8082");
+
+        webTestClient
+            .post()
+            .uri("/api/services/instances")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(instanceTest))
+            .exchange()
+            .expectStatus()
+            .isCreated();
+
+        webTestClient.delete().uri("/api/services/{serviceId}", "serviceToRemove").exchange().expectStatus().isNoContent();
     }
 }

@@ -1,4 +1,4 @@
-import { createLocalVue, Wrapper, mount, shallowMount } from '@vue/test-utils';
+import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faPowerOff } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +41,8 @@ describe('Instance Component', () => {
 
   beforeAll(() => {
     mockedAxios.get.mockReturnValue(Promise.resolve({}));
-    wrapper = mount<InstanceClass>(InstanceVue, {
+    wrapper = shallowMount<InstanceClass>(InstanceVue, {
+      store,
       localVue,
       stubs: {
         bModal: stubbedModal,
@@ -52,6 +53,11 @@ describe('Instance Component', () => {
       },
       mocks: {
         show: jest.fn(),
+        $store: {
+          getters: {
+            activeProfiles: ['static'],
+          },
+        },
       },
     });
     instance = wrapper.vm;
@@ -64,6 +70,7 @@ describe('Instance Component', () => {
   it('when component is mounted', async () => {
     const subscribeRefreshReload = jest.spyOn(refreshService.refreshReload$, 'subscribe');
     shallowMount<InstanceClass>(InstanceVue, {
+      store,
       localVue,
       stubs: {
         bModal: stubbedModal,
@@ -71,6 +78,13 @@ describe('Instance Component', () => {
       provide: {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
+      },
+      mocks: {
+        $store: {
+          getters: {
+            activeProfiles: ['static'],
+          },
+        },
       },
     });
     expect(subscribeRefreshReload).toHaveBeenCalled();
@@ -136,5 +150,13 @@ describe('Instance Component', () => {
       await instance.$nextTick();
       expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1-id/management/shutdown');
     });
+  });
+
+  it('should call onSubmitAddStaticInstance', async () => {
+    // todo
+  });
+
+  it('should call addStaticInstance', async () => {
+    // todo
   });
 });

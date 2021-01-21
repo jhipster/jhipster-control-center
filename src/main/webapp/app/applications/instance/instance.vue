@@ -5,10 +5,7 @@
       <refresh-selector class="float-right refresh-left-side">button</refresh-selector>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped table-bordered table-responsive d-table">
-        <caption>
-          Application Instances
-        </caption>
+      <table class="table table-striped table-bordered table-responsive d-table" aria-describedby="applicationInstances">
         <thead>
           <tr>
             <th scope="col" class="w-20">Service</th>
@@ -64,6 +61,31 @@
       </h4>
       <instance-modal :selected-instance="selectedInstance" :selected-instance-route="selectedInstanceRoute"></instance-modal>
     </b-modal>
+    <div v-if="isStaticProfile">
+      <b-button v-b-modal.newStaticInstance><font-awesome-icon icon="plus" /></b-button>
+      <b-modal
+        id="newStaticInstance"
+        ref="newStaticInstance"
+        title="Add a new static instance"
+        hide-footer
+        @close="onCancelAddStaticInstance"
+      >
+        <b-form @submit="onSubmitAddStaticInstance">
+          <b-form-group id="serviceName" label="Service Name" label-for="serviceNameInput">
+            <b-form-input id="serviceNameInput" v-model="inputServiceName" type="text" placeholder="Service" required></b-form-input>
+          </b-form-group>
+
+          <b-form-group id="URL" label="URL" label-for="URLInput">
+            <b-form-input id="URLInput" v-model="inputURL" type="url" placeholder="http://localhost:8080" required></b-form-input>
+          </b-form-group>
+
+          <div class="float-right">
+            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button @click="onCancelAddStaticInstance">Cancel</b-button>
+          </div>
+        </b-form>
+      </b-modal>
+    </div>
   </div>
 </template>
 
