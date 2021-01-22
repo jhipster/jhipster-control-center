@@ -40,6 +40,10 @@ export default class InstanceService extends AbstractService {
     });
   }
 
+  public removeStaticInstance(serviceId: string): AxiosPromise<any> {
+    return axios.delete(`api/services/${serviceId}`);
+  }
+
   public findAllGatewayRoute(): AxiosPromise<any> {
     return axios.get('management/gateway/routes');
   }

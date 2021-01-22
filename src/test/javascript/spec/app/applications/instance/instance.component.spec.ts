@@ -33,6 +33,7 @@ refreshService.refreshReload$ = new Observable(subscriber => {
 jest.mock('axios', () => ({
   get: jest.fn(),
   post: jest.fn(),
+  delete: jest.fn(),
 }));
 
 describe('Instance Component', () => {
@@ -166,7 +167,7 @@ describe('Instance Component', () => {
     spyShutdownInstance.mockRestore();
   });
 
-  it('should fire a post request with success toast', async () => {
+  it('should fire a post request with success toast when call shutdownInstance', async () => {
     const spySuccess = jest.spyOn(instance, 'successToast');
     mockedAxios.post.mockReturnValueOnce(Promise.resolve());
     instance.instancesRoute = instancesRoute;
@@ -179,7 +180,7 @@ describe('Instance Component', () => {
     spySuccess.mockRestore();
   });
 
-  it('should fire a post request with error toast', async () => {
+  it('should fire a post request with error toast when call shutdownInstance', async () => {
     const spyError = jest.spyOn(instance, 'errorToast');
     mockedAxios.post.mockReturnValueOnce(Promise.reject());
     instance.instancesRoute = instancesRoute;
@@ -242,5 +243,59 @@ describe('Instance Component', () => {
     expect(instance.inputServiceName).toEqual('');
     expect(instance.inputURL).toEqual('');
     spy.mockRestore();
+  });
+
+  it('should call removeStaticInstance when msgBoxConfirm is true', async () => {
+    const spyRemoveStaticInstance = jest.spyOn(instance, 'removeStaticInstance');
+    const spyMsgBoxConfirm = jest.spyOn(instance.$bvModal, 'msgBoxConfirm').mockReturnValueOnce(Promise.resolve(true));
+    instance.instancesRoute = instancesRoute;
+
+    instance.confirmRemoveStaticInstance(inst);
+    await instance.$nextTick();
+
+    expect(spyMsgBoxConfirm).toHaveBeenCalled();
+    expect(spyRemoveStaticInstance).toBeCalledWith(inst);
+    spyMsgBoxConfirm.mockRestore();
+    spyRemoveStaticInstance.mockRestore();
+  });
+
+  it('should not call removeStaticInstance when msgBoxConfirm is false', async () => {
+    const spyRemoveStaticInstance = jest.spyOn(instance, 'removeStaticInstance');
+    const spyMsgBoxConfirm = jest.spyOn(instance.$bvModal, 'msgBoxConfirm').mockReturnValueOnce(Promise.reject());
+    instance.instancesRoute = instancesRoute;
+
+    instance.confirmRemoveStaticInstance(inst);
+    await instance.$nextTick();
+
+    expect(spyMsgBoxConfirm).toHaveBeenCalled();
+    expect(spyRemoveStaticInstance).not.toHaveBeenCalled();
+    spyMsgBoxConfirm.mockRestore();
+    spyRemoveStaticInstance.mockRestore();
+  });
+
+  it('should fire a delete request with success toast when call removeStaticInstance', async () => {
+    const spySuccess = jest.spyOn(instance, 'successToast');
+    mockedAxios.delete.mockReturnValueOnce(Promise.resolve());
+    instance.instancesRoute = instancesRoute;
+
+    instance.removeStaticInstance(inst);
+    await instance.$nextTick();
+
+    expect(mockedAxios.delete).toHaveBeenCalledWith(`api/services/${inst.serviceId}`);
+    expect(spySuccess).toHaveBeenCalled();
+    spySuccess.mockRestore();
+  });
+
+  it('should fire a delete request with error toast when call removeStaticInstance', async () => {
+    const spyError = jest.spyOn(instance, 'errorToast');
+    mockedAxios.delete.mockReturnValueOnce(Promise.reject());
+    instance.instancesRoute = instancesRoute;
+
+    instance.removeStaticInstance(inst);
+    await instance.$nextTick();
+
+    expect(mockedAxios.delete).toHaveBeenCalledWith(`api/services/${inst.serviceId}`);
+    expect(spyError).toHaveBeenCalled();
+    spyError.mockRestore();
   });
 });

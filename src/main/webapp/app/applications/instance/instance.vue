@@ -13,6 +13,7 @@
             <th scope="col" class="w-30">Profile</th>
             <th scope="col" class="w-30">Git</th>
             <th scope="col" class="text-center">Detail</th>
+            <th scope="col" class="text-center" v-if="isStaticProfile">Remove</th>
             <th scope="col" class="text-center">Kill</th>
           </tr>
         </thead>
@@ -41,6 +42,13 @@
               <div class="text-center">
                 <a id="showDetail" class="hand" v-on:click="showInstance(instance, instance.uri)" v-if="instance">
                   <font-awesome-icon icon="eye"></font-awesome-icon>
+                </a>
+              </div>
+            </td>
+            <td class="table-hover" v-if="isStaticProfile">
+              <div class="text-center">
+                <a id="shutdownInstance" v-on:click="confirmRemoveStaticInstance(instance)">
+                  <font-awesome-icon icon="trash-alt"></font-awesome-icon>
                 </a>
               </div>
             </td>

@@ -89,8 +89,10 @@ export default class JhiInstance extends Vue {
     };
     this.$bvModal
       .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
-      .then(() => {
-        this.shutdownInstance(instance);
+      .then(isYes => {
+        if (isYes) {
+          this.shutdownInstance(instance);
+        }
       })
       .catch(error => console.warn(error));
   }
@@ -126,6 +128,40 @@ export default class JhiInstance extends Vue {
       const successMessage = `${serviceId} instance added`;
       this.successToast(successMessage);
     }
+  }
+
+  public confirmRemoveStaticInstance(instance: Instance): void {
+    const config = {
+      title: 'Please Confirm',
+      size: 'sm',
+      buttonSize: 'sm',
+      okVariant: 'danger',
+      okTitle: 'YES',
+      cancelTitle: 'NO',
+      footerClass: 'p-2',
+      hideHeaderClose: false,
+      centered: true,
+    };
+    this.$bvModal
+      .msgBoxConfirm(`Are you sure you want to remove the instance ${instance.serviceId} ?`, config)
+      .then(isYes => {
+        if (isYes) {
+          this.removeStaticInstance(instance);
+        }
+      })
+      .catch(error => console.warn(error));
+  }
+
+  public removeStaticInstance(instance: Instance): void {
+    this.instanceService()
+      .removeStaticInstance(instance.serviceId)
+      .then(() => {
+        this.successToast(`Instance ${instance.serviceId} removed`);
+        this.refreshService().refreshReload();
+      })
+      .catch(error => {
+        this.errorToast(error);
+      });
   }
 
   public successToast(message: string) {
