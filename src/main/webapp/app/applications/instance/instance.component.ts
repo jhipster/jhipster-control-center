@@ -89,10 +89,8 @@ export default class JhiInstance extends Vue {
     };
     this.$bvModal
       .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
-      .then(res => {
-        if (res) {
-          this.shutdownInstance(instance);
-        }
+      .then(() => {
+        this.shutdownInstance(instance);
       })
       .catch(error => console.warn(error));
   }
@@ -108,14 +106,15 @@ export default class JhiInstance extends Vue {
       });
   }
 
-  public onSubmitAddStaticInstance(event) {
-    event.preventDefault();
-    this.addStaticInstance(this.inputServiceName, this.inputURL);
+  public onHiddenAddStaticInstance() {
+    this.$bvModal.hide('newStaticInstanceModal');
+    this.refreshService().refreshReload();
+    this.inputServiceName = '';
+    this.inputURL = '';
   }
 
-  public onCancelAddStaticInstance() {
-    this.$bvModal.hide('newStaticInstance');
-    this.refreshService().refreshReload();
+  public onSubmitAddStaticInstance() {
+    this.addStaticInstance(this.inputServiceName, this.inputURL);
   }
 
   public async addStaticInstance(serviceId: string, url: string) {
@@ -129,7 +128,7 @@ export default class JhiInstance extends Vue {
     }
   }
 
-  private successToast(message: string) {
+  public successToast(message: string) {
     return this.$bvToast.toast(message, {
       title: 'Success',
       variant: 'success',
@@ -138,7 +137,7 @@ export default class JhiInstance extends Vue {
     });
   }
 
-  private errorToast(message: string) {
+  public errorToast(message: string) {
     return this.$bvToast.toast(message, {
       title: `Error`,
       variant: 'danger',

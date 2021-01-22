@@ -62,26 +62,40 @@
       <instance-modal :selected-instance="selectedInstance" :selected-instance-route="selectedInstanceRoute"></instance-modal>
     </b-modal>
     <div v-if="isStaticProfile">
-      <b-button v-b-modal.newStaticInstance><font-awesome-icon icon="plus" /></b-button>
+      <b-button ref="newStaticInstanceButton" v-b-modal.newStaticInstanceModal><font-awesome-icon icon="plus" /></b-button>
       <b-modal
-        id="newStaticInstance"
-        ref="newStaticInstance"
+        id="newStaticInstanceModal"
+        ref="newStaticInstanceModal"
         title="Add a new static instance"
+        @hidden="onHiddenAddStaticInstance"
         hide-footer
-        @close="onCancelAddStaticInstance"
       >
-        <b-form @submit="onSubmitAddStaticInstance">
+        <b-form v-on:submit.prevent="onSubmitAddStaticInstance">
           <b-form-group id="serviceName" label="Service Name" label-for="serviceNameInput">
-            <b-form-input id="serviceNameInput" v-model="inputServiceName" type="text" placeholder="Service" required></b-form-input>
+            <b-form-input
+              id="serviceNameInput"
+              ref="serviceNameInput"
+              v-model="inputServiceName"
+              type="text"
+              placeholder="Service"
+              required
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group id="URL" label="URL" label-for="URLInput">
-            <b-form-input id="URLInput" v-model="inputURL" type="url" placeholder="http://localhost:8080" required></b-form-input>
+            <b-form-input
+              id="URLInput"
+              ref="URLInput"
+              v-model="inputURL"
+              type="url"
+              placeholder="http://localhost:8080"
+              required
+            ></b-form-input>
           </b-form-group>
 
           <div class="float-right">
-            <b-button type="submit" variant="primary">Submit</b-button>
-            <b-button @click="onCancelAddStaticInstance">Cancel</b-button>
+            <b-button ref="newStaticInstanceSubmitButton" type="submit" variant="primary">Submit</b-button>
+            <b-button ref="newStaticInstanceCloseButton" @click="onHiddenAddStaticInstance">Cancel</b-button>
           </div>
         </b-form>
       </b-modal>
