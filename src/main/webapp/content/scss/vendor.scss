@@ -1,0 +1,14 @@
+/* after changing this file run 'npm run webpack:build' */
+
+/***************************
+put Sass variables here:
+eg $input-color: red;
+****************************/
+@import '~bootswatch/dist/spacelab/variables';
+// Override Bootstrap variables
+@import 'bootstrap-variables';
+// Import Bootstrap source files from node_modules
+@import '~bootstrap/scss/bootstrap';
+@import '~bootswatch/dist/spacelab/bootswatch';
+
+/* jhipster-needle-scss-add-vendor JHipster will add new css style */
