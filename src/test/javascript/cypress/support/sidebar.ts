@@ -10,14 +10,24 @@ import {
   logsFileMenuSelector,
   configurationMenuSelector,
   openAPIMenuSelector,
+  cachesMenuSelector,
+  liquibaseMenuSelector,
 } from './commands';
 
 Cypress.Commands.add('clickOnMetricItem', () => {
   return cy.get(sidebarSelector).find(metricsMenuSelector).click();
 });
 
+Cypress.Commands.add('clickOnCachesItem', () => {
+  return cy.get(sidebarSelector).find(cachesMenuSelector).click();
+});
+
 Cypress.Commands.add('clickOnHealthItem', () => {
   return cy.get(sidebarSelector).find(healthMenuSelector).click();
+});
+
+Cypress.Commands.add('clickOnLiquibaseItem', () => {
+  return cy.get(sidebarSelector).find(liquibaseMenuSelector).click();
 });
 
 Cypress.Commands.add('clickOnLogsItem', () => {
@@ -40,7 +50,9 @@ declare global {
   namespace Cypress {
     interface Chainable<Subject> {
       clickOnMetricItem(): Cypress.Chainable;
+      clickOnCachesItem(): Cypress.Chainable;
       clickOnHealthItem(): Cypress.Chainable;
+      clickOnLiquibaseItem(): Cypress.Chainable;
       clickOnLogsItem(): Cypress.Chainable;
       clickOnLogsfileItem(): Cypress.Chainable;
       clickOnConfigurationItem(): Cypress.Chainable;
