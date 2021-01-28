@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head mb-3">
-      <h2 id="caches-page-heading" class="d-inline-block" data-cy="caches-page-heading">Caches</h2>
+      <h2 id="caches-page-heading" class="d-inline-block" data-cy="cachesPageHeading">Caches</h2>
       <refresh-selector class="float-right"></refresh-selector>
       <routes-selector class="float-right mr-2"></routes-selector>
     </div>
