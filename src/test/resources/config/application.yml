@@ -14,6 +14,8 @@
 # ===================================================================
 
 spring:
+  profiles:
+    active: 'static'
   application:
     name: jhipsterControlCenter
   jackson:
@@ -69,7 +71,7 @@ spring:
         simple:
           instances:
             service-test:
-              - uri: http://localhost:8080
+              - uri: http://localhost:8081
                 instance-id: instance-test
 eureka:
   client:

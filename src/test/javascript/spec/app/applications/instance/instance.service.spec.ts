@@ -1,6 +1,6 @@
-import InstanceService from '@/applications/instance/instance.service';
-import { scheduled, asyncScheduler } from 'rxjs';
 import axios from 'axios';
+import { scheduled, asyncScheduler } from 'rxjs';
+import InstanceService from '@/applications/instance/instance.service';
 
 const mockedAxios: any = axios;
 jest.mock('axios', () => ({
@@ -11,7 +11,7 @@ jest.mock('axios', () => ({
 const data: Array<any> = [
   {
     serviceId: 'app1',
-    instanceId: 'app1-id',
+    instanceId: 'app1',
     uri: 'http://127.0.0.1:8080',
     host: '127.0.0.1',
     port: 8080,
@@ -102,6 +102,6 @@ describe('Instance Service', () => {
     mockedAxios.post.mockReturnValue(Promise.resolve(returnValue));
 
     await expect(instanceService.shutdownInstance(instance)).resolves.toEqual(returnValue);
-    expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1-id/management/shutdown');
+    expect(mockedAxios.post).toHaveBeenCalledWith('/gateway/app1/app1/management/shutdown');
   });
 });

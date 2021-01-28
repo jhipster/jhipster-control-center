@@ -33,11 +33,21 @@ export default class InstanceService extends AbstractService {
     });
   }
 
+  public addStaticInstance(serviceId: string, url: string): AxiosPromise<any> {
+    return axios.post('api/services/instances', {
+      serviceId: serviceId,
+      url: url,
+    });
+  }
+
+  public removeStaticInstance(serviceId: string): AxiosPromise<any> {
+    return axios.delete(`api/services/${serviceId}`);
+  }
+
   public findAllGatewayRoute(): AxiosPromise<any> {
     return axios.get('management/gateway/routes');
   }
 
-  /** get active profiles of an instance */
   public findActiveProfiles(gatewayRoute: string): AxiosPromise<any> {
     return axios.get(`gateway/${String(gatewayRoute)}/management/info`);
   }
