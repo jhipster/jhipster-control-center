@@ -11,6 +11,7 @@
 # - uncomment SPRING_SECURITY_OAUTH2_CLIENT properties
 # - uncomment keycloak part
 
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
 services:
   jhipstercontrolcenter-app:

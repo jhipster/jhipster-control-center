@@ -3,17 +3,16 @@ package tech.jhipster.controlcenter.web.rest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import tech.jhipster.controlcenter.JhipsterControlCenterApp;
+import tech.jhipster.controlcenter.IntegrationTest;
 import tech.jhipster.controlcenter.web.rest.vm.LoginVM;
 
 /**
  * Integration tests for the {@link UserJWTController} REST controller.
  */
 @AutoConfigureWebTestClient
-@SpringBootTest(classes = JhipsterControlCenterApp.class)
+@IntegrationTest
 class UserJWTControllerIT {
 
     @Autowired

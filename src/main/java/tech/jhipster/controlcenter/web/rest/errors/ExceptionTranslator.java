@@ -63,6 +63,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
             return Mono.just(entity);
         }
+
         ProblemBuilder builder = Problem
             .builder()
             .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())

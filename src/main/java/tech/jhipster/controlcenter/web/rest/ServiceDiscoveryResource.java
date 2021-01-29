@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperties;
@@ -78,12 +79,13 @@ public class ServiceDiscoveryResource {
         if (Arrays.stream(this.env.getActiveProfiles()).anyMatch("static"::equals)) {
             // create static instance
             URI uri = new URI(serviceInstanceVM.getUrl());
-            SimpleDiscoveryProperties.SimpleServiceInstance staticInstance = new SimpleDiscoveryProperties.SimpleServiceInstance(uri);
+            DefaultServiceInstance staticInstance = new DefaultServiceInstance();
+            staticInstance.setUri(uri);
             staticInstance.setServiceId(serviceInstanceVM.getServiceId());
             staticInstance.setInstanceId(serviceInstanceVM.getServiceId());
 
             // add static instance in our discovery client
-            Map<String, List<SimpleDiscoveryProperties.SimpleServiceInstance>> instances = new HashMap<>();
+            Map<String, List<DefaultServiceInstance>> instances = new HashMap<>();
             instances.putAll(simpleDiscoveryProperties.getInstances());
             instances.put(staticInstance.getServiceId(), List.of(staticInstance));
             simpleDiscoveryProperties.setInstances(instances);

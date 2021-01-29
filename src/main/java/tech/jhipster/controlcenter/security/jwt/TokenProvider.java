@@ -2,7 +2,6 @@ package tech.jhipster.controlcenter.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -16,7 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import tech.jhipster.config.JHipsterProperties;
 
 @Component
@@ -37,7 +36,7 @@ public class TokenProvider {
     public TokenProvider(JHipsterProperties jHipsterProperties) {
         byte[] keyBytes;
         String secret = jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret();
-        if (!StringUtils.isEmpty(secret)) {
+        if (!ObjectUtils.isEmpty(secret)) {
             log.warn(
                 "Warning: the JWT key used is not Base64-encoded. " +
                 "We recommend using the `jhipster.security.authentication.jwt.base64-secret` key for optimum security."
@@ -71,7 +70,6 @@ public class TokenProvider {
             .claim(AUTHORITIES_KEY, authorities)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
-            .serializeToJsonWith(new JacksonSerializer())
             .compact();
     }
 
@@ -80,6 +78,7 @@ public class TokenProvider {
 
         Collection<? extends GrantedAuthority> authorities = Arrays
             .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+            .filter(auth -> !auth.isBlank())
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
 

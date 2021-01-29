@@ -3,19 +3,18 @@ package tech.jhipster.controlcenter.web.rest.errors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import tech.jhipster.controlcenter.JhipsterControlCenterApp;
+import tech.jhipster.controlcenter.IntegrationTest;
 
 /**
  * Integration tests {@link ExceptionTranslator} controller advice.
  */
 @WithMockUser
 @AutoConfigureWebTestClient
-@SpringBootTest(classes = JhipsterControlCenterApp.class)
+@IntegrationTest
 class ExceptionTranslatorIT {
 
     @Autowired
