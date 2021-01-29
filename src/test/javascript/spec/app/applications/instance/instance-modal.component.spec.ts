@@ -56,5 +56,12 @@ describe('Instance Modal Component', () => {
       expect(console.warn).toHaveBeenCalledWith('error');
       spy.mockRestore();
     });
+
+    it('should not set profile when instance is consul', async () => {
+      instanceModal.selectedInstance.serviceId = 'consul';
+      instanceModal.refreshProfile();
+      await instanceModal.$nextTick();
+      expect(instanceModal.activeProfiles).toEqual({});
+    });
   });
 });

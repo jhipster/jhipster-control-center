@@ -26,7 +26,7 @@
             <font-awesome-icon icon="tachometer-alt" />
             <span>Metrics</span>
           </b-nav-item>
-          <b-nav-item to="/applications/caches" data-cy="caches-menu">
+          <b-nav-item to="/applications/caches" data-cy="cachesMenu">
             <font-awesome-icon icon="layer-group" />
             <span>Caches</span>
           </b-nav-item>
