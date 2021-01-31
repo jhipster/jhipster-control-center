@@ -10,11 +10,11 @@
     </div>
     <div v-else>
       <div>
-        <div class="to-bottom" v-if="logFileContent" @click="scrollToBottom()"><i class="fa fa-arrow-circle-down"></i> Bottom</div>
+        <div class="to-bottom" v-if="logFileContent" @click="scrollToBottom()"><em class="fa fa-arrow-circle-down"></em> Bottom</div>
         <div class="form-group">
           <textarea v-model="logFileContent" id="logfile" readonly class="form-control log-viewer" rows="25"></textarea>
         </div>
-        <div class="to-top" v-if="logFileContent" @click="scrollToTop()"><i class="fa fa-arrow-circle-up"></i> Top</div>
+        <div class="to-top" v-if="logFileContent" @click="scrollToTop()"><em class="fa fa-arrow-circle-up"></em> Top</div>
       </div>
     </div>
   </div>
