@@ -35,14 +35,18 @@ export const submitLoginSelector = '[data-cy="submit"]';
 // Sidebar
 export const sidebarSelector = '[data-cy="sidebar"]';
 export const metricsMenuSelector = '[data-cy="metricsMenu"]';
+export const cachesMenuSelector = '[data-cy="cachesMenu"]';
 export const healthMenuSelector = '[data-cy="healthMenu"]';
+export const liquibaseMenuSelector = '[data-cy="liquibaseMenu"]';
 export const logsMenuSelector = '[data-cy="logsMenu"]';
 export const logsFileMenuSelector = '[data-cy="logsfileMenu"]';
 export const configurationMenuSelector = '[data-cy="configurationMenu"]';
 export const openAPIMenuSelector = '[data-cy="openAPIMenu"]';
 
 export const metricsPageHeadingSelector = '[data-cy="metricsPageHeading"]';
+export const cachesPageHeadingSelector = '[data-cy="cachesPageHeading"]';
 export const healthPageHeadingSelector = '[data-cy="healthPageHeading"]';
+export const liquibasePageHeadingSelector = '[data-cy="liquibasePageHeading"]';
 export const logsPageHeadingSelector = '[data-cy="logsPageHeading"]';
 export const logsFilePageHeadingSelector = '[data-cy="logsfilePageHeading"]';
 export const configurationPageHeadingSelector = '[data-cy="configurationPageHeading"]';

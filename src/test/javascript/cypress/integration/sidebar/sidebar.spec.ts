@@ -5,6 +5,8 @@ import {
   configurationPageHeadingSelector,
   openAPIPageHeadingSelector,
   logsFilePageHeadingSelector,
+  cachesPageHeadingSelector,
+  liquibasePageHeadingSelector,
 } from '../../support/commands';
 
 describe('/sidebar', () => {
@@ -48,10 +50,24 @@ describe('/sidebar', () => {
     });
   });
 
+  describe('/caches', () => {
+    it('should load the page', () => {
+      cy.clickOnCachesItem();
+      cy.get(cachesPageHeadingSelector).should('be.visible');
+    });
+  });
+
   describe('/health', () => {
     it('should load the page', () => {
       cy.clickOnHealthItem();
       cy.get(healthPageHeadingSelector).should('be.visible');
+    });
+  });
+
+  describe('/liquibase', () => {
+    it('should load the page', () => {
+      cy.clickOnLiquibaseItem();
+      cy.get(liquibasePageHeadingSelector).should('be.visible');
     });
   });
 

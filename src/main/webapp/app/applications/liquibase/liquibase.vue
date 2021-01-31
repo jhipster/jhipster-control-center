@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head mb-3">
-      <h2 id="liquibase-page-heading" class="d-inline-block" data-cy="liquibase-page-heading">Liquibase</h2>
+      <h2 id="liquibase-page-heading" class="d-inline-block" data-cy="liquibasePageHeading">Liquibase</h2>
       <refresh-selector class="float-right"></refresh-selector>
       <routes-selector class="float-right mr-2"></routes-selector>
     </div>

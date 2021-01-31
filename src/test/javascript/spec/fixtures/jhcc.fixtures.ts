@@ -25,7 +25,7 @@ const stubbedModal = {
 
 const inst: Instance = {
   serviceId: 'app1',
-  instanceId: 'app1-id',
+  instanceId: 'app1',
   uri: 'http://127.0.0.01:8080',
   host: '127.0.0.1',
   port: 8080,
@@ -42,7 +42,7 @@ const jhcc_profiles = {
 
 const instancesRoute = [
   { uri: 'http://127.0.0.01:8081', route_id: 'test2/test2-id' },
-  { uri: 'http://127.0.0.01:8080', route_id: 'test/test-id' },
+  { uri: 'http://127.0.0.01:8080', route_id: 'app1/app1' },
 ];
 
 const jhcc_route = {

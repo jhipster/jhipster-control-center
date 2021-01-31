@@ -68,7 +68,9 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
                         .uri("/swagger-resources")
                         .retrieve()
                         .bodyToFlux(SwaggerResource.class)
-                        .collectList();
+                        .onErrorResume(exception -> Mono.empty())
+                        .collectList()
+                        .defaultIfEmpty(Collections.emptyList());
                     return Mono.just(route).zipWith(swaggerResources);
                 }
             )
@@ -82,6 +84,7 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
         //Add the registered microservices swagger docs as additional swagger resources
         List<SwaggerResource> servicesSwaggerResources = servicesRouteSwaggerResources
             .stream()
+            .filter(tuple -> !tuple.getT2().isEmpty())
             .map(
                 tuple -> {
                     Route route = tuple.getT1();

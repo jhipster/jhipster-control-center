@@ -5,11 +5,10 @@ import static tech.jhipster.controlcenter.web.rest.AccountResourceIT.TEST_USER_L
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import tech.jhipster.controlcenter.JhipsterControlCenterApp;
+import tech.jhipster.controlcenter.IntegrationTest;
 import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 
 /**
@@ -17,7 +16,7 @@ import tech.jhipster.controlcenter.security.AuthoritiesConstants;
  */
 @AutoConfigureWebTestClient
 @WithMockUser(value = TEST_USER_LOGIN)
-@SpringBootTest(classes = JhipsterControlCenterApp.class)
+@IntegrationTest
 class AccountResourceIT {
 
     static final String TEST_USER_LOGIN = "test";

@@ -1,10 +1,10 @@
-import { Component, Inject, Vue } from 'vue-property-decorator';
-import InstanceService, { Instance } from './instance.service';
-import InstanceModalVue from './instance-modal.vue';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
+import { takeUntil } from 'rxjs/operators';
+import InstanceModalVue from './instance-modal.vue';
+import InstanceService, { Instance } from './instance.service';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 import { RefreshService } from '@/shared/refresh/refresh.service';
+import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 
 @Component({
   components: {
@@ -15,10 +15,18 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 export default class JhiInstance extends Vue {
   public instances?: Array<Instance> = null;
   public instancesRoute: Array<any> = null;
+  public isStaticProfile = false;
+  private unsubscribe$ = new Subject();
+
+  // instance modal attributes
+  public instanceModal: any = null;
   public selectedInstance: Instance = null;
   public selectedInstanceRoute: string = null;
-  public instanceModal: any = null;
-  private unsubscribe$ = new Subject();
+
+  // input for new static instance form
+  public inputServiceName = '';
+  public inputURL = '';
+
   @Inject('instanceService') private instanceService: () => InstanceService;
   @Inject('refreshService') private refreshService: () => RefreshService;
 
@@ -31,6 +39,7 @@ export default class JhiInstance extends Vue {
       });
     this.refreshInstancesData();
     this.refreshInstancesRoute();
+    this.isStaticProfile = this.$store.getters.activeProfiles.includes('static');
   }
 
   public refreshInstancesData(): void {
@@ -53,11 +62,11 @@ export default class JhiInstance extends Vue {
       });
   }
 
-  /** Display details about an instance in a b-modal */
   public showInstance(instance: Instance, uri: string): void {
     this.selectedInstance = instance;
     for (let i = 0; i < this.instancesRoute.length; i++) {
-      if (this.instancesRoute[i].uri === uri) {
+      const isRouteOfThisService = this.instancesRoute[i].route_id.includes(this.selectedInstance.serviceId.toLowerCase());
+      if (this.instancesRoute[i].uri === uri && isRouteOfThisService) {
         this.selectedInstanceRoute = this.instancesRoute[i].route_id;
         break;
       }
@@ -66,7 +75,6 @@ export default class JhiInstance extends Vue {
     this.instanceModal.show();
   }
 
-  /* Modal dialog to confirm shutdown */
   public confirmShutdown(instance: Instance): void {
     const config = {
       title: 'Please Confirm',
@@ -81,8 +89,8 @@ export default class JhiInstance extends Vue {
     };
     this.$bvModal
       .msgBoxConfirm('Are you sure you want to shutdown the instance ?', config)
-      .then(res => {
-        if (res) {
+      .then(isYes => {
+        if (isYes) {
           this.shutdownInstance(instance);
         }
       })
@@ -93,21 +101,85 @@ export default class JhiInstance extends Vue {
     this.instanceService()
       .shutdownInstance(instance)
       .then(() => {
-        return this.$bvToast.toast('Instance shutdown successful', {
-          title: 'Success',
-          variant: 'success',
-          solid: true,
-          autoHideDelay: 5000,
-        });
+        this.successToast('Instance shutdown successful');
       })
       .catch(error => {
-        return this.$bvToast.toast(`${error}`, {
-          title: `Error`,
-          variant: 'danger',
-          solid: true,
-          autoHideDelay: 5000,
-        });
+        this.errorToast(error);
       });
+  }
+
+  public onHiddenAddStaticInstance() {
+    this.$bvModal.hide('newStaticInstanceModal');
+    this.refreshService().refreshReload();
+    this.inputServiceName = '';
+    this.inputURL = '';
+  }
+
+  public onSubmitAddStaticInstance() {
+    this.addStaticInstance(this.inputServiceName, this.inputURL);
+  }
+
+  public async addStaticInstance(serviceId: string, url: string) {
+    const addStaticInstanceResponse = await this.instanceService().addStaticInstance(serviceId, url);
+    if (addStaticInstanceResponse.status !== 201) {
+      const errorMessage = `${addStaticInstanceResponse.status} - ${addStaticInstanceResponse.data}`;
+      this.errorToast(errorMessage);
+    } else {
+      const successMessage = `${serviceId} instance added`;
+      this.successToast(successMessage);
+    }
+  }
+
+  public confirmRemoveStaticInstance(instance: Instance): void {
+    const config = {
+      title: 'Please Confirm',
+      size: 'sm',
+      buttonSize: 'sm',
+      okVariant: 'danger',
+      okTitle: 'YES',
+      cancelTitle: 'NO',
+      footerClass: 'p-2',
+      hideHeaderClose: false,
+      centered: true,
+    };
+    this.$bvModal
+      .msgBoxConfirm(`Are you sure you want to remove the instance ${instance.serviceId} ?`, config)
+      .then(isYes => {
+        if (isYes) {
+          this.removeStaticInstance(instance);
+        }
+      })
+      .catch(error => console.warn(error));
+  }
+
+  public removeStaticInstance(instance: Instance): void {
+    this.instanceService()
+      .removeStaticInstance(instance.serviceId)
+      .then(() => {
+        this.successToast(`Instance ${instance.serviceId} removed`);
+        this.refreshService().refreshReload();
+      })
+      .catch(error => {
+        this.errorToast(error);
+      });
+  }
+
+  public successToast(message: string) {
+    return this.$bvToast.toast(message, {
+      title: 'Success',
+      variant: 'success',
+      solid: true,
+      autoHideDelay: 5000,
+    });
+  }
+
+  public errorToast(message: string) {
+    return this.$bvToast.toast(message, {
+      title: `Error`,
+      variant: 'danger',
+      solid: true,
+      autoHideDelay: 5000,
+    });
   }
 
   /* istanbul ignore next */
