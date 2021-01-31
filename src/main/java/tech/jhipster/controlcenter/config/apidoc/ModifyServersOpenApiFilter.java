@@ -1,8 +1,10 @@
 package tech.jhipster.controlcenter.config.apidoc;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.nio.charset.Charset;
+import java.util.List;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -27,7 +29,7 @@ public class ModifyServersOpenApiFilter implements GlobalFilter, Ordered {
         if (path.startsWith("/gateway") && path.contains("/v3/api-docs")) {
             ServerHttpResponse originalResponse = exchange.getResponse();
             DataBufferFactory bufferFactory = originalResponse.bufferFactory();
-            ServerHttpResponseDecorator decoratedResponse = modifyServersResponseBody(originalResponse, bufferFactory, path);
+            ServerHttpResponseDecorator decoratedResponse = createModifyServersOpenApiInterceptor(path, originalResponse, bufferFactory);
 
             // replace response with decorator
             return chain.filter(exchange.mutate().response(decoratedResponse).build());
@@ -41,56 +43,69 @@ public class ModifyServersOpenApiFilter implements GlobalFilter, Ordered {
         return -1;
     }
 
-    private ServerHttpResponseDecorator modifyServersResponseBody(
+    public ModifyServersOpenApiInterceptor createModifyServersOpenApiInterceptor(
+        String path,
         ServerHttpResponse originalResponse,
-        DataBufferFactory bufferFactory,
-        String path
+        DataBufferFactory bufferFactory
     ) {
-        return new ServerHttpResponseDecorator(originalResponse) {
-            @Override
-            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
-                if (body instanceof Flux) {
-                    Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
+        return new ModifyServersOpenApiInterceptor(path, originalResponse, bufferFactory);
+    }
 
-                    return super.writeWith(
-                        fluxBody
-                            .buffer()
-                            .map(
-                                dataBuffers -> {
-                                    DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
-                                    DataBuffer join = dataBufferFactory.join(dataBuffers);
+    public class ModifyServersOpenApiInterceptor extends ServerHttpResponseDecorator {
 
-                                    byte[] content = new byte[join.readableByteCount()];
+        private final String path;
+        private final ServerHttpResponse originalResponse;
+        private final DataBufferFactory bufferFactory;
+        private String rewritedBody = "";
 
-                                    join.read(content);
+        private ModifyServersOpenApiInterceptor(String path, ServerHttpResponse originalResponse, DataBufferFactory bufferFactory) {
+            super(originalResponse);
+            this.path = path;
+            this.originalResponse = originalResponse;
+            this.bufferFactory = bufferFactory;
+        }
 
-                                    // release memory
-                                    DataBufferUtils.release(join);
+        public String getRewritedBody() {
+            return rewritedBody;
+        }
 
-                                    String strBody = new String(content, Charset.forName("UTF-8"));
+        @Override
+        public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+            this.rewritedBody = "";
+            if (body instanceof Flux) {
+                Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
 
-                                    // create custom server
-                                    Gson g = new Gson();
-                                    JsonObject jsonBody = g.fromJson(strBody, JsonObject.class);
-                                    JsonObject serversToJson = new JsonObject();
-                                    serversToJson.addProperty("url", path.replace("/v3/api-docs", ""));
-                                    serversToJson.addProperty("description", "added by global filter");
-
-                                    // remove inferred server to add custom server
-                                    jsonBody.get("servers").getAsJsonArray().remove(0);
-                                    jsonBody.get("servers").getAsJsonArray().add(serversToJson);
-
-                                    String strBodyModified = jsonBody.toString();
-
-                                    originalResponse.getHeaders().setContentLength(strBodyModified.getBytes().length);
-                                    return bufferFactory.wrap(strBodyModified.getBytes());
-                                }
-                            )
-                    );
-                }
-                // if body is not a flux. never got there.
-                return super.writeWith(body);
+                return super.writeWith(fluxBody.buffer().map(dataBuffers -> rewriteBodyWithServers(dataBuffers)));
             }
-        };
+            // when body is not a flux
+            return super.writeWith(body);
+        }
+
+        private DataBuffer rewriteBodyWithServers(List<? extends DataBuffer> dataBuffers) {
+            DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
+            DataBuffer join = dataBufferFactory.join(dataBuffers);
+            byte[] content = new byte[join.readableByteCount()];
+            join.read(content);
+
+            // release memory
+            DataBufferUtils.release(join);
+            String strBody = new String(content, Charset.forName("UTF-8"));
+
+            // create custom server
+            Gson g = new Gson();
+            JsonObject jsonBody = g.fromJson(strBody, JsonObject.class);
+            JsonObject serversToJson = new JsonObject();
+            serversToJson.addProperty("url", path.replace("/v3/api-docs", ""));
+            serversToJson.addProperty("description", "added by global filter");
+
+            // add custom server
+            JsonArray servers = new JsonArray();
+            servers.add(serversToJson);
+            jsonBody.add("servers", servers);
+
+            this.rewritedBody = jsonBody.toString();
+            originalResponse.getHeaders().setContentLength(this.rewritedBody.getBytes().length);
+            return bufferFactory.wrap(this.rewritedBody.getBytes());
+        }
     }
 }
