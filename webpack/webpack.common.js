@@ -1,9 +1,8 @@
 'use strict';
 const path = require('path');
-const vueLoaderConfig = require('./loader.conf');
 const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const vueLoaderConfig = require('./loader.conf');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -20,6 +19,18 @@ module.exports = {
     alias: {
       vue$: 'vue/dist/vue.esm.js',
       '@': resolve('src/main/webapp/app'),
+    },
+    fallback: {
+      // prevent webpack from injecting useless setImmediate polyfill because Vue
+      // source contains it (although only uses it if it's native).
+      setImmediate: false,
+      // prevent webpack from injecting mocks to Node native modules
+      // that does not make sense for the client
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
     },
   },
   module: {
@@ -72,31 +83,19 @@ module.exports = {
       },
     ],
   },
-  node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
-    setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
-  },
   plugins: [
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: './node_modules/swagger-ui-dist/*.{js,css,html,png}',
-          to: 'swagger-ui',
-          flatten: true,
+          context: './node_modules/swagger-ui-dist/',
+          from: '*.{js,css,html,png}',
+          to: 'swagger-ui/',
           globOptions: { ignore: ['**/index.html'] },
         },
-        { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui' },
-        { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui' },
-        { from: './src/main/webapp/content/', to: 'content' },
+        { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui/' },
+        { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
+        { from: './src/main/webapp/content/', to: 'content/' },
         { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
         {
           from: './src/main/webapp/manifest.webapp',
@@ -105,14 +104,6 @@ module.exports = {
         // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
         { from: './src/main/webapp/robots.txt', to: 'robots.txt' },
       ],
-    }),
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      base: '/',
-      template: './src/main/webapp/index.html',
-      chunks: ['vendors', 'main', 'global'],
-      chunksSortMode: 'manual',
-      inject: true,
     }),
   ],
 };

@@ -9,6 +9,7 @@ spring:
           oidc:
             client-id: web_app
             client-secret: web_app
+            scope: openid,profile,email
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9080/auth/realms/jhipster

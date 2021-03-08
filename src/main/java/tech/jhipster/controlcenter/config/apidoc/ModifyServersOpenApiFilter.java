@@ -1,11 +1,21 @@
 package tech.jhipster.controlcenter.config.apidoc;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import java.nio.charset.Charset;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -13,6 +23,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
@@ -22,6 +33,8 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class ModifyServersOpenApiFilter implements GlobalFilter, Ordered {
+
+    private static final Logger log = LoggerFactory.getLogger(ModifyServersOpenApiFilter.class);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -71,7 +84,7 @@ public class ModifyServersOpenApiFilter implements GlobalFilter, Ordered {
 
         @Override
         public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
-            this.rewritedBody = "";
+            rewritedBody = "";
             if (body instanceof Flux) {
                 Flux<? extends DataBuffer> fluxBody = (Flux<? extends DataBuffer>) body;
 
@@ -89,23 +102,79 @@ public class ModifyServersOpenApiFilter implements GlobalFilter, Ordered {
 
             // release memory
             DataBufferUtils.release(join);
-            String strBody = new String(content, Charset.forName("UTF-8"));
+            String strBody = contentToString(content);
 
-            // create custom server
-            Gson g = new Gson();
-            JsonObject jsonBody = g.fromJson(strBody, JsonObject.class);
-            JsonObject serversToJson = new JsonObject();
-            serversToJson.addProperty("url", path.replace("/v3/api-docs", ""));
-            serversToJson.addProperty("description", "added by global filter");
+            try {
+                // create custom server
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonBody = mapper.readTree(strBody);
+                ObjectNode serversToJson = mapper.createObjectNode();
+                serversToJson.set("url", mapper.valueToTree(path.replace("/v3/api-docs", "")));
+                serversToJson.set("description", mapper.valueToTree("added by global filter"));
 
-            // add custom server
-            JsonArray servers = new JsonArray();
-            servers.add(serversToJson);
-            jsonBody.add("servers", servers);
+                // add custom server
+                ArrayNode servers = mapper.createArrayNode();
+                servers.add(serversToJson);
+                ((ObjectNode) jsonBody).set("servers", servers);
 
-            this.rewritedBody = jsonBody.toString();
-            originalResponse.getHeaders().setContentLength(this.rewritedBody.getBytes().length);
-            return bufferFactory.wrap(this.rewritedBody.getBytes());
+                rewritedBody = jsonBody.toString();
+                return rewritedBodyToDataBuffer();
+            } catch (JsonProcessingException e) {
+                log.error("Error when modify servers from api-doc of {}: {}", path, e.getMessage());
+            }
+            return join;
+        }
+
+        private DataBuffer rewritedBodyToDataBuffer() {
+            if (isZippedResponse()) {
+                byte[] zippedBody = zipContent(rewritedBody);
+                originalResponse.getHeaders().setContentLength(zippedBody.length);
+                return bufferFactory.wrap(zippedBody);
+            }
+            originalResponse.getHeaders().setContentLength(rewritedBody.getBytes().length);
+            return bufferFactory.wrap(rewritedBody.getBytes());
+        }
+
+        private String contentToString(byte[] content) {
+            if (isZippedResponse()) {
+                byte[] unzippedContent = unzipContent(content);
+                return new String(unzippedContent, StandardCharsets.UTF_8);
+            }
+            return new String(content, StandardCharsets.UTF_8);
+        }
+
+        private boolean isZippedResponse() {
+            return (
+                !originalResponse.getHeaders().isEmpty() &&
+                originalResponse.getHeaders().get(HttpHeaders.CONTENT_ENCODING) != null &&
+                Objects.requireNonNull(originalResponse.getHeaders().get(HttpHeaders.CONTENT_ENCODING)).contains("gzip")
+            );
+        }
+
+        private byte[] unzipContent(byte[] content) {
+            try {
+                GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(content));
+                byte[] unzippedContent = gzipInputStream.readAllBytes();
+                gzipInputStream.close();
+                return unzippedContent;
+            } catch (IOException e) {
+                log.error("Error when unzip content during modify servers from api-doc of {}: {}", path, e.getMessage());
+            }
+            return content;
+        }
+
+        private byte[] zipContent(String content) {
+            try {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(content.length());
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+                gzipOutputStream.write(content.getBytes(StandardCharsets.UTF_8));
+                gzipOutputStream.flush();
+                gzipOutputStream.close();
+                return byteArrayOutputStream.toByteArray();
+            } catch (IOException e) {
+                log.error("Error when zip content during modify servers from api-doc of {}: {}", path, e.getMessage());
+            }
+            return content.getBytes();
         }
     }
 }

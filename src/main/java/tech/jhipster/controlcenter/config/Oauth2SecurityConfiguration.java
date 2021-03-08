@@ -5,24 +5,17 @@ import static org.springframework.security.web.server.util.matcher.ServerWebExch
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
@@ -43,7 +36,6 @@ import org.springframework.security.web.server.csrf.CookieServerCsrfTokenReposit
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
-import org.springframework.util.StringUtils;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
 import reactor.core.publisher.Mono;
 import tech.jhipster.config.JHipsterProperties;
@@ -65,12 +57,6 @@ public class Oauth2SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-    @Value("${spring.security.oauth2.client.registration.oidc.client-id}")
-    private String cliendId;
-
-    @Value("${spring.security.oauth2.client.registration.oidc.client-secret}")
-    private String clientSecret;
-
     private final TokenProvider tokenProvider;
 
     private final JHipsterProperties jHipsterProperties;
@@ -88,30 +74,8 @@ public class Oauth2SecurityConfiguration {
     }
 
     @Bean
-    public MapReactiveUserDetailsService userDetailsService(SecurityProperties properties) {
-        SecurityProperties.User user = properties.getUser();
-        UserDetails userDetails = User
-            .withUsername(user.getName())
-            .password("{noop}" + user.getPassword())
-            .roles(StringUtils.toStringArray(user.getRoles()))
-            .build();
-        return new MapReactiveUserDetailsService(userDetails);
-    }
-
-    @Bean
-    public ReactiveAuthenticationManager reactiveAuthenticationManager(ReactiveUserDetailsService userDetailsService) {
-        return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
-    }
-
-    @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         // @formatter:off
-        // Authenticate through configured OpenID Provider
-        http.oauth2Login();
-
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
-        http.oauth2Client();
-
         http
             .securityMatcher(
                 new NegatedServerWebExchangeMatcher(
@@ -159,6 +123,13 @@ public class Oauth2SecurityConfiguration {
         // for xsrf-token
         http.csrf().csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
 
+        http.oauth2Login()
+            .and()
+            .oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        http.oauth2Client();
+
         // @formatter:on
         return http.build();
     }
@@ -185,7 +156,6 @@ public class Oauth2SecurityConfiguration {
                 .map(
                     user -> {
                         Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
                         user
                             .getAuthorities()
                             .forEach(
@@ -198,7 +168,6 @@ public class Oauth2SecurityConfiguration {
                                     }
                                 }
                             );
-
                         return new DefaultOidcUser(mappedAuthorities, user.getIdToken(), user.getUserInfo());
                     }
                 );

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Store } from 'vuex';
-import VueRouter from 'vue-router';
+import Router from 'vue-router';
 
 export default class AccountService {
-  constructor(private store: Store<any>, private cookie: any, private router: VueRouter) {
+  constructor(private store: Store<any>, private cookie: any, private router: Router) {
     this.init();
   }
 
