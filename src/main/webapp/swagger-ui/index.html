@@ -27,6 +27,21 @@
         return '';
       }
 
+      const AlwaysEnableTryItOutPlugin = function (system) {
+        const OperationContainer = system.getComponents('OperationContainer');
+        return {
+          components: {
+            TryItOutButton: () => null,
+            OperationContainer: class CustomOperationContainer extends OperationContainer {
+              constructor(...args) {
+                super(...args);
+                this.state.tryItOutEnabled = true;
+              }
+            },
+          },
+        };
+      };
+
       window.onload = function () {
         // Automatically click all 'Try it out' buttons
         var mutationObserver = new MutationObserver(function (mutations) {
@@ -49,6 +64,12 @@
             urls.push({ name: resource.name, url: resource.location });
           });
 
+          urls.sort(function (a, b) {
+            var x = a.name.toLowerCase(),
+              y = b.name.toLowerCase();
+            return x < y ? -1 : x > y ? 1 : 0;
+          });
+
           // Build a system
           var ui = SwaggerUIBundle({
             urls: urls,
@@ -58,7 +79,7 @@
             layout: 'StandaloneLayout',
             withCredentials: true,
             presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-            plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+            plugins: [SwaggerUIBundle.plugins.DownloadUrl, AlwaysEnableTryItOutPlugin],
             requestInterceptor: function (req) {
               return axios.get('/management/info').then(function (response) {
                 var oauth2 = false;

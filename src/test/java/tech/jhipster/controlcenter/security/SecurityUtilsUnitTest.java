@@ -20,7 +20,7 @@ class SecurityUtilsUnitTest {
     void testgetCurrentUserLogin() {
         String login = SecurityUtils
             .getCurrentUserLogin()
-            .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
+            .contextWrite(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
             .block();
         assertThat(login).isEqualTo("admin");
     }
@@ -29,7 +29,7 @@ class SecurityUtilsUnitTest {
     void testgetCurrentUserJWT() {
         String jwt = SecurityUtils
             .getCurrentUserJWT()
-            .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "token")))
+            .contextWrite(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "token")))
             .block();
         assertThat(jwt).isEqualTo("token");
     }
@@ -38,7 +38,7 @@ class SecurityUtilsUnitTest {
     void testIsAuthenticated() {
         Boolean isAuthenticated = SecurityUtils
             .isAuthenticated()
-            .subscriberContext(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
+            .contextWrite(ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin")))
             .block();
         assertThat(isAuthenticated).isTrue();
     }
@@ -49,7 +49,7 @@ class SecurityUtilsUnitTest {
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
         Boolean isAuthenticated = SecurityUtils
             .isAuthenticated()
-            .subscriberContext(
+            .contextWrite(
                 ReactiveSecurityContextHolder.withAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin", authorities))
             )
             .block();
@@ -63,10 +63,10 @@ class SecurityUtilsUnitTest {
         Context context = ReactiveSecurityContextHolder.withAuthentication(
             new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
         );
-        Boolean isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER).subscriberContext(context).block();
+        Boolean isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER).contextWrite(context).block();
         assertThat(isCurrentUserInRole).isTrue();
 
-        isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN).subscriberContext(context).block();
+        isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN).contextWrite(context).block();
         assertThat(isCurrentUserInRole).isFalse();
     }
 }

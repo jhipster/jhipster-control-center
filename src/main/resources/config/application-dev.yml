@@ -20,12 +20,6 @@ logging:
     tech.jhipster.controlcenter: DEBUG
 
 spring:
-  profiles:
-    active: dev
-    include:
-      - api-docs
-      # Uncomment to activate TLS for the dev profile
-      #- tls
   devtools:
     restart:
       enabled: true
@@ -55,7 +49,7 @@ server:
 # ===================================================================
 
 jhipster:
-  # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
+  # CORS is only enabled by default with the "dev" profile
   cors:
     allowed-origins: '*'
     allowed-methods: '*'
@@ -71,7 +65,6 @@ jhipster:
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
-        # secret: my-secret-key-which-should-be-changed-in-production-and-be-base64-encoded
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:7419
   logging:
