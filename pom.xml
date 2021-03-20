@@ -49,7 +49,7 @@
         <profile.tls />
 
         <!-- Dependency versions -->
-        <jhipster-dependencies.version>7.0.0-SNAPSHOT</jhipster-dependencies.version>
+        <jhipster-dependencies.version>7.0.0</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
         https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
         <spring-boot.version>2.4.3</spring-boot.version>
