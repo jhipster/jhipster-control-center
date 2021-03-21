@@ -28,9 +28,9 @@ export default class LoggersService extends AbstractService {
 
   public changeLoggersLevel(routes: Route[], name: string, configuredLevel: Level): Observable<any> {
     const changeLoggersLevelResponses: Observable<any>[] = [];
-    for (let i = 0; i < routes.length; i++) {
+    for (const route of routes) {
       const loggersLevelResponses = new Observable(observer => {
-        const url = this.generateUri(routes[i], '/management/loggers/', name);
+        const url = this.generateUri(route, '/management/loggers/', name);
 
         axios
           .post(url, { configuredLevel })
