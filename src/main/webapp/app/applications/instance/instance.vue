@@ -11,7 +11,7 @@
             <th scope="col" class="w-20">Service</th>
             <th scope="col" class="w-30">Instance</th>
             <th scope="col" class="w-30">Profile</th>
-            <th scope="col" class="w-30">Git</th>
+            <th scope="col" class="w-30">Version</th>
             <th scope="col" class="text-center">Detail</th>
             <th scope="col" class="text-center" v-if="isStaticProfile">Remove</th>
             <th scope="col" class="text-center">Kill</th>
