@@ -34,12 +34,15 @@ export default class JhiInstance extends Vue {
     this.refreshService()
       .refreshReload$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.refreshInstancesData();
-        this.refreshInstancesRoute();
+        this.refreshInstances();
       });
+    this.refreshInstances();
+    this.isStaticProfile = this.$store.getters.activeProfiles.includes('static');
+  }
+
+  public refreshInstances(): void {
     this.refreshInstancesData();
     this.refreshInstancesRoute();
-    this.isStaticProfile = this.$store.getters.activeProfiles.includes('static');
   }
 
   public refreshInstancesData(): void {
@@ -56,6 +59,22 @@ export default class JhiInstance extends Vue {
       .findAllGatewayRoute()
       .then(res => {
         this.instancesRoute = res.data;
+
+        for (let currentInstanceRoute of this.instancesRoute) {
+          const currentInstanceRouteId = currentInstanceRoute.route_id;
+          let index;
+          const serviceInstance = this.instances.find((instance, i) => {
+            index = i;
+            return currentInstanceRouteId.includes(instance.serviceId.toLowerCase());
+          });
+
+          this.instanceService()
+            .findActiveProfiles(currentInstanceRouteId)
+            .then(result => {
+              serviceInstance.metadata.profile = result.data.activeProfiles;
+              this.$set(this.instances, index, serviceInstance);
+            });
+        }
       })
       .catch(error => {
         console.warn(error);
