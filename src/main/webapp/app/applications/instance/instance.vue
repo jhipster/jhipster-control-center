@@ -27,7 +27,7 @@
               ><br />
             </td>
             <td class="table-hover">
-              <span class="badge badge-success">{{ instance.metadata.profile }}</span>
+              <span v-for="profile in instance.metadata.profile" :key="profile" class="badge badge-success">{{ profile }}</span>
               <span class="badge badge-primary">{{ instance.metadata.version }}</span>
             </td>
             <td class="table-hover">
