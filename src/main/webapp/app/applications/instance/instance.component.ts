@@ -5,6 +5,8 @@ import InstanceService, { Instance } from './instance.service';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
+import InstanceHealthService from '@/applications/health/health.service';
+import RoutesService, { Route } from '@/shared/routes/routes.service';
 
 @Component({
   components: {
@@ -17,6 +19,9 @@ export default class JhiInstance extends Vue {
   public instancesRoute: Array<any> = null;
   public isStaticProfile = false;
   private unsubscribe$ = new Subject();
+  public healthData: any = null;
+  public activeRoute: Route;
+  public myMap = {};
 
   // instance modal attributes
   public instanceModal: any = null;
@@ -29,6 +34,8 @@ export default class JhiInstance extends Vue {
 
   @Inject('instanceService') private instanceService: () => InstanceService;
   @Inject('refreshService') private refreshService: () => RefreshService;
+  @Inject('instanceHealthService') private instanceHealthService: () => InstanceHealthService;
+  @Inject('routesService') private routesService: () => RoutesService;
 
   public mounted(): void {
     this.refreshService()
@@ -55,29 +62,56 @@ export default class JhiInstance extends Vue {
       .findAllGatewayRoute()
       .then(res => {
         this.instancesRoute = res.data;
-        this.refreshIntancesProfil();
+        for (let currentInstanceRoute of this.instancesRoute) {
+          const currentInstanceRouteId = currentInstanceRoute.route_id;
+
+          this.refreshIntancesProfil(currentInstanceRouteId);
+          this.refreshIntancesHealth(currentInstanceRouteId);
+        }
       })
       .catch(error => {
         console.warn(error);
       });
   }
 
-  public refreshIntancesProfil(): void {
-    for (let currentInstanceRoute of this.instancesRoute) {
-      const currentInstanceRouteId = currentInstanceRoute.route_id;
-      let index;
-      const serviceInstance = this.instances.find((instance, i) => {
-        index = i;
-        return currentInstanceRouteId.includes(instance.serviceId.toLowerCase());
-      });
+  public refreshIntancesProfil(instanceRouteId: string): void {
+    let index;
+    const serviceInstance = this.instances.find((instance, i) => {
+      index = i;
+      return instanceRouteId.includes(instance.serviceId.toLowerCase());
+    });
 
-      this.instanceService()
-        .findActiveProfiles(currentInstanceRouteId)
-        .then(result => {
-          serviceInstance.metadata.profile = result.data.activeProfiles;
-          this.$set(this.instances, index, serviceInstance);
+    this.instanceService()
+      .findActiveProfiles(instanceRouteId)
+      .then(result => {
+        serviceInstance.metadata.profile = result.data.activeProfiles;
+        this.$set(this.instances, index, serviceInstance);
+      });
+  }
+
+  public refreshIntancesHealth(instanceRouteId): void {
+    const instanceRoute = {
+      path: instanceRouteId,
+      predicate: '',
+      filters: [],
+      serviceId: '',
+      instanceId: '',
+      instanceUri: '',
+      order: 0,
+    };
+
+    this.instanceHealthService()
+      .checkHealth(instanceRoute)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(health => {
+        let index;
+        const serviceInstance = this.instances.find((instance, i) => {
+          index = i;
+          return instanceRouteId.includes(instance.serviceId.toLowerCase());
         });
-    }
+        serviceInstance.metadata.status = health.status;
+        this.$set(this.instances, index, serviceInstance);
+      });
   }
 
   public showInstance(instance: Instance, uri: string): void {
@@ -113,6 +147,14 @@ export default class JhiInstance extends Vue {
         }
       })
       .catch(error => console.warn(error));
+  }
+
+  public getBadgeClass(statusState: any): string {
+    if (statusState === 'UP') {
+      return 'badge-success';
+    } else {
+      return 'badge-danger';
+    }
   }
 
   public shutdownInstance(instance: Instance): void {

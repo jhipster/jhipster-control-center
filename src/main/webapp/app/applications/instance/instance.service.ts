@@ -14,7 +14,7 @@ export interface Instance {
 
 export type Metadata = { [key in MetadataKey]?: any };
 
-export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' | 'git-branch';
+export type MetadataKey = 'profile' | 'version' | 'git-version' | 'git-commit' | 'git-branch' | 'status';
 
 export default class InstanceService extends AbstractService {
   public findAllInstance(): Observable<Array<Instance>> {
