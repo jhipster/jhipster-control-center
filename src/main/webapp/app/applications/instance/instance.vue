@@ -24,8 +24,9 @@
               <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
             </td>
             <td class="table-hover">
-              <span class="badge badge-ligth">{{ instance.instanceId }}</span
-              ><br />
+              <span v-if="isStaticProfile" class="badge badge-ligth">{{ instance.host }}</span>
+              <span v-else class="badge badge-ligth">{{ instance.instanceId }}</span>               
+              <br />
             </td>
             <td class="table-hover">
               <span v-for="profile in instance.metadata.profile" :key="profile" class="badge badge-success">{{ profile }}</span>
