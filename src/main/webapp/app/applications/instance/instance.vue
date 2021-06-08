@@ -32,12 +32,7 @@
               <span class="badge badge-primary">{{ instance.metadata.version }}</span>
             </td>
             <td class="table-hover">
-              <span v-if="instance.metadata.hasOwnProperty('git-commit') && instance.metadata['git-commit']" class="badge badge-dark">
-                {{ instance.metadata['git-commit'] }}
-              </span>
-              <span v-if="instance.metadata.hasOwnProperty('git-branch') && instance.metadata['git-branch']" class="badge badge-dark">
-                {{ instance.metadata['git-branch'] }}
-              </span>
+              <span class="badge badge-dark"> {{ versionInstance(instance) }}</span>
             </td>
             <td class="table-hover">
               <span class="badge" :class="getBadgeClass(instance.metadata.status)">{{ instance.metadata.status }}</span>

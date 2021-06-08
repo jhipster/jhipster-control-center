@@ -21,7 +21,6 @@ export default class JhiInstance extends Vue {
   private unsubscribe$ = new Subject();
   public healthData: any = null;
   public activeRoute: Route;
-  public myMap = {};
 
   // instance modal attributes
   public instanceModal: any = null;
@@ -31,6 +30,9 @@ export default class JhiInstance extends Vue {
   // input for new static instance form
   public inputServiceName = '';
   public inputURL = '';
+
+  public gitCommitPropName = 'git-commit';
+  public gitBranchPropName = 'git-branch';
 
   @Inject('instanceService') private instanceService: () => InstanceService;
   @Inject('refreshService') private refreshService: () => RefreshService;
@@ -155,6 +157,32 @@ export default class JhiInstance extends Vue {
     } else {
       return 'badge-danger';
     }
+  }
+
+  public versionInstance(instance: Instance): string {
+    let result = '';
+
+    if (this.hasMetadataPropertyNotNull(instance, this.gitCommitPropName)) {
+      result = instance.metadata[this.gitCommitPropName];
+    }
+    if (this.hasMetadataPropertyNotNull(instance, this.gitBranchPropName)) {
+      if (result.length > 0) {
+        result += ' ';
+      }
+      result += instance.metadata[this.gitBranchPropName];
+    }
+    if (
+      !this.hasMetadataPropertyNotNull(instance, this.gitCommitPropName) &&
+      !this.hasMetadataPropertyNotNull(instance, this.gitBranchPropName)
+    ) {
+      result = 'N/A';
+    }
+
+    return result;
+  }
+
+  public hasMetadataPropertyNotNull(instance: Instance, property: string): boolean {
+    return instance?.metadata?.hasOwnProperty(property) && instance?.metadata[property];
   }
 
   public shutdownInstance(instance: Instance): void {
