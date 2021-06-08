@@ -24,7 +24,7 @@
               <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
             </td>
             <td class="table-hover">
-              <span v-if="isStaticProfile" class="badge badge-ligth">{{ instance.host }}</span>
+              <span v-if="isStaticProfile" class="badge badge-ligth">{{ instance.host }} : {{ instance.port }}</span>
               <span v-else class="badge badge-ligth">{{ instance.instanceId }}</span>               
               <br />
             </td>
