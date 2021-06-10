@@ -64,11 +64,11 @@ export default class JhiInstance extends Vue {
       .findAllGatewayRoute()
       .then(res => {
         this.instancesRoute = res.data;
-        for (let currentInstanceRoute of this.instancesRoute) {
+        for (const currentInstanceRoute of this.instancesRoute) {
           const currentInstanceRouteId = currentInstanceRoute.route_id;
 
-          this.refreshIntancesProfil(currentInstanceRouteId);
-          this.refreshIntancesHealth(currentInstanceRouteId);
+          this.refreshInstancesProfil(currentInstanceRouteId);
+          this.refreshInstancesHealth(currentInstanceRouteId);
         }
       })
       .catch(error => {
@@ -76,7 +76,7 @@ export default class JhiInstance extends Vue {
       });
   }
 
-  public refreshIntancesProfil(instanceRouteId: string): void {
+  public refreshInstancesProfil(instanceRouteId: string): void {
     let index;
     const serviceInstance = this.instances.find((instance, i) => {
       index = i;
@@ -91,7 +91,7 @@ export default class JhiInstance extends Vue {
       });
   }
 
-  public refreshIntancesHealth(instanceRouteId): void {
+  public refreshInstancesHealth(instanceRouteId): void {
     const instanceRoute = {
       path: instanceRouteId,
       predicate: '',
@@ -182,7 +182,7 @@ export default class JhiInstance extends Vue {
   }
 
   public hasMetadataPropertyNotNull(instance: Instance, property: string): boolean {
-    return instance?.metadata?.hasOwnProperty(property) && instance?.metadata[property];
+    return Object.prototype.hasOwnProperty.call(instance.metadata, property) && instance?.metadata[property];
   }
 
   public shutdownInstance(instance: Instance): void {

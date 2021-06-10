@@ -25,7 +25,7 @@
             </td>
             <td class="table-hover">
               <span v-if="isStaticProfile" class="badge badge-ligth">{{ instance.host }} : {{ instance.port }}</span>
-              <span v-else class="badge badge-ligth">{{ instance.instanceId }}</span>               
+              <span v-else class="badge badge-ligth">{{ instance.instanceId }}</span>
               <br />
             </td>
             <td class="table-hover">

@@ -10,6 +10,7 @@ import { faEye, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
 import InstanceService from '@/applications/instance/instance.service';
+import InstanceHealthService from '@/applications/health/health.service';
 import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtures/jhcc.fixtures';
 
@@ -26,6 +27,7 @@ config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 const instanceService = new InstanceService();
 const refreshService = new RefreshService(store);
+const instanceHealthService = new InstanceHealthService();
 refreshService.refreshReload$ = new Observable(subscriber => {
   subscriber.next();
 });
@@ -107,12 +109,37 @@ describe('Instance Component', () => {
   it('should refresh instancesRoute list', async () => {
     mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: instancesRoute }));
     const spy = jest.spyOn(instanceService, 'findAllGatewayRoute');
+    const spyRefreshProfil = jest.spyOn(instance, 'refreshInstancesProfil');
+    const spyRefreshHealth = jest.spyOn(instance, 'refreshInstancesHealth');
 
     instance.refreshInstancesRoute();
     await instance.$nextTick();
 
     expect(spy).toHaveBeenCalled();
+    expect(spyRefreshProfil).toHaveBeenCalled();
+    expect(spyRefreshHealth).toHaveBeenCalled();
     expect(instance.instancesRoute).toHaveLength(2);
+    spy.mockRestore();
+    spyRefreshProfil.mockRestore();
+    spyRefreshHealth.mockRestore();
+  });
+
+  it('should refresh instance profil', async () => {
+    // given
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { activeProfiles: ['dev', 'api-docs'] } }));
+    const spy = jest.spyOn(instanceService, 'findActiveProfiles');
+    const instanceRouteId = instancesRoute[1].route_id;
+    const currentInstance = instance.instances.find(curInstance => {
+      return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
+    });
+
+    // when
+    instance.refreshInstancesProfil(instanceRouteId);
+    await instance.$nextTick();
+
+    // then
+    expect(spy).toHaveBeenCalled();
+    expect(currentInstance.metadata.profile).toEqual(['dev', 'api-docs']);
     spy.mockRestore();
   });
 
