@@ -180,7 +180,14 @@ export default class JhiInstance extends Vue {
   }
 
   public hasMetadataPropertyNotNull(instance: Instance, property: string): boolean {
-    return Object.prototype.hasOwnProperty.call(instance?.metadata, property) && instance?.metadata[property];
+    if (!instance || !instance.metadata) {
+      return false;
+    }
+
+    return (
+      Object.prototype.hasOwnProperty.call(instance.metadata, property) &&
+      !(instance.metadata[property] === null || instance.metadata[property] === undefined)
+    );
   }
 
   public shutdownInstance(instance: Instance): void {

@@ -164,6 +164,64 @@ describe('Instance Component', () => {
     spy.mockRestore();
   });
 
+  it('should return true when Medatada has a property not null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { gitBranch: 'property' } as Metadata,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'gitBranch');
+
+    expect(result).toEqual(true);
+  });
+
+  it('should return false when Medatada has a property null or undefined', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-branch': null } as Metadata,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'git-branch');
+
+    instanceWithMetadata.metadata['git-branch'] = undefined;
+    const result2 = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'git-branch');
+
+    expect(result).toEqual(false);
+    expect(result2).toEqual(false);
+  });
+
+  it('should return false when instance is null', async () => {
+    const result = instance.hasMetadataPropertyNotNull(null, '');
+
+    expect(result).toEqual(false);
+  });
+
+  it('should return false when metadata is null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: null,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, null);
+
+    expect(result).toEqual(false);
+  });
+
   it('should handle error on refreshing instance route data', async () => {
     console.warn = jest.fn();
     mockedAxios.get.mockReturnValueOnce(Promise.reject('error'));
