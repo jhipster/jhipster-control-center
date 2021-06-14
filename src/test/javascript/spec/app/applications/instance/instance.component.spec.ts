@@ -9,7 +9,7 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 import { faEye, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
-import InstanceService from '@/applications/instance/instance.service';
+import InstanceService, { Metadata } from '@/applications/instance/instance.service';
 import InstanceHealthService from '@/applications/health/health.service';
 import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtures/jhcc.fixtures';
@@ -53,6 +53,7 @@ describe('Instance Component', () => {
       provide: {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
+        instanceHealthService: () => instanceHealthService,
       },
       mocks: {
         show: jest.fn(),
@@ -82,6 +83,7 @@ describe('Instance Component', () => {
       provide: {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
+        instanceHealthService: () => instanceHealthService,
       },
       mocks: {
         $store: {
@@ -140,6 +142,25 @@ describe('Instance Component', () => {
     // then
     expect(spy).toHaveBeenCalled();
     expect(currentInstance.metadata.profile).toEqual(['dev', 'api-docs']);
+    spy.mockRestore();
+  });
+
+  it('should refresh instance Health', async () => {
+    // given
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { status: 'UP' } }));
+    const spy = jest.spyOn(instanceHealthService, 'checkHealth');
+    const instanceRouteId = instancesRoute[1].route_id;
+    const currentInstance = instance.instances.find(curInstance => {
+      return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
+    });
+
+    // when
+    instance.refreshInstancesHealth(instanceRouteId);
+    await instance.$nextTick();
+
+    // then
+    expect(spy).toHaveBeenCalled();
+    expect(currentInstance.metadata.status).toEqual('UP');
     spy.mockRestore();
   });
 

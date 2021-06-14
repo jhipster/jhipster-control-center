@@ -6,7 +6,7 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 import { RefreshService } from '@/shared/refresh/refresh.service';
 import RefreshSelectorVue from '@/shared/refresh/refresh-selector.mixin.vue';
 import InstanceHealthService from '@/applications/health/health.service';
-import RoutesService, { Route } from '@/shared/routes/routes.service';
+import { Route } from '@/shared/routes/routes.service';
 
 @Component({
   components: {
@@ -37,8 +37,6 @@ export default class JhiInstance extends Vue {
   @Inject('instanceService') private instanceService: () => InstanceService;
   @Inject('refreshService') private refreshService: () => RefreshService;
   @Inject('instanceHealthService') private instanceHealthService: () => InstanceHealthService;
-  @Inject('routesService') private routesService: () => RoutesService;
-
   public mounted(): void {
     this.refreshService()
       .refreshReload$.pipe(takeUntil(this.unsubscribe$))
@@ -182,7 +180,7 @@ export default class JhiInstance extends Vue {
   }
 
   public hasMetadataPropertyNotNull(instance: Instance, property: string): boolean {
-    return Object.prototype.hasOwnProperty.call(instance.metadata, property) && instance?.metadata[property];
+    return Object.prototype.hasOwnProperty.call(instance?.metadata, property) && instance?.metadata[property];
   }
 
   public shutdownInstance(instance: Instance): void {
