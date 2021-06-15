@@ -222,6 +222,46 @@ describe('Instance Component', () => {
     expect(result).toEqual(false);
   });
 
+  it('should return property values when metadata properties are not null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-commit': 'property' } as Metadata,
+    };
+
+    const result = instance.versionInstance(instanceWithMetadata);
+
+    instanceWithMetadata.metadata['git-branch'] = 'property2';
+    const result2 = instance.versionInstance(instanceWithMetadata);
+
+    instanceWithMetadata.metadata['git-commit'] = undefined;
+    const result3 = instance.versionInstance(instanceWithMetadata);
+
+    expect(result).toEqual('property');
+    expect(result2).toEqual('property property2');
+    expect(result3).toEqual('property2');
+  });
+
+  it('should return N/A when metadata properties are null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-commit': undefined, 'git-branch': undefined } as Metadata,
+    };
+
+    const result = instance.versionInstance(instanceWithMetadata);
+
+    expect(result).toEqual('N/A');
+  });
+
   it('should handle error on refreshing instance route data', async () => {
     console.warn = jest.fn();
     mockedAxios.get.mockReturnValueOnce(Promise.reject('error'));
