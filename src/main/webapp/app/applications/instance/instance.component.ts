@@ -152,9 +152,8 @@ export default class JhiInstance extends Vue {
   public getBadgeClass(statusState: any): string {
     if (statusState === 'UP') {
       return 'badge-success';
-    } else {
-      return 'badge-danger';
     }
+    return 'badge-danger';
   }
 
   public versionInstance(instance: Instance): string {

@@ -33,7 +33,7 @@
               <span class="badge badge-primary">{{ instance.metadata.version }}</span>
             </td>
             <td class="table-hover">
-              <span class="badge badge-dark"> {{ versionInstance(instance) }}</span>
+              <span class="badge badge-dark">{{ versionInstance(instance) }}</span>
             </td>
             <td class="table-hover">
               <span class="badge" :class="getBadgeClass(instance.metadata.status)">{{ instance.metadata.status }}</span>
