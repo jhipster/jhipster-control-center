@@ -236,14 +236,21 @@ describe('Instance Component', () => {
     const result = instance.versionInstance(instanceWithMetadata);
 
     instanceWithMetadata.metadata['git-branch'] = 'property2';
+    instanceWithMetadata.metadata['version'] = 'property3';
     const result2 = instance.versionInstance(instanceWithMetadata);
 
     instanceWithMetadata.metadata['git-commit'] = undefined;
+    instanceWithMetadata.metadata['version'] = undefined;
     const result3 = instance.versionInstance(instanceWithMetadata);
 
+    instanceWithMetadata.metadata['git-branch'] = undefined;
+    instanceWithMetadata.metadata['version'] = 'property3';
+    const result4 = instance.versionInstance(instanceWithMetadata);
+
     expect(result).toEqual('property');
-    expect(result2).toEqual('property property2');
+    expect(result2).toEqual('property3 property property2');
     expect(result3).toEqual('property2');
+    expect(result4).toEqual('property3');
   });
 
   it('should return N/A when metadata properties are null', async () => {

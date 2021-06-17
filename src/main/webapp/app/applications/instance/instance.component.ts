@@ -158,28 +158,22 @@ export default class JhiInstance extends Vue {
   }
 
   public versionInstance(instance: Instance): string {
-    let result = '';
+    let result = [];
 
     if (this.hasMetadataPropertyNotNull(instance, this.versionPropName)) {
-      result = instance.metadata[this.versionPropName];
+      result.push(instance.metadata[this.versionPropName]);
     }
     if (this.hasMetadataPropertyNotNull(instance, this.gitCommitPropName)) {
-      result = instance.metadata[this.gitCommitPropName];
+      result.push(instance.metadata[this.gitCommitPropName]);
     }
     if (this.hasMetadataPropertyNotNull(instance, this.gitBranchPropName)) {
-      if (result.length > 0) {
-        result += ' ';
-      }
-      result += instance.metadata[this.gitBranchPropName];
+      result.push(instance.metadata[this.gitBranchPropName]);
     }
-    if (
-      !this.hasMetadataPropertyNotNull(instance, this.gitCommitPropName) &&
-      !this.hasMetadataPropertyNotNull(instance, this.gitBranchPropName)
-    ) {
-      result = 'N/A';
+    if (result.length === 0) {
+      return 'N/A';
     }
 
-    return result;
+    return result.join(' ');
   }
 
   public hasMetadataPropertyNotNull(instance: Instance, property: string): boolean {
@@ -187,10 +181,7 @@ export default class JhiInstance extends Vue {
       return false;
     }
 
-    return (
-      Object.prototype.hasOwnProperty.call(instance.metadata, property) &&
-      !(instance.metadata[property] === null || instance.metadata[property] === undefined)
-    );
+    return Object.prototype.hasOwnProperty.call(instance.metadata, property) && !!instance.metadata[property];
   }
 
   public shutdownInstance(instance: Instance): void {
