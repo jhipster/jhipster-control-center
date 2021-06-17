@@ -1,10 +1,10 @@
-image: vwiencek/console
+image: jhipster/jhipster-control-center
 manifests:
-  - image: vwiencek/console:amd64
+  - image: jhipster/jhipster-control-center:amd64
     platform:
       architecture: amd64
       os: linux
-  - image: vwiencek/console:arm64v8
+  - image: jhipster/jhipster-control-center:arm64v8
     platform:
       architecture: arm64
       os: linux
