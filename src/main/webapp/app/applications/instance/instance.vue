@@ -33,9 +33,9 @@
                 <span class="badge badge-info">{{ profile }}</span
                 >&nbsp;
               </span>
-              <span class="badge badge-primary">{{ instance.metadata.version }}</span>
             </td>
             <td class="table-hover">
+              <span class="badge badge-primary">{{ instance.metadata.version }}</span>
               <span class="badge badge-dark">{{ versionInstance(instance) }}</span>
             </td>
             <td class="table-hover">

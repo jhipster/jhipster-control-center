@@ -33,6 +33,7 @@ export default class JhiInstance extends Vue {
 
   public gitCommitPropName = 'git-commit';
   public gitBranchPropName = 'git-branch';
+  public versionPropName = 'version';
 
   @Inject('instanceService') private instanceService: () => InstanceService;
   @Inject('refreshService') private refreshService: () => RefreshService;
@@ -159,6 +160,9 @@ export default class JhiInstance extends Vue {
   public versionInstance(instance: Instance): string {
     let result = '';
 
+    if (this.hasMetadataPropertyNotNull(instance, this.versionPropName)) {
+      result = instance.metadata[this.versionPropName];
+    }
     if (this.hasMetadataPropertyNotNull(instance, this.gitCommitPropName)) {
       result = instance.metadata[this.gitCommitPropName];
     }
