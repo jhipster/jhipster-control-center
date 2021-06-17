@@ -4,11 +4,6 @@ manifests:
     platform:
       architecture: amd64
       os: linux
-  - image: vwiencek/console:arm32v7
-    platform:
-      architecture: arm
-      os: linux
-      variant: v7
   - image: vwiencek/console:arm64v8
     platform:
       architecture: arm64
