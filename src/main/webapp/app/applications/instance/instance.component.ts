@@ -63,12 +63,10 @@ export default class JhiInstance extends Vue {
       .findAllGatewayRoute()
       .then(res => {
         this.instancesRoute = res.data;
-        for (const currentInstanceRoute of this.instancesRoute) {
-          const currentInstanceRouteId = currentInstanceRoute.route_id;
-
-          this.refreshInstancesProfil(currentInstanceRouteId);
-          this.refreshInstancesHealth(currentInstanceRouteId);
-        }
+        this.instancesRoute.forEach(({ route_id }) => {
+          this.refreshInstancesProfil(route_id);
+          this.refreshInstancesHealth(route_id);
+        });
       })
       .catch(error => {
         console.warn(error);
@@ -76,17 +74,10 @@ export default class JhiInstance extends Vue {
   }
 
   public refreshInstancesProfil(instanceRouteId: string): void {
-    let index;
-    const serviceInstance = this.instances.find((instance, i) => {
-      index = i;
-      return instanceRouteId.includes(instance.serviceId.toLowerCase());
-    });
-
     this.instanceService()
       .findActiveProfiles(instanceRouteId)
       .then(result => {
-        serviceInstance.metadata.profile = result.data.activeProfiles;
-        this.$set(this.instances, index, serviceInstance);
+        this.updateMetadata(instanceRouteId, 'profile', result.data.activeProfiles);
       });
   }
 
@@ -105,14 +96,16 @@ export default class JhiInstance extends Vue {
       .checkHealth(instanceRoute)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(health => {
-        let index;
-        const serviceInstance = this.instances.find((instance, i) => {
-          index = i;
-          return instanceRouteId.includes(instance.serviceId.toLowerCase());
-        });
-        serviceInstance.metadata.status = health.status;
-        this.$set(this.instances, index, serviceInstance);
+        this.updateMetadata(instanceRouteId, 'status', health.status);
       });
+  }
+
+  private updateMetadata(instanceRouteId, fieldName, value) {
+    const index = this.instances.findIndex(instance => {
+      return instanceRouteId.includes(instance.serviceId.toLowerCase());
+    });
+    this.instances[index].metadata[fieldName] = value;
+    this.$set(this.instances, index, this.instances[index]);
   }
 
   public showInstance(instance: Instance, uri: string): void {
