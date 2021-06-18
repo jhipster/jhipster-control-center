@@ -151,7 +151,7 @@ export default class JhiInstance extends Vue {
   }
 
   public versionInstance(instance: Instance): string {
-    let result = [];
+    const result = [];
 
     if (this.hasMetadataPropertyNotNull(instance, this.versionPropName)) {
       result.push(instance.metadata[this.versionPropName]);

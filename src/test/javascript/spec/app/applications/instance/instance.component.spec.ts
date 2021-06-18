@@ -127,7 +127,7 @@ describe('Instance Component', () => {
   });
 
   it('should refresh instance profil', async () => {
-    // given
+    //given
     mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { activeProfiles: ['dev', 'api-docs'] } }));
     const spy = jest.spyOn(instanceService, 'findActiveProfiles');
     const instanceRouteId = instancesRoute[1].route_id;
@@ -135,18 +135,18 @@ describe('Instance Component', () => {
       return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
     });
 
-    // when
+    //when
     instance.refreshInstancesProfil(instanceRouteId);
     await instance.$nextTick();
 
-    // then
+    //then
     expect(spy).toHaveBeenCalled();
     expect(currentInstance.metadata.profile).toEqual(['dev', 'api-docs']);
     spy.mockRestore();
   });
 
   it('should refresh instance Health', async () => {
-    // given
+    //given
     mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { status: 'UP' } }));
     const spy = jest.spyOn(instanceHealthService, 'checkHealth');
     const instanceRouteId = instancesRoute[1].route_id;
@@ -154,11 +154,11 @@ describe('Instance Component', () => {
       return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
     });
 
-    // when
+    //when
     instance.refreshInstancesHealth(instanceRouteId);
     await instance.$nextTick();
 
-    // then
+    //then
     expect(spy).toHaveBeenCalled();
     expect(currentInstance.metadata.status).toEqual('UP');
     spy.mockRestore();
