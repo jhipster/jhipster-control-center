@@ -11,7 +11,8 @@
             <th scope="col" class="w-20">Service</th>
             <th scope="col" class="w-30">Instance</th>
             <th scope="col" class="w-30">Profile</th>
-            <th scope="col" class="w-30">Git</th>
+            <th scope="col" class="w-30">Version</th>
+            <th scope="col" class="w-30">Status</th>
             <th scope="col" class="text-center">Detail</th>
             <th scope="col" class="text-center" v-if="isStaticProfile">Remove</th>
             <th scope="col" class="text-center">Kill</th>
@@ -23,20 +24,21 @@
               <a :href="instance.uri" target="_blank">{{ instance.serviceId }}</a>
             </td>
             <td class="table-hover">
-              <span class="badge badge-ligth">{{ instance.instanceId }}</span
-              ><br />
+              <span v-if="isStaticProfile" class="badge badge-ligth">{{ instance.host }} : {{ instance.port }}</span>
+              <span v-else class="badge badge-ligth">{{ instance.instanceId }}</span>
+              <br />
             </td>
             <td class="table-hover">
-              <span class="badge badge-success">{{ instance.metadata.profile }}</span>
-              <span class="badge badge-primary">{{ instance.metadata.version }}</span>
+              <span v-for="profile in instance.metadata.profile" :key="profile">
+                <span class="badge badge-info">{{ profile }}</span
+                >&nbsp;
+              </span>
             </td>
             <td class="table-hover">
-              <span v-if="instance.metadata.hasOwnProperty('git-commit') && instance.metadata['git-commit']" class="badge badge-dark">
-                {{ instance.metadata['git-commit'] }}
-              </span>
-              <span v-if="instance.metadata.hasOwnProperty('git-branch') && instance.metadata['git-branch']" class="badge badge-dark">
-                {{ instance.metadata['git-branch'] }}
-              </span>
+              <span class="badge badge-dark">{{ versionInstance(instance) }}</span>
+            </td>
+            <td class="table-hover">
+              <span class="badge" :class="getBadgeClass(instance.metadata.status)">{{ instance.metadata.status }}</span>
             </td>
             <td class="table-hover">
               <div class="text-center">

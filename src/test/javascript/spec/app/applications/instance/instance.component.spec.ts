@@ -9,7 +9,8 @@ import { RefreshService } from '@/shared/refresh/refresh.service';
 import { faEye, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import InstanceModal from '@/applications/instance/instance-modal.vue';
 import InstanceClass from '@/applications/instance/instance.component';
-import InstanceService from '@/applications/instance/instance.service';
+import InstanceService, { Metadata } from '@/applications/instance/instance.service';
+import InstanceHealthService from '@/applications/health/health.service';
 import { createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 import { inst, instanceList, instancesRoute, stubbedModal } from '../../../fixtures/jhcc.fixtures';
 
@@ -26,6 +27,7 @@ config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 const instanceService = new InstanceService();
 const refreshService = new RefreshService(store);
+const instanceHealthService = new InstanceHealthService();
 refreshService.refreshReload$ = new Observable(subscriber => {
   subscriber.next();
 });
@@ -51,6 +53,7 @@ describe('Instance Component', () => {
       provide: {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
+        instanceHealthService: () => instanceHealthService,
       },
       mocks: {
         show: jest.fn(),
@@ -80,6 +83,7 @@ describe('Instance Component', () => {
       provide: {
         instanceService: () => instanceService,
         refreshService: () => refreshService,
+        instanceHealthService: () => instanceHealthService,
       },
       mocks: {
         $store: {
@@ -107,13 +111,162 @@ describe('Instance Component', () => {
   it('should refresh instancesRoute list', async () => {
     mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: instancesRoute }));
     const spy = jest.spyOn(instanceService, 'findAllGatewayRoute');
+    const spyRefreshProfil = jest.spyOn(instance, 'refreshInstancesProfil');
+    const spyRefreshHealth = jest.spyOn(instance, 'refreshInstancesHealth');
 
     instance.refreshInstancesRoute();
     await instance.$nextTick();
 
     expect(spy).toHaveBeenCalled();
+    expect(spyRefreshProfil).toHaveBeenCalled();
+    expect(spyRefreshHealth).toHaveBeenCalled();
     expect(instance.instancesRoute).toHaveLength(2);
     spy.mockRestore();
+    spyRefreshProfil.mockRestore();
+    spyRefreshHealth.mockRestore();
+  });
+
+  it('should refresh instance profil', async () => {
+    //given
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { activeProfiles: ['dev', 'api-docs'] } }));
+    const spy = jest.spyOn(instanceService, 'findActiveProfiles');
+    const instanceRouteId = instancesRoute[1].route_id;
+    const currentInstance = instance.instances.find(curInstance => {
+      return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
+    });
+
+    //when
+    instance.refreshInstancesProfil(instanceRouteId);
+    await instance.$nextTick();
+
+    //then
+    expect(spy).toHaveBeenCalled();
+    expect(currentInstance.metadata.profile).toEqual(['dev', 'api-docs']);
+    spy.mockRestore();
+  });
+
+  it('should refresh instance Health', async () => {
+    //given
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { status: 'UP' } }));
+    const spy = jest.spyOn(instanceHealthService, 'checkHealth');
+    const instanceRouteId = instancesRoute[1].route_id;
+    const currentInstance = instance.instances.find(curInstance => {
+      return instanceRouteId.includes(curInstance.serviceId.toLowerCase());
+    });
+
+    //when
+    instance.refreshInstancesHealth(instanceRouteId);
+    await instance.$nextTick();
+
+    //then
+    expect(spy).toHaveBeenCalled();
+    expect(currentInstance.metadata.status).toEqual('UP');
+    spy.mockRestore();
+  });
+
+  it('should return true when Medatada has a property not null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { gitBranch: 'property' } as Metadata,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'gitBranch');
+
+    expect(result).toEqual(true);
+  });
+
+  it('should return false when Medatada has a property null or undefined', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-branch': null } as Metadata,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'git-branch');
+
+    instanceWithMetadata.metadata['git-branch'] = undefined;
+    const result2 = instance.hasMetadataPropertyNotNull(instanceWithMetadata, 'git-branch');
+
+    expect(result).toEqual(false);
+    expect(result2).toEqual(false);
+  });
+
+  it('should return false when instance is null', async () => {
+    const result = instance.hasMetadataPropertyNotNull(null, '');
+
+    expect(result).toEqual(false);
+  });
+
+  it('should return false when metadata is null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: null,
+    };
+
+    const result = instance.hasMetadataPropertyNotNull(instanceWithMetadata, null);
+
+    expect(result).toEqual(false);
+  });
+
+  it('should return property values when metadata properties are not null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-commit': 'property' } as Metadata,
+    };
+
+    const result = instance.versionInstance(instanceWithMetadata);
+
+    instanceWithMetadata.metadata['git-branch'] = 'property2';
+    instanceWithMetadata.metadata['version'] = 'property3';
+    const result2 = instance.versionInstance(instanceWithMetadata);
+
+    instanceWithMetadata.metadata['git-commit'] = undefined;
+    instanceWithMetadata.metadata['version'] = undefined;
+    const result3 = instance.versionInstance(instanceWithMetadata);
+
+    instanceWithMetadata.metadata['git-branch'] = undefined;
+    instanceWithMetadata.metadata['version'] = 'property3';
+    const result4 = instance.versionInstance(instanceWithMetadata);
+
+    expect(result).toEqual('property');
+    expect(result2).toEqual('property3 property property2');
+    expect(result3).toEqual('property2');
+    expect(result4).toEqual('property3');
+  });
+
+  it('should return N/A when metadata properties are null', async () => {
+    const instanceWithMetadata = {
+      serviceId: 'app1',
+      instanceId: 'app1',
+      uri: 'http://127.0.0.01:8080',
+      host: '127.0.0.1',
+      port: 8080,
+      secure: false,
+      metadata: { 'git-commit': undefined, 'git-branch': undefined } as Metadata,
+    };
+
+    const result = instance.versionInstance(instanceWithMetadata);
+
+    expect(result).toEqual('N/A');
   });
 
   it('should handle error on refreshing instance route data', async () => {
