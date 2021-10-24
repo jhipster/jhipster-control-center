@@ -1,6 +1,6 @@
 # jhipsterControlCenter
 
-This application was generated using JHipster 7.0.0-beta.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1](https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1).
+This application was generated using JHipster 7.3.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.3.1](https://www.jhipster.tech/documentation-archive/v7.3.1).
 
 ## JHipster Control Center
 
@@ -67,7 +67,7 @@ After installing Node, you should be able to run the following command to instal
 You will only need to run this command when dependencies change in [package.json](package.json).
 
 ```
-    npm install
+npm install
 ```
 
 We use npm scripts and [Webpack][] as our build system.
@@ -109,13 +109,13 @@ Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipste
 For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
 
 ```
-    npm install --save --save-exact leaflet
+npm install --save --save-exact leaflet
 ```
 
 To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
 
 ```
-    npm install --save-dev --save-exact @types/leaflet
+npm install --save-dev --save-exact @types/leaflet
 ```
 
 Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
@@ -167,6 +167,15 @@ Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/te
 ```
 npm test
 ```
+
+UI end-to-end tests are powered by [Cypress][]. They're located in [src/test/javascript/cypress](src/test/javascript/cypress)
+and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`npm run e2e`) in a second one.
+
+#### Lighthouse audits
+
+You can execute automated [lighthouse audits][https://developers.google.com/web/tools/lighthouse/] with [cypress audits][https://github.com/mfrachet/cypress-audit] by running `npm run e2e:cypress:audits`.
+You should only run the audits when your application is packaged with the production profile.
+The lighthouse report is created in `target/cypress/lhreport.html`
 
 For more information, refer to the [Running tests page][].
 
@@ -220,17 +229,19 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 7.0.0-beta.1 archive]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/development/
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/setting-up-ci/
+[jhipster 7.3.1 archive]: https://www.jhipster.tech/documentation-archive/v7.3.1
+[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.3.1/development/
+[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.3.1/docker-compose
+[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.3.1/production/
+[running tests page]: https://www.jhipster.tech/documentation-archive/v7.3.1/running-tests/
+[code quality page]: https://www.jhipster.tech/documentation-archive/v7.3.1/code-quality/
+[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.3.1/setting-up-ci/
 [node.js]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
 [webpack]: https://webpack.github.io/
 [browsersync]: https://www.browsersync.io/
 [jest]: https://facebook.github.io/jest/
+[cypress]: https://www.cypress.io/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
 [github-actions]: https://github.com/jhipster/jhipster-control-center/actions

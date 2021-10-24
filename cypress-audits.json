@@ -1,18 +1,14 @@
 {
   "baseUrl": "http://localhost:7419/",
-  "testFiles": "**/*.spec.ts",
+  "testFiles": "**/*.audits.ts",
   "supportFile": "src/test/javascript/cypress/support/index.ts",
   "video": false,
   "integrationFolder": "src/test/javascript/cypress/integration",
   "fixturesFolder": "src/test/javascript/cypress/fixtures",
   "pluginsFile": "src/test/javascript/cypress/plugins/index.ts",
   "screenshotsFolder": "target/cypress/screenshots",
-  "chromeWebSecurity": false,
+  "chromeWebSecurity": true,
   "viewportWidth": 1200,
   "viewportHeight": 720,
-  "retries": 2,
-  "env": {
-    "jwtStorageName": "jhi-authenticationToken",
-    "oauth2": false
-  }
+  "retries": 2
 }

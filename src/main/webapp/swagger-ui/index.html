@@ -41,23 +41,7 @@
           },
         };
       };
-
       window.onload = function () {
-        // Automatically click all 'Try it out' buttons
-        var mutationObserver = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-            document.querySelectorAll('.btn.try-out__btn:not(.cancel)').forEach(div => {
-              div.click();
-            });
-          });
-        });
-
-        mutationObserver.observe(document.documentElement, {
-          attributes: true,
-          childList: true,
-          subtree: true,
-        });
-
         var urls = [];
         axios.get('/swagger-resources').then(function (response) {
           response.data.forEach(function (resource) {
@@ -67,11 +51,15 @@
           urls.sort(function (a, b) {
             var x = a.name.toLowerCase(),
               y = b.name.toLowerCase();
+            if (x.includes('(default)')) return -1;
+            if (y.includes('(default)')) return 1;
+            if (x.includes('(management)')) return -1;
+            if (y.includes('(management)')) return 1;
             return x < y ? -1 : x > y ? 1 : 0;
           });
 
           // Build a system
-          var ui = SwaggerUIBundle({
+          window.ui = SwaggerUIBundle({
             urls: urls,
             dom_id: '#swagger-ui',
             deepLinking: true,
@@ -116,8 +104,6 @@
               });
             },
           });
-
-          window.ui = ui;
         });
       };
     </script>

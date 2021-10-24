@@ -58,6 +58,15 @@ export const openAPIPageHeadingSelector = '[data-cy="openAPIPageHeading"]';
 
 export const classInvalid = 'invalid';
 export const classValid = 'valid';
+Cypress.Commands.add('authenticatedRequest', (data: any) => {
+  const bearerToken = sessionStorage.getItem(Cypress.env('jwtStorageName'));
+  return cy.request({
+    ...data,
+    auth: {
+      bearer: bearerToken,
+    },
+  });
+});
 
 Cypress.Commands.add('login', (username: string, password: string) => {
   cy.clickOnLoginItem();
@@ -80,12 +89,14 @@ declare global {
   namespace Cypress {
     interface Chainable<Subject> {
       login(username: string, password: string): Cypress.Chainable;
+      authenticatedRequest(data: any): Cypress.Chainable;
       getProfiles(): Cypress.Chainable;
       skipSpec(): Cypress.Chainable;
     }
   }
 }
 
+import 'cypress-audit/commands';
 // Convert this to a module instead of script (allows import/export)
 export {};
 

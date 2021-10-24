@@ -164,18 +164,19 @@ jhipster:
     name: 'jhipsterControlCenterApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
-  #   allowed-origins: "*"
+  #   allowed-origins: "http://localhost:8100,http://localhost:9000"
   #   allowed-methods: "*"
   #   allowed-headers: "*"
-  #   exposed-headers: "Authorization,Link,X-Total-Count"
+  #   exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
   #   allow-credentials: true
   #   max-age: 1800
   mail:
     from: jhipsterControlCenter@localhost
   api-docs:
-    default-include-pattern: /api/.*
-    title: jhipsterControlCenter API
-    description: jhipsterControlCenter API documentation
+    default-include-pattern: ${server.servlet.context-path:}/api/.*
+    management-include-pattern: ${server.servlet.context-path:}/management/.*
+    title: Jhipster Control Center API
+    description: Jhipster Control Center API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:
@@ -184,6 +185,7 @@ jhipster:
     license: unlicensed
     license-url:
   security:
+    content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:"
     oauth2:
       audience:
         - account

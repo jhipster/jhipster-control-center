@@ -11,7 +11,7 @@ export default class LogfileService extends AbstractService {
       axios
         .get(url)
         .then(res => {
-          observer.next(res.data);
+          observer.next(String(res.data));
           observer.complete();
         })
         .catch(error => {

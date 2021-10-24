@@ -1,24 +1,15 @@
 'use strict';
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const portfinder = require('portfinder');
 const path = require('path');
 const webpack = require('webpack');
-const { merge: webpackMerge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const utils = require('./vue.utils');
-const config = require('../config');
-const baseWebpackConfig = require('./webpack.common');
-const jhiUtils = require('./utils.js');
+const { styleLoaders } = require('./vue.utils');
+const config = require('./config');
 
-const HOST = process.env.HOST;
-const PORT = process.env.PORT && Number(process.env.PORT);
-
-module.exports = webpackMerge(baseWebpackConfig, {
-  mode: 'development',
+module.exports = (env, options) => ({
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
+    rules: styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -27,15 +18,16 @@ module.exports = webpackMerge(baseWebpackConfig, {
     main: './src/main/webapp/app/main',
   },
   output: {
-    path: jhiUtils.root('target/classes/static/'),
-    filename: 'app/[name].bundle.js',
+    filename: 'app/[contenthash].bundle.js',
     chunkFilename: 'app/[id].chunk.js',
   },
   optimization: {
     moduleIds: 'named',
   },
   devServer: {
-    contentBase: './target/classes/static/',
+    static: {
+      directory: './target/classes/static/',
+    },
     port: 9060,
     proxy: [
       {
@@ -57,15 +49,9 @@ module.exports = webpackMerge(baseWebpackConfig, {
         headers: { host: 'localhost:9000' },
       },
     ],
-    watchOptions: {
-      ignored: /node_modules/,
-    },
     historyApiFallback: true,
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env'),
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
@@ -96,7 +82,7 @@ module.exports = webpackMerge(baseWebpackConfig, {
         } */
       },
       {
-        reload: false,
+        reload: true,
       }
     ),
   ],

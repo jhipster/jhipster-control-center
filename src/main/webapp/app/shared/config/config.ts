@@ -36,6 +36,8 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
+import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faUsersCog } from '@fortawesome/free-solid-svg-icons/faUsersCog';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 // jhcc-custom begin
 import { faSitemap } from '@fortawesome/free-solid-svg-icons/faSitemap';
@@ -64,7 +66,10 @@ export function initVueApp(vue) {
   vue.use(VueCookie);
   vue.use(Vuelidate);
   vue.use(Vue2Filters);
-  setupAxiosInterceptors(() => console.log('Unauthorized!'));
+  setupAxiosInterceptors(
+    () => console.log('Unauthorized!'),
+    () => console.log('Server error!')
+  );
   filters.initFilters();
 }
 
@@ -105,6 +110,8 @@ export function initFortAwesome(vue) {
     faUser,
     faUserPlus,
     faWrench,
+    faUsers,
+    faUsersCog,
     // jhcc-custom begin
     faAngleDoubleLeft,
     faChartLine,

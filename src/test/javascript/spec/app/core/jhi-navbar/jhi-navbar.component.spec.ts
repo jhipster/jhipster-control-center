@@ -89,13 +89,8 @@ describe('JhiNavbar', () => {
 
   // jhcc-custom
   it('logout should clear credentials', async () => {
-    const profileInfo = {
-      'display-ribbon-on-profiles': 'dev',
-      activeProfiles: ['dev', 'api-docs', 'consul'],
-    };
     const spy = jest.spyOn(jhiNavbar, 'logout');
     store.commit('authenticated', { login: 'test' });
-
     jhiNavbar.logout();
     await jhiNavbar.$nextTick;
 

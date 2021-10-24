@@ -13,6 +13,7 @@ import JhiSortIndicatorComponent from './shared/sort/jhi-sort-indicator.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import LoginService from './account/login.service';
 import AccountService from './account/account.service';
+import AlertService from './shared/alert/alert.service';
 
 import '../content/scss/vendor.scss';
 
@@ -87,6 +88,7 @@ const app = new Vue({
     loginService: () => loginService,
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService,
+    alertService: () => new AlertService(),
 
     // jhcc-custom begin
     instanceService: () => new InstanceService(),

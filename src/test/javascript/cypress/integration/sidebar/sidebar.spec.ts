@@ -30,7 +30,7 @@ describe('/sidebar', () => {
     if (Cypress.env('oauth2')) {
       cy.getOauth2Data();
       cy.get('@oauth2Data').then(oauth2Data => {
-        cy.keycloackLogout(oauth2Data);
+        cy.oauthLogout();
       });
       cy.clearCache();
       cy.get('@oauth2Data').then(oauth2Data => {

@@ -1,9 +1,6 @@
 package tech.jhipster.controlcenter.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -82,19 +79,42 @@ public final class SecurityUtils {
     }
 
     /**
-     * If the current user has a specific authority (security role).
-     * <p>
-     * The name of this method comes from the {@code isUserInRole()} method in the Servlet API.
+     * Checks if the current user has any of the authorities.
      *
-     * @param authority the authority to check.
-     * @return true if the current user has the authority, false otherwise.
+     * @param authorities the authorities to check.
+     * @return true if the current user has any of the authorities, false otherwise.
      */
-    public static Mono<Boolean> isCurrentUserInRole(String authority) {
+    public static Mono<Boolean> hasCurrentUserAnyOfAuthorities(String... authorities) {
         return ReactiveSecurityContextHolder
             .getContext()
             .map(SecurityContext::getAuthentication)
             .map(Authentication::getAuthorities)
-            .map(authorities -> authorities.stream().map(GrantedAuthority::getAuthority).anyMatch(authority::equals));
+            .map(authorityList ->
+                authorityList
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(authority -> Arrays.asList(authorities).contains(authority))
+            );
+    }
+
+    /**
+     * Checks if the current user has none of the authorities.
+     *
+     * @param authorities the authorities to check.
+     * @return true if the current user has none of the authorities, false otherwise.
+     */
+    public static Mono<Boolean> hasCurrentUserNoneOfAuthorities(String... authorities) {
+        return hasCurrentUserAnyOfAuthorities(authorities).map(result -> !result);
+    }
+
+    /**
+     * Checks if the current user has a specific authority.
+     *
+     * @param authority the authority to check.
+     * @return true if the current user has the authority, false otherwise.
+     */
+    public static Mono<Boolean> hasCurrentUserThisAuthority(String authority) {
+        return hasCurrentUserAnyOfAuthorities(authority);
     }
 
     public static List<GrantedAuthority> extractAuthorityFromClaims(Map<String, Object> claims) {

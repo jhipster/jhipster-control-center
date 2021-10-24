@@ -6,7 +6,6 @@ import java.util.TimeZone;
 import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,7 +23,6 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.i18n.LocaleContextResolver;
 
 @Configuration
-@Import(WebFluxAutoConfiguration.class)
 public class LocaleConfiguration {
 
     @Bean(name = "localeContextResolver")
@@ -66,12 +64,12 @@ public class LocaleConfiguration {
             return new TimeZoneAwareLocaleContext() {
                 @Override
                 public Locale getLocale() {
-                    return (Locale) exchange.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
+                    return exchange.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
                 }
 
                 @Override
                 public TimeZone getTimeZone() {
-                    return (TimeZone) exchange.getAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME);
+                    return exchange.getAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME);
                 }
             };
         }

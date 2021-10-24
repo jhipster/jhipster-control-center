@@ -14,8 +14,6 @@
 # ===================================================================
 
 spring:
-  profiles:
-    active: 'static'
   application:
     name: jhipsterControlCenter
   jackson:
@@ -47,7 +45,6 @@ spring:
   autoconfigure:
     exclude:
       # Disable Eureka autoconfigurations
-      - org.springframework.cloud.netflix.eureka.config.EurekaDiscoveryClientConfigServiceAutoConfiguration
       - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       # Disable Consul autoconfigurations
       - org.springframework.cloud.consul.serviceregistry.ConsulAutoServiceRegistrationAutoConfiguration

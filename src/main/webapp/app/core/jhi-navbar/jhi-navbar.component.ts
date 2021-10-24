@@ -1,5 +1,4 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
-import { VERSION } from '@/constants';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 
@@ -9,7 +8,7 @@ export default class JhiNavbar extends Vue {
   private loginService: () => LoginService;
 
   @Inject('accountService') private accountService: () => AccountService;
-  public version = VERSION ? 'v' + VERSION : '';
+  public version = 'v' + VERSION;
   private currentLanguage = this.$store.getters.currentLanguage;
   private languages: any = this.$store.getters.languages;
   private hasAnyAuthorityValue = false;

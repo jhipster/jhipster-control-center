@@ -1,4 +1,5 @@
-import InstanceService, { Instance } from './instance.service';
+import InstanceService from './instance.service';
+import type { Instance } from './instance.service';
 import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
 
 @Component
