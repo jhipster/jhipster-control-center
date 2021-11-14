@@ -53,7 +53,7 @@ describe('Logfile Component', () => {
   });
 
   afterAll(() => {
-    logfile.beforeDestroy();
+    logfile.$destroy();
   });
 
   it('when component is mounted', async () => {

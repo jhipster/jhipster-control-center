@@ -4,7 +4,7 @@ import { BootstrapVue } from 'bootstrap-vue';
 import RoutesSelectorVue from '@/shared/routes/routes-selector.vue';
 import RoutesSelectorClass from '@/shared/routes/routes-selector.component';
 import RoutesService from '@/shared/routes/routes.service';
-import { RefreshService } from '@/shared/refresh/refresh.service.ts';
+import { RefreshService } from '@/shared/refresh/refresh.service';
 import { Observable, throwError } from 'rxjs';
 import { jhcc_route, routes, service_test_route } from '../../../fixtures/jhcc.fixtures';
 

@@ -69,10 +69,11 @@ describe('Instance Component', () => {
   });
 
   afterAll(() => {
-    instance.beforeDestroy();
+    instance.$destroy();
   });
 
   it('when component is mounted', async () => {
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: instanceList }));
     const subscribeRefreshReload = jest.spyOn(refreshService.refreshReload$, 'subscribe');
     shallowMount<InstanceClass>(InstanceVue, {
       store,

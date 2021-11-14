@@ -19,7 +19,7 @@ describe('Metric Component', () => {
   });
 
   describe('init', () => {
-    it('should count the numbers of each thread type', () => {
+    it('should count the numbers of each thread type', async () => {
       wrapper.setProps({
         threadDump: [
           { name: 'test1', threadState: 'RUNNABLE' },
@@ -30,7 +30,7 @@ describe('Metric Component', () => {
           { name: 'test5', threadState: 'NONE' },
         ],
       });
-
+      await metricModal.$nextTick();
       expect(metricModal.threadDumpData.threadDumpRunnable).toBe(1);
       expect(metricModal.threadDumpData.threadDumpWaiting).toBe(1);
       expect(metricModal.threadDumpData.threadDumpTimedWaiting).toBe(1);

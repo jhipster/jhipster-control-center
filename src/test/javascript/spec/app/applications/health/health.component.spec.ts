@@ -58,7 +58,7 @@ describe('Health Component', () => {
   });
 
   afterAll(() => {
-    health.beforeDestroy();
+    health.$destroy();
   });
 
   it('when component is mounted', async () => {

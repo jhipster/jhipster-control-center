@@ -1,9 +1,9 @@
 import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
 import * as config from '@/shared/config/config';
 import { BootstrapVue } from 'bootstrap-vue';
-import RefreshSelectorMixinClass from '@/shared/refresh/refresh-selector.mixin.ts';
+import RefreshSelectorMixinClass from '@/shared/refresh/refresh-selector.mixin';
 import RefreshSelectorMixinVue from '@/shared/refresh/refresh-selector.mixin.vue';
-import { RefreshService } from '@/shared/refresh/refresh.service.ts';
+import { RefreshService } from '@/shared/refresh/refresh.service';
 import { Observable } from 'rxjs';
 
 const localVue = createLocalVue();

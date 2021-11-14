@@ -17,7 +17,7 @@ export default class MetricService extends AbstractService {
       axios
         .get(url)
         .then(res => {
-          const metrics: Metrics = res.data;
+          const metrics: Metrics = <Metrics>res.data;
           observer.next(metrics);
           observer.complete();
         })
@@ -33,7 +33,7 @@ export default class MetricService extends AbstractService {
       const url = this.generateUri(route, '/management/threaddump/');
 
       axios.get(url).then(res => {
-        const threadDump: ThreadDump = res.data;
+        const threadDump: ThreadDump = <ThreadDump>res.data;
         observer.next(threadDump);
         observer.complete();
       });

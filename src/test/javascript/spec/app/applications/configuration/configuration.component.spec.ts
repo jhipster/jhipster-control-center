@@ -65,7 +65,7 @@ describe('Configuration Component', () => {
   });
 
   afterAll(() => {
-    configuration.beforeDestroy();
+    configuration.$destroy();
   });
 
   it('when component is mounted', async () => {
