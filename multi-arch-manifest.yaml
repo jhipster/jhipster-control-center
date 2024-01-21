@@ -1,0 +1,11 @@
+image: jhipster/jhipster-control-center
+manifests:
+  - image: jhipster/jhipster-control-center:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: jhipster/jhipster-control-center:arm64v8
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
