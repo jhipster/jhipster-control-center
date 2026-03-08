@@ -83,6 +83,17 @@ management:
 spring:
   application:
     name: jhipsterControlCenter
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${OAUTH2_ISSUER_URI:http://keycloak:9080/auth/realms/jhipster}
+        registration:
+          oidc:
+            client-id: ${OAUTH2_CLIENT_ID:internal}
+            client-secret: ${OAUTH2_CLIENT_SECRET:internal}
+            scope: openid,profile,email
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file
