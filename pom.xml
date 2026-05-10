@@ -57,6 +57,7 @@
         <archunit-junit5.version>0.15.0</archunit-junit5.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
+        <oauth2-oidc-sdk.version>9.22.2</oauth2-oidc-sdk.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -95,6 +96,11 @@
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>oauth2-oidc-sdk</artifactId>
+                <version>${oauth2-oidc-sdk.version}</version>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
         </dependencies>
