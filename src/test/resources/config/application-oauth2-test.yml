@@ -4,7 +4,11 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: http://localhost:9080/auth/realms/jhipster
+            authorization-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+            token-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+            jwk-set-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/certs
+            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
         registration:
           oidc:
             client-id: web_app
@@ -12,3 +16,4 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9080/auth/realms/jhipster
+          jwk-set-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/certs
