@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   keycloak:
-    image: jboss/keycloak:11.0.1
+    image: quay.io/keycloak/keycloak:11.0.1
     command:
       [
         '-b',

@@ -48,8 +48,6 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: '11.x'
-            - name: Install node.js packages
-              run: npm install
             - name: Run backend test
               run: |
                   chmod +x mvnw
