@@ -57,6 +57,12 @@
         <archunit-junit5.version>0.15.0</archunit-junit5.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
+        <!-- spring-security-oauth2-client 5.4.5 (pulled in by spring-boot-starter-oauth2-client
+        ${oauth2-client.version}) transitively brings in oauth2-oidc-sdk 8.36.1, whose OIDCProviderMetadata
+        parser rejects nested JSON object members (e.g. mtls_endpoint_aliases, present in Keycloak 15+
+        discovery documents) that arrive as java.util.LinkedHashMap rather than net.minidev.json.JSONObject -
+        see #174. Pin to the latest 9.x patch, which parses these leniently. -->
+        <nimbus-oauth2-oidc-sdk.version>9.43.6</nimbus-oauth2-oidc-sdk.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -95,6 +101,11 @@
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>oauth2-oidc-sdk</artifactId>
+                <version>${nimbus-oauth2-oidc-sdk.version}</version>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
         </dependencies>
