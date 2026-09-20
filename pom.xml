@@ -57,9 +57,11 @@
         <archunit-junit5.version>0.15.0</archunit-junit5.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
-        <!-- oauth2-oidc-sdk 9.x accepts the shallow Map shape Spring Security builds
-        from modern OIDC discovery documents containing mtls_endpoint_aliases. See #174. -->
+        <!-- Pinned together: oauth2-oidc-sdk 9.x tolerates a plain Map for a nested
+        discovery member (see #174), and it must be paired with the matching
+        nimbus-jose-jwt generation it is built against. -->
         <oauth2-oidc-sdk.version>9.43.6</oauth2-oidc-sdk.version>
+        <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -103,6 +105,11 @@
                 <groupId>com.nimbusds</groupId>
                 <artifactId>oauth2-oidc-sdk</artifactId>
                 <version>${oauth2-oidc-sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
         </dependencies>
