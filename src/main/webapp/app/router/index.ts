@@ -9,8 +9,8 @@ import Router from 'vue-router';
 import { Authority } from '@/shared/security/authority';
 const Home = () => import('@/core/home/home.vue');
 const Error = () => import('@/core/error/error.vue');
-import entities from '@/router/entities.ts';
-import pages from '@/router/pages.ts';
+import entities from '@/router/entities';
+import pages from '@/router/pages';
 
 // jhcc-custom begin
 const InstanceComponent = () => import('../applications/instance/instance.vue');
