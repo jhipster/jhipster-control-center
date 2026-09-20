@@ -2,25 +2,20 @@
 version: '3.8'
 services:
   keycloak:
-    image: jboss/keycloak:11.0.1
+    image: quay.io/keycloak/keycloak:26.7.3
     command:
-      [
-        '-b',
-        '0.0.0.0',
-        '-Dkeycloak.migration.action=import',
-        '-Dkeycloak.migration.provider=dir',
-        '-Dkeycloak.migration.dir=/opt/jboss/keycloak/realm-config',
-        '-Dkeycloak.migration.strategy=OVERWRITE_EXISTING',
-        '-Djboss.socket.binding.port-offset=1000',
-        '-Dkeycloak.profile.feature.upload_scripts=enabled',
-      ]
+      - start-dev
+      - --http-port=9080
+      - --http-relative-path=/auth
+      - --import-realm
     volumes:
-      - ./realm-config:/opt/jboss/keycloak/realm-config
+      - ./realm-config:/opt/keycloak/data/import
     environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
-      - DB_VENDOR=h2
+      # KC_BOOTSTRAP_ADMIN_* is used from Keycloak 26; KEYCLOAK_ADMIN_* is kept for older tags
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
       - 9080:9080
       - 9443:9443
-      - 10990:10990

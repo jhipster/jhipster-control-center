@@ -694,17 +694,6 @@
         ],
         "policies": [
           {
-            "id": "ff09b194-0615-4cfd-9851-74adf540dabd",
-            "name": "Default Policy",
-            "description": "A policy that grants access only for users within this realm",
-            "type": "js",
-            "logic": "POSITIVE",
-            "decisionStrategy": "AFFIRMATIVE",
-            "config": {
-              "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-            }
-          },
-          {
             "id": "4b5c72cc-b8b8-4bfc-95ac-61815669f985",
             "name": "Default Permission",
             "description": "A permission that applies to the default resource type",
@@ -712,8 +701,7 @@
             "logic": "POSITIVE",
             "decisionStrategy": "UNANIMOUS",
             "config": {
-              "defaultResourceType": "urn:internal:resources:default",
-              "applyPolicies": "[\"Default Policy\"]"
+              "defaultResourceType": "urn:internal:resources:default"
             }
           }
         ],
