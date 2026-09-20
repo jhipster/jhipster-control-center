@@ -58,10 +58,10 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <oauth2-client.version>2.3.1.RELEASE</oauth2-client.version>
         <!-- Pinned together: oauth2-oidc-sdk 9.x tolerates a plain Map for a nested
-        discovery member (see #174), and it must be paired with the matching
-        nimbus-jose-jwt generation it is built against. -->
+        discovery member (see #174). Keep nimbus-jose-jwt on the patched 9.37.x
+        line: 9.37.4 fixes CVE-2025-53864 while remaining generation-compatible. -->
         <oauth2-oidc-sdk.version>9.43.6</oauth2-oidc-sdk.version>
-        <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>9.37.4</nimbus-jose-jwt.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
