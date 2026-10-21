@@ -2,6 +2,8 @@ package tech.jhipster.controlcenter.config;
 
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
+import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +20,9 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -36,6 +41,8 @@ import org.springframework.security.web.server.csrf.CookieServerCsrfTokenReposit
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
 import reactor.core.publisher.Mono;
 import tech.jhipster.config.JHipsterProperties;
@@ -43,8 +50,6 @@ import tech.jhipster.controlcenter.security.AuthoritiesConstants;
 import tech.jhipster.controlcenter.security.SecurityUtils;
 import tech.jhipster.controlcenter.security.jwt.JWTFilter;
 import tech.jhipster.controlcenter.security.jwt.TokenProvider;
-import tech.jhipster.controlcenter.security.oauth2.AudienceValidator;
-import tech.jhipster.controlcenter.security.oauth2.JwtGrantedAuthorityConverter;
 import tech.jhipster.controlcenter.web.filter.SpaWebFilter;
 import tech.jhipster.web.filter.reactive.CookieCsrfFilter;
 
@@ -57,11 +62,22 @@ public class Oauth2SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
+    @Value("${spring.security.oauth2.client.registration.oidc.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.oidc.client-secret}")
+    private String clientSecret;
+
+    @Value("${spring.security.oauth2.client.registration.oidc.scope}")
+    private String[] scope;
+
     private final TokenProvider tokenProvider;
 
     private final JHipsterProperties jHipsterProperties;
 
     private final SecurityProblemSupport problemSupport;
+
+    private OIDCProviderMetadata providerMetadata;
 
     public Oauth2SecurityConfiguration(
         TokenProvider tokenProvider,
@@ -132,6 +148,53 @@ public class Oauth2SecurityConfiguration {
 
         // @formatter:on
         return http.build();
+    }
+
+    /**
+     * Replaces Spring Boot's issuer-location based {@link ReactiveClientRegistrationRepository}.
+     * Spring Boot backs off via {@code @ConditionalOnMissingBean}, so defining this bean disables
+     * the buggy auto-configured path.
+     *
+     * <p>Why this exists -- <a href="https://github.com/jhipster/jhipster-control-center/issues/174">issue #174</a>:
+     * Spring Security 5.4 resolves the OIDC discovery document into a Jackson {@code Map} and then
+     * calls {@code new JSONObject(map)}, which copies only the top level. Nested objects -- such as
+     * the {@code mtls_endpoint_aliases} object Keycloak ≥15 emits -- stay plain {@code Map}s, and the
+     * Nimbus SDK rejects them with {@code ParseException} at startup. Fetching the document as a
+     * {@code String} and parsing it with the SDK's own parser handles nesting correctly.
+     *
+     * @return a repository holding the single {@code oidc} client registration.
+     */
+    @Bean
+    public ReactiveClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration registration = OidcDiscoveryClientRegistrationFactory.buildClientRegistration(
+            "oidc",
+            clientId,
+            clientSecret,
+            scope,
+            issuerUri,
+            providerMetadata()
+        );
+        return new InMemoryReactiveClientRegistrationRepository(registration);
+    }
+
+    /**
+     * Fetches the OIDC discovery document from the issuer as a {@code String} and parses it with
+     * the Nimbus SDK's own parser, which handles nested JSON objects correctly. The result is
+     * cached for the lifetime of the application context.
+     *
+     * @return the parsed provider metadata.
+     */
+    private OIDCProviderMetadata providerMetadata() {
+        if (providerMetadata == null) {
+            URI discoveryUri = UriComponentsBuilder
+                .fromUriString(issuerUri)
+                .path("/.well-known/openid-configuration")
+                .build()
+                .toUri();
+            String discoveryDocument = WebClient.create().get().uri(discoveryUri).retrieve().bodyToMono(String.class).block();
+            providerMetadata = OidcDiscoveryClientRegistrationFactory.parseDiscoveryDocument(discoveryDocument);
+        }
+        return providerMetadata;
     }
 
     Converter<Jwt, Mono<AbstractAuthenticationToken>> jwtAuthenticationConverter() {
