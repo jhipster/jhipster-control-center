@@ -27,6 +27,7 @@ import reactor.core.publisher.Flux;
  * @see org.springframework.cloud.gateway.discovery.DiscoveryClientRouteDefinitionLocator
  */
 public class JHipsterControlCenterRouteDefinitionLocator implements RouteDefinitionLocator {
+
     public static final String GATEWAY_PATH = "/gateway/";
 
     private final DiscoveryClient discoveryClient;
@@ -41,7 +42,7 @@ public class JHipsterControlCenterRouteDefinitionLocator implements RouteDefinit
             .fromIterable(discoveryClient.getServices())
             .map(discoveryClient::getInstances)
             .filter(instances -> !instances.isEmpty())
-            .map(instances -> instances.get(0))
+            .flatMapIterable(instances -> instances)
             .map(JHipsterControlCenterRouteDefinitionLocator::getRouteDefinitionForInstance);
     }
 
