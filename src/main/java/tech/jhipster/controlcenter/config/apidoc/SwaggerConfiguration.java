@@ -1,5 +1,6 @@
 package tech.jhipster.controlcenter.config.apidoc;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,9 +39,15 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
     @Qualifier("swaggerResources")
     private final SwaggerResourcesProvider controlCenterSwaggerResources;
 
+    private Duration swaggerResourceTimeout = Duration.ofSeconds(5);
+
     public SwaggerConfiguration(RouteLocator routeLocator, SwaggerResourcesProvider swaggerResources) {
         this.routeLocator = routeLocator;
         this.controlCenterSwaggerResources = swaggerResources;
+    }
+
+    void setSwaggerResourceTimeout(Duration swaggerResourceTimeout) {
+        this.swaggerResourceTimeout = swaggerResourceTimeout;
     }
 
     @Override
@@ -68,8 +75,9 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
                         .uri("/swagger-resources")
                         .retrieve()
                         .bodyToFlux(SwaggerResource.class)
-                        .onErrorResume(exception -> Mono.empty())
                         .collectList()
+                        .timeout(swaggerResourceTimeout)
+                        .onErrorResume(exception -> Mono.empty())
                         .defaultIfEmpty(Collections.emptyList());
                     return Mono.just(route).zipWith(swaggerResources);
                 }
